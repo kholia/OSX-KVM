@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+<key>Timeout</key>
+<string>10</string>
+<key>EthernetBuiltIn</key>
+<string>Yes</string>
+<key>PCIRootUID</key>
+<string>1</string>
+<key>KernelBooter_kexts</key>
+<string>Yes</string>
+<key>CsrActiveConfig</key>
+<string>103</string>
+</dict>
+</plist>
