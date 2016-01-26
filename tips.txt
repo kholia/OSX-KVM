@@ -1,0 +1,6 @@
+If you want a larger VNC screen do the following:
+
+Add this to the bootloader config in /Extra/org.chameleon.boot.plist:
+
+<key>Graphics Mode</key>
+<string>1440x900x32</string>
