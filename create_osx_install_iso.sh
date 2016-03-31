@@ -489,7 +489,7 @@ stage_start "Copying BaseSystem.dmg to writeable image"
 #rsync -aIWEh --cache --progress "$OSX_inst_base_dmg" "$OSX_inst_img_rw_mnt/" || exit_with_error "Copying BaseSystem.dmg failed"
 cp -p "$OSX_inst_base_dmg" "$OSX_inst_img_rw_mnt/" || exit_with_error "Copying BaseSystem.dmg failed"
 cp -p "${OSX_inst_base_dmg%.dmg}.chunklist" "$OSX_inst_img_rw_mnt/" || exit_with_error "Copying BaseSystem.chunklist failed"
-cp -R ~/Kernels "$OSX_inst_img_rw_mnt/System/Library/"  # this is the only tweak we have made in the upstream version!
+cp -R "$work_dir/Kernels" "$OSX_inst_img_rw_mnt/System/Library/"  # this is the only tweak we have made in the upstream version!
 stage_end_ok
 
 stage_start "Replacing Packages symlink with real files"
