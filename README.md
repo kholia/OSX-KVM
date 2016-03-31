@@ -24,6 +24,15 @@ Kernel Extraction
   menu option) and then open "Essentials.pkg". Extract the folder & file
   (Kernels/kernel) located at /System/Library/Kernels/kernel location.
 
+ISO Creation
+------------
+
+* After extracting the Kernels folder, place it in the same directory as the iso creation script.
+
+* Run the ISO creation script, making sure to use 'sudo' if possible.
+
+* Copy the ISO from your Mac to your KVM machine.
+
 Enoch Bootloader
 ----------------
 
