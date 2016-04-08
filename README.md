@@ -44,10 +44,31 @@ Enoch Bootloader
 
 * Rename boot to enoch_rev####_boot.
 
+Installation
+------------
+
+```bash
+virsh --connect qemu:///system define osx-libvirt.xml
+
+```
+
+Redefine HDD/DVD sources in virt-manager
+
 Post Installation
 -----------------
 
 Put "org.chameleon.boot.plist" in /Extra folder.
+
+```bash
+sudo modprobe nbd
+sudo qemu-nbd -c /dev/nbd0 /some/image.qcow2
+sudo mkdir -p /mnt/osx-kvm
+sudo mount -t hfsplus -o force,rw /dev/nbd0p2 /mnt/osx-kvm
+sudo mkdir /mnt/osx-kvm/Extra
+sudo cp org.chameleon.boot.plist /mnt/osx-kvm/Extra
+sudo umount /mnt/osx-kvm
+sudo qemu-nbd -d /dev/nbd0
+```
 
 InstallESD.dmg
 --------------
