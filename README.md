@@ -7,17 +7,6 @@ Fedora 24 running on i5-6500 CPU.
 
 Tested with QEMU 2.4.1 and QEMU 2.5.
 
-Notes
------
-
-* Type the following after boot (not needed anymore)
-  "KernelBooter_kexts"="Yes" "CsrActiveConfig"="103"
-
-Kernel Extraction
------------------
-
-* Done automatically now.
-
 ISO Creation
 ------------
 
@@ -45,9 +34,6 @@ virsh --connect qemu:///system define osx-libvirt-install.xml
 ```
 
 Redefine HDD/DVD sources in virt-manager
-
-Post Installation
------------------
 
 References
 ----------
