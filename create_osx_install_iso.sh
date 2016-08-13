@@ -12,12 +12,13 @@
 # Latest version:
 # https://raw.githubusercontent.com/Karlson2k/k2k-OSX-Tools/master/Create_osx_install_iso/create_osx_install_iso.sh
 #
-# Version 1.0.5
+# Version 1.0.6
 
 readonly script_org_name='create_osx_install_iso.sh' || exit 127
 unset work_dir script_name tmp_dir OSX_inst_name OSX_inst_inst_dmg_mnt \
 	OSX_inst_img_rw_mnt OSX_inst_img_rw_dev || exit 127
 work_dir="$PWD"
+script_dir="$(dirname $(readlink -f "$0"))"
 save_IFS="$IFS" || exit 127
 export LANG='en_US.UTF-8' || exit 127 # prevent localization of output, not really required
 
@@ -454,14 +455,29 @@ elif [[ "$cr_method" == "method3" ]]; then
 		stage_end_ok "$OSX_inst_img_rw_volname"
 	fi
 
-	stage_start_nl "Remounting writable image to predefined mointpoint"
+	stage_start_nl "Remounting writable image to predefined mountpoint"
 	hdiutil detach "$OSX_inst_img_rw_dev" -force || exit_with_error "Can't unmount image"
 	unset OSX_inst_img_rw_dev
 	OSX_inst_img_rw_mnt="$tmp_dir/OS_X_Install_img_rw_mnt"
 	hdiutil attach "$OSX_inst_img_rw" -readwrite -nobrowse -mountpoint "$OSX_inst_img_rw_mnt" ${ver_opt+-noverify} || exit_with_error "Can't mount writable image"
 	stage_end_ok "Remounting succeed"
+
 else
 	exit_with_error "Unknown creation method"
+fi
+
+custom_boot_plist=
+if [[ -f "$script_dir/org.chameleon.boot.plist" ]] ; then
+    custom_boot_plist="$script_dir/org.chameleon.boot.plist"
+fi
+if [[ -f "$work_dir/org.chameleon.boot.plist" ]] ; then
+    custom_boot_plist="$work_dir/org.chameleon.boot.plist"
+fi
+if [[ -n "$custom_boot_plist" ]] ; then
+    stage_start "Installing custom boot.plist"
+    mkdir $OSX_inst_img_rw_mnt/Extra
+    cp "$custom_boot_plist" "$OSX_inst_img_rw_mnt/Extra/org.chameleon.boot.plist"
+    stage_end_ok "done"
 fi
 
 stage_start "Detecting OS X version on image"
@@ -486,10 +502,14 @@ else
 fi
 
 stage_start "Copying BaseSystem.dmg to writeable image"
-#rsync -aIWEh --cache --progress "$OSX_inst_base_dmg" "$OSX_inst_img_rw_mnt/" || exit_with_error "Copying BaseSystem.dmg failed"
 cp -p "$OSX_inst_base_dmg" "$OSX_inst_img_rw_mnt/" || exit_with_error "Copying BaseSystem.dmg failed"
 cp -p "${OSX_inst_base_dmg%.dmg}.chunklist" "$OSX_inst_img_rw_mnt/" || exit_with_error "Copying BaseSystem.chunklist failed"
-cp -R "$work_dir/Kernels" "$OSX_inst_img_rw_mnt/System/Library/"  # this is the only tweak we have made in the upstream version!
+stage_end_ok
+
+stage_start "Extracting kernel from Essentials.pkg"
+cd "$OSX_inst_img_rw_mnt"
+"$script_dir/pbzx" "$OSX_inst_inst_dmg_mnt/Packages/Essentials.pkg" | cpio -idmuv ./System/Library/Kernels  || exit_with_error "Extraction of kernel failed"
+cd "$work_dir"
 stage_end_ok
 
 stage_start "Replacing Packages symlink with real files"
@@ -509,12 +529,12 @@ fi
 stage_start_nl "Unmounting InstallESD.dmg"
 hdiutil detach "$OSX_inst_inst_dmg_mnt" -force || exit_with_error "Can't unmount InstallESD.dmg"
 unset OSX_inst_img_rw_dev
-stage_end_ok "Unmointing succeed"
+stage_end_ok "Unmounting succeed"
 
 stage_start_nl "Unmounting writable images"
 hdiutil detach "$OSX_inst_img_rw_mnt" -force || exit_with_error "Can't unmount writable image"
 unset OSX_inst_img_rw_dev
-stage_end_ok "Unmointing succeed"
+stage_end_ok "Unmounting succeed"
 
 insert_version_into_name() {
 	local name="$1"
