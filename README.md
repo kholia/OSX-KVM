@@ -43,12 +43,15 @@ virsh --connect qemu:///system define osx-libvirt-install.xml
 * After selecting the language, fire-up the Disk Utility ...
 ![screenshot_02](https://cloud.githubusercontent.com/assets/731252/17645881/513b6918-61b2-11e6-91f2-026d953cbe0b.png)
 
-* ... and nitialize the new harddisk.
+* ... and initialize the new harddisk.
 ![screenshot_03](https://cloud.githubusercontent.com/assets/731252/17645878/51373d48-61b2-11e6-8740-69c86bf92d31.png)
 ![screenshot_04](https://cloud.githubusercontent.com/assets/731252/17645879/513ae704-61b2-11e6-9a54-109c37132783.png)
 
 * After disk initialization, open a terminal window (in the Utilities menu) and recursively copy the /Extra folder
-  to the newly initialized target volume using cp -av /Extra "/Volumes/NewVolumeName" 
+  to the newly initialized target volume using
+```bash
+cp -av /Extra "/Volumes/NewVolumeName"
+```
 ![screenshot_05](https://cloud.githubusercontent.com/assets/731252/17645876/5136ad6a-61b2-11e6-84cd-cb7851119292.png)
 
 * Now, you can continue with the installation as usual
