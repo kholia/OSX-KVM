@@ -41,7 +41,7 @@ virsh --connect qemu:///system define osx-libvirt-install.xml
 ![screenshot_01](https://cloud.githubusercontent.com/assets/731252/17645877/5136b1ac-61b2-11e6-8d90-29f5cc11ae01.png)
 
 * After selecting the language, fire-up the Disk Utility ...
-![screenshot_02(https://cloud.githubusercontent.com/assets/731252/17645881/513b6918-61b2-11e6-91f2-026d953cbe0b.png)
+![screenshot_02](https://cloud.githubusercontent.com/assets/731252/17645881/513b6918-61b2-11e6-91f2-026d953cbe0b.png)
 
 * ... and nitialize the new harddisk.
 ![screenshot_03](https://cloud.githubusercontent.com/assets/731252/17645878/51373d48-61b2-11e6-8740-69c86bf92d31.png)
