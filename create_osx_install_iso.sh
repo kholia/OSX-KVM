@@ -14,11 +14,24 @@
 #
 # Version 1.0.6
 
+function myreadlink() {
+  (
+    cd $(dirname $1)
+    if [[ -L $1 ]] ; then
+        cd $(dirname $(readlink $1))
+    else
+        cd $(dirname $1)
+    fi
+    echo $PWD/$(basename $1)
+  )
+}
+
 readonly script_org_name='create_osx_install_iso.sh' || exit 127
 unset work_dir script_name tmp_dir OSX_inst_name OSX_inst_inst_dmg_mnt \
 	OSX_inst_img_rw_mnt OSX_inst_img_rw_dev || exit 127
 work_dir="$PWD"
-script_dir="$(dirname $(readlink -f "$0"))"
+script_dir="$(dirname $(myreadlink "$0"))"
+cd "$work_dir"
 save_IFS="$IFS" || exit 127
 export LANG='en_US.UTF-8' || exit 127 # prevent localization of output, not really required
 
@@ -204,7 +217,7 @@ exit_with_cmd_err() {
 }
 
 unset cmd_par_app cmd_par_iso test_name ver_opt cr_method || exit_with_error "Can't unset variable"
-allow_sudo='yes' && ver_opt='--noverify' || exit_with_error "Can't set variable"
+ver_opt='--noverify'
 while [[ -n "$1" ]]; do
 	case "$1" in
 		-a | --app | --application ) cmd_par_app="$2"
