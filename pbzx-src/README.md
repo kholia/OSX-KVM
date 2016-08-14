@@ -1,29 +1,29 @@
-Building pbzx from scratch
+# Building pbzx from scratch
 
-Prerequisites
-=============
+## Prerequisites
 
-* A decent version of Xcode installed
+* A decent version of Xcode installed.
 Xcode is available for free in Apple's AppStore
 
-Building
-========
+## Building
 
-Simply run make
+Simply run
+```bash
+make
+```
 This first downloads, configures and builds a static version of liblzma
 and then the pbxz binary itself.
 
-The following ifalse libtool warning can be safely ignored:
+The following false libtool warning can be safely ignored:
 
-libtool: warning: remember to run 'libtool --finish /usr/lib'
+`libtool: warning: remember to run 'libtool --finish /usr/lib'`
 
-For your reference, below is the output of a typical make invocation:
-=====================================================================
-
+### For your reference, below is the output of a typical make invocation:
+```
 test -d xz-5.2.2 || curl -L http://tukaani.org/xz/xz-5.2.2.tar.bz2 | tar xjf -
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0 70 1164k   70  819k    0     0  1566k      0 --:--:-- --:--:-- --:--:-- 1567k100 1164k  100 1164k    0     0  2001k      0 --:--:-- --:--:-- --:--:-- 2004k
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0 49 1164k   49  573k    0     0   867k      0  0:00:01 --:--:--  0:00:01  866k100 1164k  100 1164k    0     0  1177k      0 --:--:-- --:--:-- --:--:-- 1176k
 cd xz-5.2.2 && ./configure --prefix=/usr --disable-shared --disable-xz --disable-xzdec --disable-lzmadec --disable-lzmainfo --disable-lzma-links --disable-scripts --disable-doc --disable-dependency-tracking --disable-nls --disable-rpath --without-libiconv-prefix --without-libintl-prefix --enable-silent-rules
 
 XZ Utils 5.2.2
@@ -153,10 +153,10 @@ checking for windres... no
 
 Initializing gettext:
 checking whether NLS is requested... no
-checking for msgfmt... /Library/Frameworks/Mono.framework/Versions/Current/bin//msgfmt
-checking for gmsgfmt... /Library/Frameworks/Mono.framework/Versions/Current/bin//msgfmt
-checking for xgettext... /Library/Frameworks/Mono.framework/Versions/Current/bin//xgettext
-checking for msgmerge... /Library/Frameworks/Mono.framework/Versions/Current/bin//msgmerge
+checking for msgfmt... no
+checking for gmsgfmt... :
+checking for xgettext... no
+checking for msgmerge... no
 checking for ld used by GCC... /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ld
 checking if the linker (/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ld) is GNU ld... no
 checking for shared library run path origin... done
@@ -400,3 +400,4 @@ make[3]: Nothing to be done for `install-exec-am'.
 make[3]: Nothing to be done for `install-data-am'.
 make[3]: Nothing to be done for `install-exec-am'.
 gcc -Wall -o pbzx -Iliblzma/usr/include -Lliblzma/usr/lib -llzma -lxar pbzx.c
+```
