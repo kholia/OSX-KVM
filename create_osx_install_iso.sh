@@ -252,7 +252,7 @@ if [[ -z "$cmd_par_app" ]]; then
 	stage_start "Looking for downloaded OS upgrades"
 	unset test_name || exit_with_error
 	IFS=$'\n'
-	dirlist=(`ls -1d "/Applications/Install OS X "*".app/" | sed -n -e 's|^\(/Applications/Install OS X .*\.app\)/$|\1|p' `) || exit_with_error "Can't find downloaded OS X upgrade"
+	dirlist=(`ls -1d "/Applications/Install macOS "*".app/" | sed -n -e 's|^\(/Applications/Install macOS .*\.app\)/$|\1|p' `) || exit_with_error "Can't find downloaded OS X upgrade"
 	IFS="$save_IFS"
 	[[ ${#dirlist[@]} -eq 0 ]] && exit_with_error "Can't find downloaded OS X upgrade"
 	stage_end_ok "found"
