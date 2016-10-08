@@ -324,7 +324,7 @@ else
 fi
 
 stage_start "Creating temporary directory"
-tmp_dir="$(mktemp -d -t osx_iso_tmpdir)" || exit_with_error "Can't create tmp directory"
+tmp_dir="$(mktemp -d -t osx_iso_tmpdir_XXX)" || exit_with_error "Can't create tmp directory"
 # mkdir "tmp-tmp"
 # tmp_dir=$(cd tmp-tmp && pwd) || exit_with_error "Can't create tmp directory"
 stage_end_ok "succeed"
