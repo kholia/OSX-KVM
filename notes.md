@@ -13,7 +13,6 @@ Finally reboot, and then use the App Store without problems.
 
 This fix was found by Glnk2012 of https://www.tonymacx86.com/ site.
 
-
 ### Enoch Bootloader
 
 * Download Enoch bootloader from http://www.insanelymac.com/forum/ (requires
@@ -24,6 +23,20 @@ This fix was found by Glnk2012 of https://www.tonymacx86.com/ site.
 
 * Rename boot to enoch_rev####_boot.
 
+
+### Enoch Bootloader (alternate extraction method)
+
+* Build xar from http://mackyle.github.io/xar/ on a Linux box.
+
+* Extract "boot" from using the following steps,
+
+  ```
+  xar -x -f Enoch-rev.2848.pkg
+
+  gunzip -c Core.pkg/Payload | cpio -i
+
+  cp usr/standalone/i386/boot enoch_rev2848_boot
+  ```
 
 ### Higher Resolution
 
