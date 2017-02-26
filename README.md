@@ -37,7 +37,8 @@ Intel VT-x / AMD SVM is required.
   which will contain the `org.chameleon.boot.plist` file.
 
   ```
-  sudo ./create_install_iso.sh -a /path/to/Install_macOS_Sierra_(OS_X_10.12.3).iso	-i /path/to/output/installer.iso
+  sudo ./create_install_iso.sh -a /path/to/Install_macOS_Sierra_(OS_X_10.12.3).iso	\
+  -i /path/to/output/installer.iso
   ```
 
   See Debugging section for help if this step has problems.
@@ -45,12 +46,12 @@ Intel VT-x / AMD SVM is required.
 * Save the final ISO to copy from your Mac to your QEMU/KVM machine.
 
 #### Prep On Your QEMU System
-  * Install qemu
+  * Install qemu.
   ```
   sudo apt-get install qemu
   ```
 
-  * Install packages to support virtual management and OSX networking
+  * Install packages to support virtual management and OSX networking.
   ```
   sudo apt-get install uml-utilities virt-manager
   sudo ip tuntap add dev tap0 mode tap
@@ -74,7 +75,7 @@ Intel VT-x / AMD SVM is required.
   git clone https://github.com/kholia/OSX-KVM.git
   ```
 
-* Create a virtual HDD image where the OSX operating system will be installed. If you change the name of the disk image from `mac_hdd.img` to something else, the boot scripts will need updating to point to the new image name.
+* Create a virtual HDD image where the OSX operating system will be installed. If you change the name of the disk image from `mac_hdd.img` to something else, the boot scripts will need updating to point to the new image name. A base install of OSX needs 10G of space. Adding XCode or other large software obviously increases that requirement.
   ```bash
    qemu-img create -f qcow2 mac_hdd.img 64G
   ```
@@ -94,7 +95,7 @@ There are two recommended ways to boot the installation ISO.
   cp enoch_rev2848_boot ..
   ```
 
-  * We will use the `boot.sh` script for booting an El Capitan (OSX 10.11.x) system. The `boot-macOS.sh` script is for booting a macOS Sierra (10.12.x) system.
+  * We will use the `boot-macOS.sh` script for booting a macOS Sierra (OSX 10.12.x) system. The `boot.sh` script is for booting an El Capitan (10.11.x) system.
 
   * Run the boot script with `sudo`. To run without sudo, check the qemu documentation for assistance.
   ```
@@ -165,7 +166,7 @@ There are two recommended ways to boot the installation ISO.
   ```
   diskutil eraseDisk JHFS+ <name of disk> <disk#>
     ```
-  For example: `diskutil eraseDisk JHFS+ MyHackintoshHD disk2`
+  For example: `diskutil eraseDisk JHFS+ MyKVMacHD disk2`
 
   Then select your language and click the forward arrow to move to the next step.
 
