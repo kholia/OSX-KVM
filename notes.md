@@ -47,6 +47,14 @@ If you want a larger VNC screen add the following to the bootloader config in /E
 <string>1440x900x32</string>
 ```
 
+Make sure to pick a resolution that is supported by the SeaBIOS used by QEMU.
+The full list can be found in the source for SeaBIOS located
+[here](http://git.qemu-project.org/?p=seabios.git;a=blob_plain;f=vgasrc/bochsvga.c;hb=HEAD).
+
+For example, setting the resolution to 2560x1440x32 will not work. OS X will
+boot with the next lowest supported resolution which is 1920x1200x32. Instead,
+use 2560x1600x32 and it will work.
+
 ### Boot Notes
 
 Type the following after boot,

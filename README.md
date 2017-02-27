@@ -1,17 +1,28 @@
+### Note
+
+See the [debugging section below](https://github.com/kholia/OSX-KVM#debugging)
+and closed issues before opening a new issue.
+
 ### Host System Details
 
-Ubuntu 15.10 running on i5-6500 CPU.
+Known to work on:
 
-Fedora 24 running on i5-6500 + i7-6600U CPU.
+* Ubuntu 15.10 running on i5-6500 CPU.
 
-Tested with QEMU 2.4.1 and QEMU 2.5.
+* Ubuntu 16.10 running on i7-3960X CPU.
+
+* Fedora 24 running on i5-6500 + i7-6600U CPU.
+
+Tested with QEMU 2.4.1, 2.5, 2.6.1, and 2.8.
 
 AMD CPU(s) are known to be problematic. AMD FX-8350 works but Phenom II X3 720
 does not.
 
 Intel VT-x / AMD SVM is required.
 
-### ISO Creation
+### Installation Preparation
+
+#### Preparation steps on your current OS X / macOS
 
 * Download OS X El Capitan or macOS Sierra installer from Apple App Store.
 
@@ -23,22 +34,42 @@ Intel VT-x / AMD SVM is required.
   ```
 
 * Run the ISO creation script `create_install_iso.sh` included in this
-  repository, making sure to use 'sudo'.
+  repository. Run it with `sudo`.
 
   This script supports specifying the path to OS X / macOS installation
   application manually via the `-a` option.
 
-* Copy the ISO from your Mac to your QEMU/KVM machine.
+* Copy the generated ISO from your Mac to your QEMU/KVM machine.
+
+#### Preparation steps on your QEMU system
+
+* Clone this repository again on your QEMU system. Files from this repository are used in the following steps.
+
+* Install QEMU and other packages.
+
+  ```
+  sudo apt-get install qemu uml-utilities virt-manager
+  ```
+
+* See [networking notes](networking-qemu-kvm-howto.txt) to setup guest networking.
+
+* Create a virtual HDD image where the OS X operating system will be installed.
+  If you change the name of the disk image from `mac_hdd.img` to something
+  else, the boot scripts will need updating to point to the new image name. A
+  base install of OS X needs 10 GiB of space. Adding Xcode or other large
+  software obviously increases that requirement.
+
+  ```
+  qemu-img create -f qcow2 mac_hdd.img 64G
+  ```
+
+  Now you are ready to install OS X / macOS.
 
 ### Installation
 
-See `boot.sh` / `boot-macOS.sh` file for a more solid alternate to the
-following virsh method.
-
-* Create a virtual HDD image where the operating system will be installed.
-  ```bash
-   qemu-img create -f qcow2 mac_hdd.img 64G
-  ```
+To install OS X, you can use the included `boot.sh` / `boot-macOS.sh` scripts
+for a more solid alternate to the following `virsh` method. Use either the
+`boot*.sh` method or the following `virsh` method to install OS X / macOS.
 
 * Edit `macOS-libvirt.xml` file and change file paths for `mac_hdd.qcow2` (HDD), `Install_OS_X_10.11_El_Capitan.iso` (bootable ISO image) and `enoch_rev2839_boot` suitably.
 
@@ -50,13 +81,17 @@ following virsh method.
 
 * Start the VM in virt-manager and hit return in the console window.
 
+#### Installer Steps
+
 * After booting, the initial language selection should show up.
 ![screenshot_01](https://cloud.githubusercontent.com/assets/731252/17645877/5136b1ac-61b2-11e6-8d90-29f5cc11ae01.png)
 
 * After selecting the language, fire-up the Disk Utility ...
 ![screenshot_02](https://cloud.githubusercontent.com/assets/731252/17645881/513b6918-61b2-11e6-91f2-026d953cbe0b.png)
 
-* ... and initialize the new harddisk.
+* ... and initialize the new harddisk. If this step fails and the menu bar
+  shows "Language Chooser" then see the Debugging section below.
+
 ![screenshot_03](https://cloud.githubusercontent.com/assets/731252/17645878/51373d48-61b2-11e6-8740-69c86bf92d31.png)
 ![screenshot_04](https://cloud.githubusercontent.com/assets/731252/17645879/513ae704-61b2-11e6-9a54-109c37132783.png)
 
@@ -74,6 +109,28 @@ following virsh method.
 * When finished, the VM will reboot automatically and the first time setup continues as usual.
 ![screenshot_07](https://cloud.githubusercontent.com/assets/731252/17645882/51517a50-61b2-11e6-8bb5-70c810d80b2b.png)
 
+#### Post-Installation Recommendations
+* The `boot*.sh` scripts have the installation ISO listed in them but this is
+  only required for installation. Once installation is complete, comment out
+  the `-device` and `-drive` lines referring to MacDVD and the installation ISO.
+
+* Inside the guest, you may modify the `/Extra/org.chameleon.boot.plist` file
+  to change the default resolution of the virtual screen. See [notes](notes.md)
+  for instructions on how to do this and some limitations on the resolution
+  choices.
+
+* Download a Chameleon wizard such as Chameleon Wizard or Champlist in order to
+  generate a usable SMBios.plist. This file goes into `/Extra` and can be used
+  to assign a reasonable serial number to your virtual Mac. Generating this file
+  sometimes fixes software incompatibilities that occur when the software can't
+  determine what Apple hardware it is running on.
+
+* For better mouse behavior, install https://github.com/pmj/QemuUSBTablet-OSX and
+  configure QEMU to use the "usb-tablet" absolute pointing device.
+
+* To get sound on your virtual Mac, install the VoodooHDA driver from
+  [here](https://sourceforge.net/projects/voodoohda/files/).
+
 ### Debugging
 
 * For macOS Sierra change the CPU model from `core2duo` to `Penryn`. The
@@ -81,8 +138,28 @@ following virsh method.
 
 * While booting from the macOS Sierra ISO installer, you might get stuck on the
   "Language Chooser" menu bar (with no option to launch Disk Utility). The
-  solution is to wait for a few seconds on the "Language Chooser" screen itself
-  without pressing the forward button.
+  solution is to use Ctrl+F2 and arrow keys to navigate the "macOS Installer"
+  menu bar, and to launch the "Disk Utility".
+
+  An alternate solution is to type `Super-T` (where `Super` is the Mac
+  command/clover key next to the `Alt` key). Type this sequence multiple times
+  until a terminal window opens up. In the termianl window type:
+
+  ```
+  diskutil list
+  ```
+
+  This will generate a list of all attached disks. Look for the disk with a
+  size similar to the `mac_hdd.img` created in an earlier step. Once identified,
+  note the disk number. Run a command to initialize the filesystem.
+
+  ```
+  diskutil eraseDisk JHFS+ <name of disk> <disk#>
+  ```
+
+  For example: `diskutil eraseDisk JHFS+ SYS disk2`
+
+  Then select your language and click the forward arrow to move to the next step.
 
 * Host machine may need the following tweak for this to work,
 
@@ -107,7 +184,11 @@ following virsh method.
   $ hdiutil detach /dev/disk2  # or something similar
   ```
 
+* If the App Store doesn't work, check the [notes file](notes.md) for instructions on how to solve this.
+
 ### Credits
+
+* Chuck Remes (chuckremes) - better documentation
 
 * Meissa - better networking documentation
 
