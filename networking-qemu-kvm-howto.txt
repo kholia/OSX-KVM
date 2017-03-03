@@ -53,24 +53,26 @@ makes file sharing, printer sharing, and other common networking activities
 harder to use in a home network.
 
 Bridged networking allows your QEMU guest to get an address on the same subnet
-as the host computer. Here are the steps for setting it up.
+as the host computer. For example, many home networks let the wireless router
+handle IP assignment via DHCP. Here are the steps for setting up the bridge.
 
-To setup bridged networking from the command line, [refer to this documentation
-at the Ubuntu website](https://help.ubuntu.com/community/KVM/Networking).
+To setup bridged networking from the command line, refer to this documentation
+at the Ubuntu website.
+    https://help.ubuntu.com/community/KVM/Networking
 
-If you prefer working with the GUI and NetworkManager, then [refer to this
-alternate documentation](http://ask.xmodulo.com/configure-linux-bridge-network-manager-ubuntu.html)
-to setup the bridge.
+If you prefer working with the GUI and NetworkManager, then refer to this
+alternate documentation.
+    http://ask.xmodulo.com/configure-linux-bridge-network-manager-ubuntu.html
 
 Ultimately, the script for booting the QEMU guest will need a line similar to
 the following to enable bridged networking in the guest:
-```
--netdev bridge,id=net0,br=virbr0,"helper=/usr/lib/qemu/qemu-bridge-helper"
-```
+
+    -netdev bridge,id=net0,br=virbr0,"helper=/usr/lib/qemu/qemu-bridge-helper"
+
 On some systems the `qemu-bridge-helper` file has incorrect permissions. For it
 to work, it needs to be setuid root. This can be accomplished with this command:
-```
-% sudo chmod u+s /usr/lib/qemu/qemu-bridge-helper
-```
+
+    % sudo chmod u+s /usr/lib/qemu/qemu-bridge-helper
+
 Note that this is sometimes viewed as a security hole. Be careful and understand
 what you are doing before running this command.
