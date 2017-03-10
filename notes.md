@@ -55,6 +55,25 @@ For example, setting the resolution to 2560x1440x32 will not work. OS X will
 boot with the next lowest supported resolution which is 1920x1200x32. Instead,
 use 2560x1600x32 and it will work.
 
+### Accelerated Graphics
+
+Install VMsvga2 from [this location](https://sourceforge.net/projects/vmsvga2/). No support
+is provided for this unmaintained project!
+
+* Add `-vga vmware` to QEMU parameters in boot-macOS.sh.
+
+* Add the following to `/Extra/org.chameleon.Boot.plist` file.
+
+  ```
+  <key>Kernel Flags</key>
+  <string>vmw_options_fb=0x06</string>
+  ```
+
+Thanks to Kfir Ozer for finding this.
+
+GPU passthrough is out of scope for this project. No support for it is provided
+whatsoever.
+
 ### Boot Notes
 
 Type the following after boot,
