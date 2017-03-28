@@ -128,8 +128,7 @@ for a more solid alternate to the following `virsh` method. Use either the
 * For better mouse behavior, install https://github.com/pmj/QemuUSBTablet-OSX and
   configure QEMU to use the "usb-tablet" absolute pointing device.
 
-* To get sound on your virtual Mac, install the VoodooHDA driver from
-  [here](https://sourceforge.net/projects/voodoohda/files/).
+* To get sound on your virtual Mac, see the "Virtual Sound Device" in [notes](notes.md).
 
 ### Debugging
 
@@ -186,27 +185,7 @@ for a more solid alternate to the following `virsh` method. Use either the
 
 * If the App Store doesn't work, check the [notes file](notes.md) for instructions on how to solve this.
 
-### Credits
-
-* Chuck Remes (chuckremes) - better documentation
-
-* Meissa - better networking documentation
-
-* PJ Meyer (pjmeyer) - compatibility with modern versions of GNU mktemp
-
-* Robert DeRose (RobertDeRose) and Dirk Bajohr (isolution-de) - macOS support
-
-* Fritz Elfert (felfert) - cleanups, better documentation, and nicer ISO creation script
-
-* Ian McDowell (IMcD23) - more documentation, and better ISO creation script
-
-* voobscout - libvirt XML file
-
-* Evgeny Grin (Karlson2k) - for the original ISO creation script
-
-* Gabriel L. Somlo - for getting things started
-
-* http://www.insanelymac.com/ - Enoch bootloader
+* If you are getting "Dont_Steal_MacOS" related errors, see `FakeSMC installation` section in [notes file](notes.md).
 
 ### References
 

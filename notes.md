@@ -13,6 +13,9 @@ Finally reboot, and then use the App Store without problems.
 
 This fix was found by Glnk2012 of https://www.tonymacx86.com/ site.
 
+Also tweaking the `SMBios.plist` file using `Chameleon Wizard` can help with
+App Store problems.
+
 ### Enoch Bootloader
 
 * Download Enoch bootloader from http://www.insanelymac.com/forum/ (requires
@@ -23,6 +26,68 @@ This fix was found by Glnk2012 of https://www.tonymacx86.com/ site.
 
 * Rename boot to enoch_rev####_boot.
 
+
+### FakeSMC installation
+
+* Do the following steps as `root` user on the Virtual Machine (VM).
+
+  ```
+  cp -a FakeSMC.kext /System/Library/Extensions/
+  cd /System/Library/Extensions/
+  chmod -R 755 FakeSMC.kext
+  chown -R root:wheel FakeSMC.kext
+  rm -R /System/Library/Caches/com.apple.kext.caches
+  touch /System/Library/Extensions && kextcache -u /  # optional step
+  ```
+
+* Remove the `-device isa-applesmc,osk=... \` line completely from `boot*.sh` file(s).
+
+* If you are using the `virsh` boot method, then remove the following lines from your `virsh` XML file,
+
+  ```
+  <qemu:arg value='-device'/>
+  <qemu:arg value='isa-applesmc,osk=XXX'/>
+  ```
+
+* Reboot the VM for changes to take effect. Use `kextstat` to verify that `FakeSMC.kext` is loaded.
+
+* Latest `FakeSMC.kext` version can be downloaded from [this location](https://bitbucket.org/RehabMan/os-x-fakesmc-kozlek).
+
+* If your updated VM is failing to boot and it doesn't have `FakeSMC.kext` installed, the following steps can used to inject `FakeSMC.kext` into the VM disk image,
+
+  ```
+  $ sudo modprobe nbd  # all steps to be executed on the QEMU/KVM host
+
+  $ sudo qemu-nbd -c /dev/nbd0 -n mac_hdd.img
+
+  $ sudo fdisk -l /dev/nbd0
+  ...
+  Device          Start       End   Sectors   Size Type
+  /dev/nbd0p1        40    409639    409600   200M EFI System
+  /dev/nbd0p2    409640 132948151 132538512  63.2G Apple HFS/HFS+
+  /dev/nbd0p3 132948152 134217687   1269536 619.9M Apple boot
+
+  $ sudo kpartx -a /dev/nbd0
+
+  $ mkdir mnt
+
+  $ sudo mount -t hfsplus -o force,rw /dev/mapper/nbd0p2 mnt
+
+  $ cd mnt
+
+  $ ls
+  Applications  bin  Chameleon.Backups  cores  dev  etc...
+
+  # Install FakeSMC.kext using the above mentioned steps
+
+  $ cd ..
+
+  $ sudo umount mnt
+
+  $ sudo kpartx -d /dev/nbd0
+
+  $ sudo qemu-nbd -d /dev/nbd0
+  ```
 
 ### Enoch Bootloader (alternate extraction method)
 
@@ -69,10 +134,36 @@ is provided for this unmaintained project!
   <string>vmw_options_fb=0x06</string>
   ```
 
-Thanks to Kfir Ozer for finding this.
+Thanks to Zhang Tong and Kfir Ozer for finding this.
 
 GPU passthrough is out of scope for this project. No support for it is provided
 whatsoever.
+
+### Virtual Sound Device
+
+No support is provided for this. You are on your own. The sound output is known
+to be choppy and distorted.
+
+* Add `-device ich9-intel-hda -device hda-duplex` to the VM configuration.
+  `boot-macOS.sh` already has this change.
+
+* To get sound on your virtual Mac, install the VoodooHDA driver from
+  [here](https://sourceforge.net/projects/voodoohda/files/).
+
+
+### Building QEMU from source
+
+See http://wiki.qemu-project.org/Hosts/Linux for help.
+
+```
+$ git clone https://github.com/qemu/qemu.git
+
+$ cd qemu
+
+$ ./configure --prefix=/home/$(whoami)/QEMU --target-list=x86_64-softmmu --audio-drv-list=pa
+
+$ make clean; make; make install
+```
 
 ### Boot Notes
 
@@ -117,3 +208,5 @@ Release Date: October 21, 2015
 ``jar -xf <zipfile>`` is pretty neat.
 
 Move 'InstallESD.dmg' to '/Applications/Install OS X El Capitan.app/Contents/SharedSupport/InstallESD.dmg' location.
+
+Move 'InstallESD.dmg' to '/Applications/Install macOS Sierra.app/Contents/SharedSupport/' location (for macOS Sierra).
