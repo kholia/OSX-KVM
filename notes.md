@@ -13,7 +13,7 @@ Finally reboot, and then use the App Store without problems.
 
 This fix was found by Glnk2012 of https://www.tonymacx86.com/ site.
 
-Also tweaking the `SMBios.plist` file using `Chameleon Wizard` can help with
+Also tweaking the `smbios.plist` file using `Chameleon Wizard` can help with
 App Store problems.
 
 ### Enoch Bootloader
@@ -105,7 +105,7 @@ App Store problems.
 
 ### Higher Resolution
 
-If you want a larger VNC screen add the following to the bootloader config in /Extra/org.chameleon.boot.plist:
+If you want a larger VNC screen add the following to the bootloader config in /Extra/org.chameleon.Boot.plist:
 
 ```
 <key>Graphics Mode</key>
@@ -189,7 +189,7 @@ Type the following after boot,
 
 ### Post Installation
 
-Put "org.chameleon.boot.plist" in /Extra folder.
+Put "org.chameleon.Boot.plist" in /Extra folder.
 
 
 ### Installer Details (InstallESD.dmg)
