@@ -480,16 +480,16 @@ else
 fi
 
 custom_boot_plist=
-if [[ -f "$script_dir/org.chameleon.boot.plist" ]] ; then
-    custom_boot_plist="$script_dir/org.chameleon.boot.plist"
+if [[ -f "$script_dir/org.chameleon.Boot.plist" ]] ; then
+    custom_boot_plist="$script_dir/org.chameleon.Boot.plist"
 fi
-if [[ -f "$work_dir/org.chameleon.boot.plist" ]] ; then
-    custom_boot_plist="$work_dir/org.chameleon.boot.plist"
+if [[ -f "$work_dir/org.chameleon.Boot.plist" ]] ; then
+    custom_boot_plist="$work_dir/org.chameleon.Boot.plist"
 fi
 if [[ -n "$custom_boot_plist" ]] ; then
     stage_start "Installing custom boot.plist"
     mkdir $OSX_inst_img_rw_mnt/Extra
-    cp "$custom_boot_plist" "$OSX_inst_img_rw_mnt/Extra/org.chameleon.boot.plist"
+    cp "$custom_boot_plist" "$OSX_inst_img_rw_mnt/Extra/org.chameleon.Boot.plist"
     stage_end_ok "done"
 fi
 

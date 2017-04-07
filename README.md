@@ -114,13 +114,13 @@ for a more solid alternate to the following `virsh` method. Use either the
   only required for installation. Once installation is complete, comment out
   the `-device` and `-drive` lines referring to MacDVD and the installation ISO.
 
-* Inside the guest, you may modify the `/Extra/org.chameleon.boot.plist` file
+* Inside the guest, you may modify the `/Extra/org.chameleon.Boot.plist` file
   to change the default resolution of the virtual screen. See [notes](notes.md)
   for instructions on how to do this and some limitations on the resolution
   choices.
 
 * Download a Chameleon wizard such as Chameleon Wizard or Champlist in order to
-  generate a usable SMBios.plist. This file goes into `/Extra` and can be used
+  generate a usable smbios.plist. This file goes into `/Extra` and can be used
   to assign a reasonable serial number to your virtual Mac. Generating this file
   sometimes fixes software incompatibilities that occur when the software can't
   determine what Apple hardware it is running on.
