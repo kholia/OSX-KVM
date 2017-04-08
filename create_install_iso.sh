@@ -197,7 +197,7 @@ Valid options are:
                    Method 3 can produce bootable images without super
                    user rights.
       -n, --nosudo
-                   Do not use sudo command
+                   Do not use sudo command (untested, unsupported)
       -v, --verify
                    Do not skip verifications (slow down image creation)
       -h, --help   Print this message and exit
@@ -218,6 +218,7 @@ exit_with_cmd_err() {
 
 unset cmd_par_app cmd_par_iso test_name ver_opt cr_method || exit_with_error "Can't unset variable"
 ver_opt='--noverify'
+inject_kexts='no'
 while [[ -n "$1" ]]; do
 	case "$1" in
 		-a | --app | --application ) cmd_par_app="$2"
@@ -233,6 +234,7 @@ while [[ -n "$1" ]]; do
 		--method* ) cr_method="method${1#--method}"; shift ;;
 		-n | --nosudo ) allow_sudo='no'; shift ;;
 		-v | --verify ) unset ver_opt; shift ;;
+		-k ) inject_kexts='yes'; shift ;;
 		-h | --h | --help ) print_help; exit 0 ;;
 		-V | --version ) print_version; exit 0 ;;
 		*) exit_with_cmd_err "Unknown option \"$1\""
@@ -433,7 +435,7 @@ if [[ "$cr_method" == "method1" ]] || [[ "$cr_method" == "method2" ]]; then
 
 	stage_start_nl "Mounting writable image"
 	OSX_inst_img_rw_mnt="$tmp_dir/OS_X_Install_img_rw_mnt"
-	hdiutil attach "$OSX_inst_img_rw" -readwrite -nobrowse -mountpoint "$OSX_inst_img_rw_mnt" ${ver_opt+-noverify} || exit_with_error "Can't mount writable image"
+	hdiutil attach "$OSX_inst_img_rw" -readwrite -nobrowse -mountpoint "$OSX_inst_img_rw_mnt" ${ver_opt+-noverify} -owners on || exit_with_error "Can't mount writable image"
 	stage_end_ok "Mounting succeed"
 elif [[ "$cr_method" == "method3" ]]; then
 	stage_start_nl "Creating blank writable image"
@@ -528,6 +530,26 @@ cd "$OSX_inst_img_rw_mnt"
 "$script_dir/pbzx" "$OSX_inst_inst_dmg_mnt/Packages/Essentials.pkg" | cpio -idmu ./System/Library/Kernels  || exit_with_error "Extraction of kernel failed"
 cd "$work_dir"
 stage_end_ok
+
+# Inject kext(s) into ISO image
+if [[ "$inject_kexts" == "yes" ]]; then
+	stage_start "Injecting kext(s) into ISO image (unsupported)"
+	cd "$OSX_inst_img_rw_mnt"
+
+	kext_name="QemuUSBTablet1011.kext"
+	cp -a "$script_dir/kexts/$kext_name" ./System/Library/Extensions/
+	chmod -R 755 ./System/Library/Extensions/$kext_name
+	chown -R root:wheel ./System/Library/Extensions/$kext_name
+
+	kext_name="FakeSMC.kext"
+	cp -a "$script_dir/kexts/$kext_name" ./System/Library/Extensions/
+	chmod -R 755 ./System/Library/Extensions/$kext_name
+	chown -R root:wheel ./System/Library/Extensions/$kext_name
+
+	touch ./System/Library/Extensions
+	cd "$work_dir"
+	stage_end_ok
+fi
 
 stage_start "Replacing Packages symlink with real files"
 rm -f "$OSX_inst_img_rw_mnt/System/Installation/Packages" || exit_with_error "Deleting Packages symlink failed"
