@@ -16,7 +16,7 @@ Known to work on:
 Tested with QEMU 2.4.1, 2.5, 2.6.1, and 2.8.
 
 AMD CPU(s) are known to be problematic. AMD FX-8350 works but Phenom II X3 720
-does not.
+does not. A CPU with SSE4.1 support is required for macOS Sierra.
 
 Intel VT-x / AMD SVM is required.
 
@@ -186,6 +186,11 @@ for a more solid alternate to the following `virsh` method. Use either the
 * If the App Store doesn't work, check the [notes file](notes.md) for instructions on how to solve this.
 
 * If you are getting "Dont_Steal_MacOS" related errors, see `FakeSMC installation` section in [notes file](notes.md).
+
+* If the boot process is getting stuck on the Apple logo, upgrade your host
+  kernel and QEMU. For example, Linux 3.16.x from Debian 8 is known to be
+  problematic, whereas Linux 4.9.x with QEMU 2.8.x works fine on the same
+  distribution.
 
 ### References
 

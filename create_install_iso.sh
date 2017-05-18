@@ -505,9 +505,9 @@ else
 	stage_end_ok "$OSX_inst_ver"
 fi
 
-if [[ "$OSX_inst_ver" =~ 10.12.[4-9] ]]; then
-	exit_with_error "This script might not generate bootable images for versions >= macOS Sierra 10.12.4. Edit this script manually to proceed at your own risk!"
-fi
+# if [[ "$OSX_inst_ver" =~ 10.12.[4-9] ]]; then
+# 	exit_with_error "This script might not generate bootable images for versions >= macOS Sierra 10.12.4. Edit this script manually to proceed at your own risk!"
+# fi
 
 [[ "$OSX_inst_ver" == "10.11" ]] || [[ "$OSX_inst_ver" =~ 10.11.[1-6] ]] || \
 	echo_warning "Warning! This script is tested only with images of OS X versions 10.11 and 10.11.1-10.11.6. Use at your own risk!"

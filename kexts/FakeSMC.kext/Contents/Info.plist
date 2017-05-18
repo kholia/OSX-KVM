@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>BuildMachineOSBuild</key>
-	<string>16C67</string>
+	<string>16F73</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>KEXT</string>
 	<key>CFBundleShortVersionString</key>
-	<string>6.24-316-g197d663.1737</string>
+	<string>6.25-333-g05e0f4be.1759</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleSupportedPlatforms</key>
@@ -25,11 +25,11 @@
 		<string>MacOSX</string>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1737</string>
+	<string>1759</string>
 	<key>DTCompiler</key>
 	<string>com.apple.compilers.llvm.clang.1_0</string>
 	<key>DTPlatformBuild</key>
-	<string>8C1002</string>
+	<string>8E3004b</string>
 	<key>DTPlatformVersion</key>
 	<string>GM</string>
 	<key>DTSDKBuild</key>
@@ -37,9 +37,9 @@
 	<key>DTSDKName</key>
 	<string>macosx10.8</string>
 	<key>DTXcode</key>
-	<string>0821</string>
+	<string>0833</string>
 	<key>DTXcodeBuild</key>
-	<string>8C1002</string>
+	<string>8E3004b</string>
 	<key>IOKitPersonalities</key>
 	<dict>
 		<key>FakeSMC</key>
@@ -116,6 +116,27 @@
 						hfwETdgSevQ=
 						</data>
 					</array>
+					<key>ALI0</key>
+					<array>
+						<string>{ali</string>
+						<data>
+						BwECAA==
+						</data>
+					</array>
+					<key>ALRV</key>
+					<array>
+						<string>ui16</string>
+						<data>
+						AAE=
+						</data>
+					</array>
+					<key>ALV0</key>
+					<array>
+						<string>{alv</string>
+						<data>
+						ARAGdQEgALYO4A==
+						</data>
+					</array>
 					<key>FNum</key>
 					<array>
 						<string>ui8</string>
@@ -135,6 +156,13 @@
 						<string>{rev</string>
 						<data>
 						AQQKAAY=
+						</data>
+					</array>
+					<key>MSLD</key>
+					<array>
+						<string>ui8 </string>
+						<data>
+						AA==
 						</data>
 					</array>
 					<key>MSSD</key>
@@ -179,6 +207,13 @@
 						<string>{rev</string>
 						<data>
 						ATAPAAAD
+						</data>
+					</array>
+					<key>RMde</key>
+					<array>
+						<string>char</string>
+						<data>
+						QQ==
 						</data>
 					</array>
 					<key>RVBF</key>
@@ -239,7 +274,7 @@
 			<key>RM,Build</key>
 			<string>Release-rehabman</string>
 			<key>RM,Version</key>
-			<string>FakeSMC 1737</string>
+			<string>FakeSMC 1759</string>
 		</dict>
 		<key>FakeSMCKeyStore</key>
 		<dict>
@@ -258,9 +293,9 @@
 		</dict>
 	</dict>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright © 2015 netkas. All rights reserved.</string>
+	<string>Copyright © 2017 netkas. All rights reserved.</string>
 	<key>OSBundleCompatibleVersion</key>
-	<string>1212</string>
+	<string>1429</string>
 	<key>OSBundleLibraries</key>
 	<dict>
 		<key>com.apple.iokit.IOACPIFamily</key>
