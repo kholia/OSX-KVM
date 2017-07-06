@@ -15,7 +15,7 @@ networking devices it is willing to accept, so we need to specify the network
 configuration to use the e1000 emulated card with SLiRP networking.
 
 In order to do this, change the line in your qemu-system-x86_64 command (found
-in boot.sh or boot-macOS.sh) to the following:
+in boot-macOS.sh) to the following:
 
 -netdev user,id=net0 -device e1000-82545em,netdev=net0,id=net0,mac=52:54:00:c9:18:27 \
 

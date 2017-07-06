@@ -1,10 +1,8 @@
 #!/bin/bash
 
-# qemu-img create -f qcow2 mac_hdd.img 64G
-# echo 1 > /sys/module/kvm/parameters/ignore_msrs
+# qemu-img create -f qcow2 mac_hdd.img 128G
 #
-# Type the following after boot,
-# -v "KernelBooter_kexts"="Yes" "CsrActiveConfig"="103"
+# echo 1 > /sys/module/kvm/parameters/ignore_msrs (this is required)
 #
 # printf 'DE:AD:BE:EF:%02X:%02X\n' $((RANDOM%256)) $((RANDOM%256))
 #
@@ -16,13 +14,16 @@
 #
 # Network device "-device e1000-82545em" can be replaced with "-device vmxnet3"
 # for possibly better performance.
+#
+# Use "-device usb-tablet" instead of "-device usb-mouse" for better mouse
+# behaviour. This requires QEMU >= 2.9.0.
 
 qemu-system-x86_64 -enable-kvm -m 3072 -cpu Penryn,kvm=off,vendor=GenuineIntel \
 	  -machine pc-q35-2.4 \
 	  -smp 4,cores=2 \
 	  -usb -device usb-kbd -device usb-mouse \
 	  -device isa-applesmc,osk="ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc" \
-	  -kernel ./enoch_rev2883_boot \
+	  -kernel ./enoch_rev2889_boot \
 	  -smbios type=2 \
 	  -device ich9-intel-hda -device hda-duplex \
 	  -device ide-drive,bus=ide.2,drive=MacHDD \
@@ -30,7 +31,7 @@ qemu-system-x86_64 -enable-kvm -m 3072 -cpu Penryn,kvm=off,vendor=GenuineIntel \
 	  -netdev tap,id=net0,ifname=tap0,script=no,downscript=no -device e1000-82545em,netdev=net0,id=net0,mac=52:54:00:c9:18:27 \
 	  -monitor stdio \
 	  -device ide-drive,bus=ide.0,drive=MacDVD \
-	  -drive id=MacDVD,if=none,snapshot=on,file=./'Install_macOS_Sierra_(OS_X_10.12).iso'
+	  -drive id=MacDVD,if=none,snapshot=on,file=./'Install_macOS_10.12.6_Sierra.iso'
 	  # -vnc 0.0.0.0:0 -k en-us \
 	  # -redir tcp:5901::5900 \
 	  # -netdev user,id=hub0port0 -device e1000-82545em,netdev=hub0port0,id=mac_vnet0 \

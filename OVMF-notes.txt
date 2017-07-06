@@ -1,0 +1,20 @@
+Building OVMF
+-------------
+
+git clone https://github.com/tianocore/edk2
+cd edk2
+make -C BaseTools
+. edksetup.sh BaseTools
+build -a X64 -t GCC5 -p OvmfPkg/OvmfPkgX64.dsc -b RELEASE
+
+The included blobs were built from commit 2913ebb2b550f50a.
+
+Host OS
+-------
+
+OVMF blobs were built on Ubuntu 14.04.5 LTS (Trusty Tahr)
+
+References
+----------
+
+https://www.contrib.andrew.cmu.edu/~somlo/OSXKVM/

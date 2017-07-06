@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Script for building bootable .iso images from downloaded OS X upgrade
-# Copyright (C) 2015-2016 Karlson2k (Evgeny Grin)
+# Script for building bootable .iso images from downloaded macOS upgrade
+# Copyright (C) 2015-2017 Karlson2k (Evgeny Grin)
 #
 # You can run, copy, modify, publish and do whatever you want with this
 # script as long as this message and copyright string above are preserved.
@@ -12,7 +12,7 @@
 # Latest version:
 # https://raw.githubusercontent.com/Karlson2k/k2k-OSX-Tools/master/Create_osx_install_iso/create_osx_install_iso.sh
 #
-# Version 1.0.6
+# Version 1.0.6 + local changes
 
 function myreadlink() {
   (
@@ -177,13 +177,13 @@ script_version="$(sed -n -e '\|^# Version| {s|^# Version \(.*$\)|\1|p; q;}' "${B
 
 print_help() {
 	echo "\
-Script for creating .iso images from downloaded OS X upgrade application.
+Script for creating .iso images from downloaded macOS upgrade application.
 Usage:"
 	echo_enh_n "      $script_name"; echo " [options]
 
 Valid options are:
-      -a, --app[lication] <OS X Install app>
-                   Path and name of OS X upgrade application.
+      -a, --app[lication] <macOS Install app>
+                   Path and name of macOS upgrade application.
                    Path can be omitted if application is located at
                    default path.
       -i, --iso <path with name for .iso>
@@ -217,6 +217,7 @@ exit_with_cmd_err() {
 }
 
 unset cmd_par_app cmd_par_iso test_name ver_opt cr_method || exit_with_error "Can't unset variable"
+# allow_sudo='yes' && ver_opt='--noverify' || exit_with_error "Can't set variable"
 ver_opt='--noverify'
 inject_kexts='no'
 while [[ -n "$1" ]]; do
@@ -254,9 +255,9 @@ if [[ -z "$cmd_par_app" ]]; then
 	stage_start "Looking for downloaded OS upgrades"
 	unset test_name || exit_with_error
 	IFS=$'\n'
-	dirlist=(`ls -d1 /Applications/Install\ {OS\ X,macOS}\ *.app 2>/dev/null`)
+	dirlist=(`find /Applications -maxdepth 1 -mindepth 1 \( -name 'Install OS X *.app' -or -name 'Install macOS *.app' \)`) || exit_with_error "Can't find downloaded macOS upgrade"
 	IFS="$save_IFS"
-	[[ ${#dirlist[@]} -eq 0 ]] && exit_with_error "Can't find downloaded OS X upgrade. Use the -a option to specify the path to it manually."
+	[[ ${#dirlist[@]} -eq 0 ]] && exit_with_error "Can't find downloaded OS X / macOS upgrade. Use the -a option to specify the path to it manually."
 	stage_end_ok "found"
 	if [[ ${#dirlist[@]} -gt 1 ]]; then
 		echo "Several OS upgrades were found."
@@ -303,14 +304,16 @@ else
 			OSX_inst_app="/Applications/Install ${test_name}"
 		elif check_intall_app "/Applications/Install OS X ${test_name}"; then
 			OSX_inst_app="/Applications/Install OS X ${test_name}"
+		elif check_intall_app "/Applications/Install macOS ${test_name}"; then
+			OSX_inst_app="/Applications/Install macOS ${test_name}"
 		fi
 	fi
-	[[ -n "$OSX_inst_app" ]] || exit_with_error "\"$cmd_par_app\" is not valid OS X Install application"
+	[[ -n "$OSX_inst_app" ]] || exit_with_error "\"$cmd_par_app\" is not valid macOS Install application"
 	stage_end_ok "found"
 	echo_enh "Using \"$OSX_inst_app\"."
 fi
 
-stage_start "Detecting OS X name for installation"
+stage_start "Detecting macOS name for installation"
 unset test_name OSX_inst_prt_name || exit_with_error
 test_name=$(sed -n -e '\|<key>CFBundleDisplayName</key>| { N; s|^.*<string>\(.\{1,\}\)</string>.*$|\1|p; q; }' \
 	 "$OSX_inst_app/Contents/Info.plist" 2>/dev/null) || unset test_name
@@ -319,8 +322,8 @@ if [[ -n "$test_name" ]]; then
 	OSX_inst_prt_name="Install $OSX_inst_name"
 	stage_end_ok "$OSX_inst_name"
 else
-	OSX_inst_name=$(echo "$OSX_inst_app"|sed -n -e's|^.*Install \(OS X .\{1,\}\)\.app.*$|\1|p' 2>/dev/null) || unset OSX_inst_name || exit_with_error
-	[[ -z "$OSX_inst_name" ]] && OSX_inst_name="OS X"
+	OSX_inst_name=$(echo "$OSX_inst_app"|sed -n -e's|^.*Install \(\(macOS|OS X\) .\{1,\}\)\.app.*$|\1|p' 2>/dev/null) || unset OSX_inst_name || exit_with_error
+	[[ -z "$OSX_inst_name" ]] && OSX_inst_name="macOS"
 	OSX_inst_prt_name="Install $OSX_inst_name"
 	stage_end_warn "guessed \"$OSX_inst_name\""
 fi
@@ -334,7 +337,7 @@ stage_end_ok "succeed"
 stage_start_nl "Mounting InstallESD.dmg"
 OSX_inst_inst_dmg="$OSX_inst_app"'/Contents/SharedSupport/InstallESD.dmg'
 OSX_inst_inst_dmg_mnt="$tmp_dir/InstallESD_dmg_mnt"
-hdiutil attach "$OSX_inst_inst_dmg" -kernel -readonly -nobrowse ${ver_opt+-noverify} -mountpoint "$OSX_inst_inst_dmg_mnt" || exit_with_error "Can't mount installation image"
+hdiutil attach "$OSX_inst_inst_dmg" -kernel -readonly -nobrowse ${ver_opt+-noverify} -mountpoint "$OSX_inst_inst_dmg_mnt" || exit_with_error "Can't mount installation image. Reboot recommended before retry."
 OSX_inst_base_dmg="$OSX_inst_inst_dmg_mnt/BaseSystem.dmg" || exit_with_error
 stage_end_ok "Mounting succeed"
 
@@ -476,7 +479,6 @@ elif [[ "$cr_method" == "method3" ]]; then
 	OSX_inst_img_rw_mnt="$tmp_dir/OS_X_Install_img_rw_mnt"
 	hdiutil attach "$OSX_inst_img_rw" -readwrite -nobrowse -mountpoint "$OSX_inst_img_rw_mnt" ${ver_opt+-noverify} || exit_with_error "Can't mount writable image"
 	stage_end_ok "Remounting succeed"
-
 else
 	exit_with_error "Unknown creation method"
 fi
@@ -495,7 +497,7 @@ if [[ -n "$custom_boot_plist" ]] ; then
     stage_end_ok "done"
 fi
 
-stage_start "Detecting OS X version on image"
+stage_start "Detecting macOS version on image"
 unset OSX_inst_ver || exit_with_error "Can't unset variable"
 OSX_inst_img_rw_ver_file="$OSX_inst_img_rw_mnt/System/Library/CoreServices/SystemVersion.plist" || exit_with_error "Can't set variable"
 OSX_inst_ver=`sed -n -e '\|<key>ProductUserVisibleVersion</key>| { N; s|^.*<string>\(.\{1,\}\)</string>.*$|\1|p; q; }' "$OSX_inst_img_rw_ver_file"` || unset OSX_inst_ver
@@ -505,12 +507,8 @@ else
 	stage_end_ok "$OSX_inst_ver"
 fi
 
-# if [[ "$OSX_inst_ver" =~ 10.12.[4-9] ]]; then
-# 	exit_with_error "This script might not generate bootable images for versions >= macOS Sierra 10.12.4. Edit this script manually to proceed at your own risk!"
-# fi
-
-[[ "$OSX_inst_ver" == "10.11" ]] || [[ "$OSX_inst_ver" =~ 10.11.[1-6] ]] || \
-	echo_warning "Warning! This script is tested only with images of OS X versions 10.11 and 10.11.1-10.11.6. Use at your own risk!"
+[[ "$OSX_inst_ver" =~ ^10.11($|.[1-4]$)|^10.12($|.[1-5]$) ]] || \
+	echo_warning "Warning! This script is tested only with images of macOS versions 10.11.0-10.11.4 and 10.12.0-10.12.5. Use with your own risk!"
 
 stage_start_nl "Renaming partition on writeable image"
 if ! diskutil rename "$OSX_inst_img_rw_mnt" "$OSX_inst_prt_name"; then
@@ -527,7 +525,8 @@ stage_end_ok
 
 stage_start "Extracting kernel from Essentials.pkg (very slow step)"
 cd "$OSX_inst_img_rw_mnt"
-"$script_dir/pbzx" "$OSX_inst_inst_dmg_mnt/Packages/Essentials.pkg" | cpio -idmu ./System/Library/Kernels  || exit_with_error "Extraction of kernel failed"
+# "$script_dir/pbzx" "$OSX_inst_inst_dmg_mnt/Packages/Essentials.pkg" | cpio -idmu ./System/Library/Kernels || exit_with_error "Extraction of kernel failed"
+tar -xOf "$OSX_inst_inst_dmg_mnt/Packages/Essentials.pkg" Payload | python "$script_dir/parse_pbzx.py" | cpio -idmu ./System/Library/Kernels || exit_with_error "Extraction of kernel failed"
 cd "$work_dir"
 stage_end_ok
 
@@ -586,6 +585,8 @@ insert_version_into_name() {
 		ins_aft="OS X"
 	elif [[ "$name" =~ (^|[[:space:]])"MacOS X"($|[[:space:]]) ]]; then
 		ins_aft="MacOS X"
+	elif [[ "$name" =~ (^|[[:space:]])"macOS"($|[[:space:]]) ]]; then
+		ins_aft="macOS"
 	fi
 	if [[ -n "$ins_aft" ]]; then
 		result=$(echo -n "$name" | sed -n -e 's|^\(.*[[:<:]]'"$ins_aft"'[[:>:]]\).*$|\1|p') || return 2
@@ -593,7 +594,7 @@ insert_version_into_name() {
 		result+=" $version" # allow any regex/special symbols in $version
 		result+=$(echo -n "$name" | sed -n -e 's|^.*[[:<:]]'"$ins_aft"'[[:>:]]\(.*\)$|\1|p') || return 2
 	else
-		result="$name (OS X $version)"
+		result="$name (macOS $version)"
 	fi
 	[[ -z "$result" ]] && return 1
 	echo "$result"
@@ -666,7 +667,7 @@ if ! [[ -e "$OSX_inst_result_flag" ]]; then
 			echo_warning "Next command will be executed with sudo, you may be asked for password."
 			$sudo_prf hdiutil makehybrid -o "$OSX_inst_result_image_ro" "$OSX_inst_img_rw" -hfs -udf -default-volume-name "$OSX_inst_prt_name" && touch "$OSX_inst_result_flag"
 		else
-			echo_warning "Usage os sudo was disabled by command parameter"
+			echo_warning "Usage of sudo was disabled by command parameter"
 		fi
 	fi
 fi

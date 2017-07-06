@@ -29,6 +29,9 @@ App Store problems.
 
 ### FakeSMC installation
 
+This option is not recommended. Building latest QEMU from Git repository is
+recommended instead.
+
 * Do the following steps as `root` user on the Virtual Machine (VM).
 
   ```
@@ -136,8 +139,7 @@ is provided for this unmaintained project!
 
 Thanks to Zhang Tong and Kfir Ozer for finding this.
 
-GPU passthrough is out of scope for this project. No support for it is provided
-whatsoever.
+See `UEFI/README.md` for GPU passthrough notes.
 
 ### Virtual Sound Device
 
@@ -156,13 +158,57 @@ to be choppy and distorted.
 See http://wiki.qemu-project.org/Hosts/Linux for help.
 
 ```
-$ git clone https://github.com/qemu/qemu.git
+$ git clone https://github.com/kholia/qemu.git
 
 $ cd qemu
+
+$ git checkout macOS
 
 $ ./configure --prefix=/home/$(whoami)/QEMU --target-list=x86_64-softmmu --audio-drv-list=pa
 
 $ make clean; make; make install
+```
+
+### Connect iPhone / iPad to macOS guest
+
+Some folks are using https://www.virtualhere.com/ to connect iPhone / iPad to
+the macOS guest.
+
+### Exposing AES-NI instructions to macOS
+
+Add `+aes` argument to the `-cpu` option in `boot-macOS.sh` file.
+
+``` diff
+diff --git a/boot-macOS.sh b/boot-macOS.sh
+index 5948b8a..3acc123 100755
+--- a/boot-macOS.sh
++++ b/boot-macOS.sh
+@@ -18,7 +18,7 @@
+ # Use "-device usb-tablet" instead of "-device usb-mouse" for better mouse
+ # behaviour. This requires QEMU >= 2.9.0.
+
+-qemu-system-x86_64 -enable-kvm -m 3072 -cpu Penryn,kvm=off,vendor=GenuineIntel \
++qemu-system-x86_64 -enable-kvm -m 3072 -cpu Penryn,kvm=off,vendor=GenuineIntel,+aes \
+          -machine pc-q35-2.4 \
+          -smp 4,cores=2 \
+          -usb -device usb-kbd -device usb-mouse \
+```
+
+Other host CPU features can be similarly exposed to the macOS guest.
+
+The following command can be used on macOS to verify that AES-NI instructions are exposed,
+
+```
+sysctl -a | grep machdep.features
+```
+
+On machines with OpenSSL installed, the following two commands can be used to
+check AES-NI performance,
+
+```
+openssl speed aes-128-cbc
+
+openssl speed -evp aes-128-cbc  # uses AES-NI
 ```
 
 ### Boot Notes
@@ -189,7 +235,13 @@ Type the following after boot,
 
 ### Post Installation
 
-Put "org.chameleon.Boot.plist" in /Extra folder.
+* Put "org.chameleon.Boot.plist" in /Extra folder.
+
+* System Preferences -> Sharing -> enable Screen Sharing and Remote Login
+
+* System Preferences -> Energy Saver -> Computer sleep set to Never
+
+* System Preferences -> Energy Saver -> Display sleep set to Never
 
 
 ### Installer Details (InstallESD.dmg)

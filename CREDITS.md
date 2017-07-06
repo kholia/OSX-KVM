@@ -18,6 +18,8 @@
 
 * Evgeny Grin (Karlson2k) - for the original ISO creation script
 
-* Gabriel L. Somlo - for getting things started
+* Gabriel L. Somlo - for getting things started and going
 
 * http://www.insanelymac.com/ - Enoch bootloader
+
+* Nicholas Sherlock - UEFI, Clover, and other hacks

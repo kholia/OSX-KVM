@@ -67,9 +67,9 @@ Intel VT-x / AMD SVM is required.
 
 ### Installation
 
-To install OS X, you can use the included `boot.sh` / `boot-macOS.sh` scripts
-for a more solid alternate to the following `virsh` method. Use either the
-`boot*.sh` method or the following `virsh` method to install OS X / macOS.
+To install OS X, you can use the included `boot-macOS.sh` script for a more
+solid alternate to the following `virsh` method. Use either the `boot-macOS.sh`
+method or the following `virsh` method to install OS X / macOS.
 
 * Edit `macOS-libvirt.xml` file and change file paths for `mac_hdd.qcow2` (HDD), `Install_OS_X_10.11_El_Capitan.iso` (bootable ISO image) and `enoch_rev2839_boot` suitably.
 
@@ -185,7 +185,8 @@ for a more solid alternate to the following `virsh` method. Use either the
 
 * If the App Store doesn't work, check the [notes file](notes.md) for instructions on how to solve this.
 
-* If you are getting "Dont_Steal_MacOS" related errors, see `FakeSMC installation` section in [notes file](notes.md).
+* If you are getting "Dont_Steal_MacOS" related errors, see `Building QEMU` (recommended option) and
+  `FakeSMC installation` sections in [notes file](notes.md).
 
 * If the boot process is getting stuck on the Apple logo, upgrade your host
   kernel and QEMU. For example, Linux 3.16.x from Debian 8 is known to be
@@ -199,3 +200,5 @@ for a more solid alternate to the following `virsh` method. Use either the
 * [Mac OS X 10.11 El Capitan – VM on unRAID](https://macosxvirtualmachinekvm.wordpress.com/guide-mac-os-x-10-11-el-capitan-vm-on-unraid/)
 
 * http://www.contrib.andrew.cmu.edu/~somlo/OSXKVM/
+
+* http://forge.voodooprojects.org/p/chameleon/source/changes/HEAD/ (Enoch source)
