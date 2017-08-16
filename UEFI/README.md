@@ -117,6 +117,53 @@ I am running Ubuntu 17.04 on Intel i5-6500 + ASUS Z170-AR motherboard + NVIDIA
 * To reuse the keyboard and mouse devices from the host, setup "Automatic
   login" in System Preferences in macOS and configure Synergy software.
 
+### USB passthrough notes
+
+These steps will need to be adapted for your particular setup.
+
+* Isolate the passthrough PCIe devices with vfio-pci, with the help of `lspci
+  -nnk` command.
+
+  ```
+  $ lspci -nn
+  ...
+  01:00.0 ... NVIDIA Corporation [GeForce GTX 1050 Ti] [10de:1c82]
+  01:00.1 Audio device: NVIDIA Corporation Device [10de:0fb9]
+  03:00.0 USB controller: ASMedia ASM1142 USB 3.1 Host Controller [1b21:1242]
+  ```
+
+  Add `1b21:1242` to `/etc/modprobe.d/vfio.conf` file in the required format.
+
+* Update initramfs, and then reboot.
+
+  ```
+  $ sudo update-initramfs -k all -u
+  ```
+
+* Use the helper scripts to isolate the USB controller.
+
+  ```
+  $ scripts/lsgroup.sh
+  ### Group 7 ###
+      00:1c.0 PCI bridge: Intel Corporation Sunrise ...
+  ### Group 15 ###
+      06:00.0 Audio device: Creative Labs Sound Core3D ...
+  ### Group 5 ###
+      00:17.0 SATA controller: Intel Corporation Sunrise ...
+  ### Group 13 ###
+      03:00.0 USB controller: ASMedia ASM1142 USB 3.1 Host Controller
+  ```
+
+  ```
+  $ scripts/vfio-group.sh 13
+  ```
+
+* Add `-device vfio-pci,host=03:00.0,bus=pcie.0 \` line to the
+  `boot-passthrough.sh` script.
+
+* Boot the VM, and devices attached to the ASMedia USB controller should just
+  work under macOS.
+
 ### Synergy Notes
 
 * Get Synergy from https://sourceforge.net/projects/synergy-stable-builds.
