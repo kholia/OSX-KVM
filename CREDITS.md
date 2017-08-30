@@ -23,3 +23,5 @@
 * http://www.insanelymac.com/ - Enoch bootloader
 
 * Nicholas Sherlock - UEFI, Clover, and other hacks
+
+* Phil Dennis-Jordan - virtio-net-osx, usb-tablet and other hacks

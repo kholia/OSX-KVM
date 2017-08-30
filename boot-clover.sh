@@ -4,7 +4,13 @@
 #
 # The "pc-q35-2.4" machine type was changed to "pc-q35-2.9" on 06-August-2017.
 
-qemu-system-x86_64 -enable-kvm -m 3072 -cpu Penryn,kvm=on,vendor=GenuineIntel,+invtsc,vmware-cpuid-freq=on \
+##################################################################################
+# NOTE: Comment out the "MY_OPTIONS" line in case you are having booting problems!
+##################################################################################
+
+MY_OPTIONS="+aes,+xsave,+avx,+xsaveopt,+xsavec,+xgetbv1,+xsaves,+avx2,+bmi2,+smep,+bmi1,+fma,+movbe"
+
+qemu-system-x86_64 -enable-kvm -m 3072 -cpu Penryn,kvm=on,vendor=GenuineIntel,+invtsc,vmware-cpuid-freq=on,$MY_OPTIONS\
 	  -machine pc-q35-2.9 \
 	  -smp 4,cores=2 \
 	  -usb -device usb-kbd -device usb-tablet \

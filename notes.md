@@ -141,6 +141,8 @@ Thanks to Zhang Tong and Kfir Ozer for finding this.
 
 See `UEFI/README.md` for GPU passthrough notes.
 
+Note: There is no working QXL driver for macOS so far.
+
 ### Virtual Sound Device
 
 No support is provided for this. You are on your own. The sound output is known
@@ -152,6 +154,8 @@ to be choppy and distorted.
 * To get sound on your virtual Mac, install the VoodooHDA driver from
   [here](https://sourceforge.net/projects/voodoohda/files/).
 
+Note: It seems that playback of Flash videos requires an audio device to be
+present.
 
 ### Building QEMU from source
 
@@ -210,6 +214,48 @@ openssl speed aes-128-cbc
 
 openssl speed -evp aes-128-cbc  # uses AES-NI
 ```
+
+### Exposing AVX and AVX2 instructions to macOS
+
+Exposing AVX and AVX2 instructions to macOS requires support for these
+instructions on the host CPU.
+
+The `boot-clover.sh` script already exposes AVX and AVX2 instructions to the
+macOS guest by default. Modify or comment out the `MY_OPTIONS` line in
+`boot-clover.sh` file in case you are having problems.
+
+To enable AVX2, do the following change,
+
+`Clover boot menu -> Options -> Binaries patching -> Fake CPUID -> 0x0306C0  # for Haswell`
+
+For details, see [this wiki](https://clover-wiki.zetam.org/Configuration/KernelAndKextPatches) page.
+
+Once enabled, the following commands can be used to confirm the presence of AVX
+and AVX2 instructions on the macOS guest.
+
+```
+$ sysctl -a | grep avx
+hw.optional.avx2_0: 1
+hw.optional.avx1_0: 1
+
+$ sysctl -a | grep leaf7
+machdep.cpu.leaf7_features: SMEP BMI1 AVX2 BMI2
+machdep.cpu.leaf7_feature_bits: 424
+```
+
+### Using virtio-net-osx with macOS
+
+Configuration options for macOS Sierra (thanks to virtio-net-osx project users),
+
+```
+-netdev user,id=hub0port0 \
+-device virtio-net,netdev=hub0port0,id=eth0 \
+-set device.eth0.vectors=0
+```
+
+Adapt these to your use case. These changes need to be made in the `boot-*`
+scripts. On the guest, install the included `Virtio-Net-Driver-0.9.4.pkg`
+package.
 
 ### Boot Notes
 

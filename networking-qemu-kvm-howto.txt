@@ -41,7 +41,7 @@ to your qemu-system-x86_64 command.
 QEMU networking tip
 -------------------
 
-# printf 'DE:AD:BE:EF:%02X:%02X\n' $((RANDOM%256)) $((RANDOM%256))  # generates QEMU compatible mac addresses!
+# printf '52:54:00:AB:%02X:%02X\n' $((RANDOM%256)) $((RANDOM%256))  # generates QEMU compatible mac addresses!
 
 ------------------
 Bridged Networking

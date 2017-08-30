@@ -23,7 +23,7 @@ qemu-system-x86_64 -enable-kvm -m 3072 -cpu Penryn,kvm=off,vendor=GenuineIntel \
 	  -smp 4,cores=2 \
 	  -usb -device usb-kbd -device usb-mouse \
 	  -device isa-applesmc,osk="ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc" \
-	  -kernel ./enoch_rev2889_boot \
+	  -kernel ./enoch_rev2898_boot \
 	  -smbios type=2 \
 	  -device ich9-intel-hda -device hda-duplex \
 	  -device ide-drive,bus=ide.2,drive=MacHDD \
