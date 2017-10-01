@@ -308,3 +308,9 @@ Release Date: October 21, 2015
 Move 'InstallESD.dmg' to '/Applications/Install OS X El Capitan.app/Contents/SharedSupport/InstallESD.dmg' location.
 
 Move 'InstallESD.dmg' to '/Applications/Install macOS Sierra.app/Contents/SharedSupport/' location (for macOS Sierra).
+
+### Clover References
+
+* https://clover-wiki.zetam.org/Development
+
+* https://sourceforge.net/p/cloverefiboot/code/HEAD/log/?path=

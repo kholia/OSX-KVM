@@ -12,7 +12,12 @@ The included blobs were built from commit 2913ebb2b550f50a.
 Host OS
 -------
 
-OVMF blobs were built on Ubuntu 14.04.5 LTS (Trusty Tahr)
+OVMF blobs (OVMF_CODE.fd, OVMF_VARS.fd) were built on Ubuntu 14.04.5 LTS
+(Trusty Tahr).
+
+OVMF_CODE-pure-efi.fd and OVMF_VARS-pure-efi.fd files come from the
+"edk2.git-ovmf-x64-0-20170922.b3006.gfe4049471b.noarch.rpm" archive
+downloaded from https://www.kraxel.org/repos/jenkins/edk2/ site.
 
 References
 ----------

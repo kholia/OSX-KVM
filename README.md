@@ -1,5 +1,8 @@
 ### Note
 
+For macOS High Sierra, follow [README.md for High Sierra](HighSierra/README.md).
+Consult this document for debugging and general tips.
+
 See the [debugging section below](https://github.com/kholia/OSX-KVM#debugging)
 and closed issues before opening a new issue.
 
@@ -200,5 +203,7 @@ method or the following `virsh` method to install OS X / macOS.
 * [Mac OS X 10.11 El Capitan – VM on unRAID](https://macosxvirtualmachinekvm.wordpress.com/guide-mac-os-x-10-11-el-capitan-vm-on-unraid/)
 
 * http://www.contrib.andrew.cmu.edu/~somlo/OSXKVM/
+
+* https://www.kraxel.org/blog/2017/09/running-macos-as-guest-in-kvm/
 
 * http://forge.voodooprojects.org/p/chameleon/source/changes/HEAD/ (Enoch source)
