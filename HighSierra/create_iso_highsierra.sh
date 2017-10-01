@@ -1,4 +1,8 @@
-# Borrrowed from multiple internet sources
+#!/usr/bin/env bash
+
+set -e
+
+# Borrowed from multiple internet sources
 hdiutil create -o ~/Desktop/HighSierra.cdr -size 7316m -layout SPUD -fs HFS+J
 hdiutil attach ~/Desktop/HighSierra.cdr.dmg -noverify -mountpoint /Volumes/install_build
 sudo /Applications/Install\ macOS\ High\ Sierra.app/Contents/Resources/createinstallmedia --volume /Volumes/install_build --nointeraction
