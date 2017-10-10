@@ -117,6 +117,9 @@ I am running Ubuntu 17.04 on Intel i5-6500 + ASUS Z170-AR motherboard + NVIDIA
 * To reuse the keyboard and mouse devices from the host, setup "Automatic
   login" in System Preferences in macOS and configure Synergy software.
 
+Note: Many AMD GPU devices (e.g. AMD RX 480 & RX 580) should be natively
+supported in macOS High Sierra.
+
 ### USB passthrough notes
 
 These steps will need to be adapted for your particular setup.

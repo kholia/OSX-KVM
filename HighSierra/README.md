@@ -11,6 +11,9 @@ Known to work on:
 
 * Ubuntu 17.04 running on i5-6500 CPU.
 
+* Gentoo (October-2017) running on AMD FX-8320 CPU with AMD RX 470 GPU
+  passthrough.
+
 Tested with QEMU >= 2.10 (with an out-of-tree patch) and Linux 4.10.x / 4.12.x.
 A CPU with SSE4.1 support is required for macOS High Sierra. Intel VT-x / AMD
 SVM is required.
@@ -21,6 +24,8 @@ SVM is required.
 #### Preparation steps on your current macOS installation
 
 * Download macOS High Sierra installer from Apple App Store.
+
+  If you are getting a partial installer from the Apple App Store, [follow the instructions here](http://osxdaily.com/2017/09/27/download-complete-macos-high-sierra-installer/) to get the full (5GB) version instead.
 
 * Clone this repository. Files included in this repository are needed for ISO
   creation.
@@ -128,6 +133,8 @@ changes and exit the OVMF menu. Relaunch the `boot-macOS-HS.sh` script.
 
 * For debugging and general tips, see the main [README.md](../README.md) file
   and [notes.md](../notes.md) file.
+
+* For USB and GPU passthrough notes, see [UEFI notes](../UEFI/README.md) file.
 
 
 ### Credits

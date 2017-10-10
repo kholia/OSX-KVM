@@ -196,6 +196,12 @@ method or the following `virsh` method to install OS X / macOS.
   problematic, whereas Linux 4.9.x with QEMU 2.8.x works fine on the same
   distribution.
 
+### Is This Legal?
+
+The "secret" Apple OSK string is widely available on the Internet. It is also included in a public court document [available here](http://www.rcfp.org/sites/default/files/docs/20120105_202426_apple_sealing.pdf). I am not a lawyer but it seems that Apple's attempt(s) to get the OSK string treated as a trade secret did not work out. Due to these reasons, the OSK string is freely included in this repository.
+
+Gabriel Somlo also has [some thoughts](http://www.contrib.andrew.cmu.edu/~somlo/OSXKVM/#sec_4) on the legal aspects involved in running macOS under QEMU/KVM.
+
 ### References
 
 * https://github.com/Karlson2k/k2k-OSX-Tools
