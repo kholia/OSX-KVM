@@ -11,6 +11,10 @@ Known to work on:
 
 * Ubuntu 17.04 running on i5-6500 CPU.
 
+* Gentoo running on FX-8320 CPU with AMD RX 470 GPU passthrough
+
+* Gentoo running on i5-5200U
+
 Tested with QEMU >= 2.10 (with an out-of-tree patch) and Linux 4.10.x / 4.12.x.
 A CPU with SSE4.1 support is required for macOS High Sierra. Intel VT-x / AMD
 SVM is required.
