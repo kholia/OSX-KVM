@@ -129,6 +129,8 @@ changes and exit the OVMF menu. Relaunch the `boot-macOS-HS.sh` script.
 * For debugging and general tips, see the main [README.md](../README.md) file
   and [notes.md](../notes.md) file.
 
+* For USB and GPU passthrough notes, see [UEFI notes](../UEFI/README.md) file.
+
 
 ### Credits
 

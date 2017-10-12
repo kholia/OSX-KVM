@@ -3,6 +3,9 @@
 # See https://www.mail-archive.com/qemu-devel@nongnu.org/msg471657.html thread.
 #
 # The "pc-q35-2.4" machine type was changed to "pc-q35-2.9" on 06-August-2017.
+#
+# The "media=cdrom" part is needed to make Clover recognize the bootable ISO
+# image.
 
 ##################################################################################
 # NOTE: Comment out the "MY_OPTIONS" line in case you are having booting problems!
