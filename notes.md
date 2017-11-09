@@ -243,6 +243,16 @@ machdep.cpu.leaf7_features: SMEP BMI1 AVX2 BMI2
 machdep.cpu.leaf7_feature_bits: 424
 ```
 
+### Running Docker for Mac
+
+Docker for Mac requires a virtual machine. You have to enable nested virtualization in your host
+```
+modprobe -r kvm_intel
+modprobe kvm_intel nested=1
+```
+
+Also you have to add `vmx,rdtscp` argument to the `-cpu` option in `boot-macOS.sh` file.
+
 ### Using virtio-net-osx with macOS
 
 Configuration options for macOS Sierra (thanks to virtio-net-osx project users),
