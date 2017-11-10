@@ -1,7 +1,6 @@
 ### Setting up UEFI enabled macOS
 
-**This is under development. No support is provided for OVMF and Clover based
-installations at the moment. Experiment at your own risk.**
+**This is under development. Experiment at your own risk.**
 
 * Install macOS by following the usual Enoch method.
 

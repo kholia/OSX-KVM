@@ -72,7 +72,10 @@ Intel VT-x / AMD SVM is required.
 
 To install OS X, you can use the included `boot-macOS.sh` script for a more
 solid alternate to the following `virsh` method. Use either the `boot-macOS.sh`
-method or the following `virsh` method to install OS X / macOS.
+method or the following `virsh / virt-manager` method to install OS X / macOS.
+
+Update: The `virt-manager` method is no longer recommended, and no support is
+provided for it.
 
 * Edit `macOS-libvirt.xml` file and change file paths for `mac_hdd.qcow2` (HDD), `Install_OS_X_10.11_El_Capitan.iso` (bootable ISO image) and `enoch_rev2839_boot` suitably.
 

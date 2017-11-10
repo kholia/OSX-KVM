@@ -25,3 +25,5 @@
 * Nicholas Sherlock - UEFI, Clover, and other hacks
 
 * Phil Dennis-Jordan - virtio-net-osx, usb-tablet and other hacks
+
+* Nikolay Dimitrov (nikidim) - Docker for Mac
