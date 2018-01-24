@@ -73,7 +73,7 @@ SVM is required.
   $ make clean; make -j8; make install
   ```
 
-  This step is not optional and is required.
+  This step is not optional and is required. QEMU 2.10.1 shipped with Fedora 27 works fine too.
 
 * See [networking notes](../networking-qemu-kvm-howto.txt) to setup guest networking.
 
@@ -87,7 +87,7 @@ SVM is required.
 
 
   ```
-  sudo ./clover-image.sh --iso Clover-v2.4k-4233-X64.iso --cfg clover/config.plist.stripped.qemu --img Clover.qcow2
+  sudo ./clover-image.sh --iso Clover-v2.4k-4380-X64.iso --cfg clover/config.plist.stripped.qemu --img Clover.qcow2
   ```
 
   Instead of building your own bootable Clover disk, you may use the included `Clover.qcow2` disk image.
