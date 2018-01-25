@@ -27,7 +27,7 @@ Intel VT-x / AMD SVM is required.
 
 #### Preparation steps on your current OS X / macOS
 
-* Download OS X El Capitan or macOS Sierra installer from Apple App Store.
+* Download OS X El Capitan or macOS High Sierra installer from Apple App Store.
 
 * Clone this repository. Files included in this repository are needed for ISO
   creation.
@@ -36,11 +36,16 @@ Intel VT-x / AMD SVM is required.
   git clone https://github.com/kholia/OSX-KVM.git
   ```
 
-* Run the ISO creation script `create_install_iso.sh` included in this
-  repository. Run it with `sudo`.
+* Run the following commands to generate a macOS High Sierra ISO
 
-  This script supports specifying the path to OS X / macOS installation
-  application manually via the `-a` option.
+  ```
+  hdiutil create -o /tmp/HighSierra.cdr -size 5130m -layout SPUD -fs HFS+J
+  hdiutil attach /tmp/HighSierra.cdr.dmg -noverify -mountpoint /Volumes/install_build
+  sudo /Applications/Install\ macOS\ High\ Sierra.app/Contents/Resources/createinstallmedia --volume /Volumes/install_build
+  mv /tmp/HighSierra.cdr.dmg ~/Desktop/InstallSystem.dmg
+  hdiutil detach /Volumes/Install\ macOS\ High\ Sierra
+  hdiutil convert ~/Desktop/InstallSystem.dmg -format UDTO -o ~/Desktop/HighSierra.iso
+  ```
 
 * Copy the generated ISO from your Mac to your QEMU/KVM machine.
 
