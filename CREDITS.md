@@ -27,3 +27,5 @@
 * Phil Dennis-Jordan - virtio-net-osx, usb-tablet and other hacks
 
 * Nikolay Dimitrov (nikidim) - Docker for Mac
+
+* Francisco de la Peña - libvirt XML file for macOS High Sierra
