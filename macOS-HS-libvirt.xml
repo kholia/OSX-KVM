@@ -25,6 +25,14 @@
 		Change interface to <interface type='user'>
 		and remove the <source bridge='virbr0'/>
 		Or use virt-manager to edit this line instead of virsh edit.
+
+		Note: Default configuration caused severe clock problems
+		under Fedora 27 w/ i7-5820k. This is because Darwin uses
+		tsc (time since last tick) for time, and for me did not
+		fall back to rtc in the event of a clock mismatch with
+		libvirt's default time source. Therefore we must explicitly
+		give the clock a tsc timer for kvm to pass to the guest.
+		See comments on the <kvm> and <clock> attributes.
 -->
 <domain type='kvm' xmlns:qemu='http://libvirt.org/schemas/domain/qemu/1.0'>
   <name>macos-high-sierra</name>
@@ -40,6 +48,7 @@
   </os>
   <features>
     <acpi/>
+<!-- Note: On Fedora 27 w/ an i7-5820k CPU and repository QEMU version as of 27-Jan-2018, the guest experienced severe clock issues. If you encounter these issues, try changing this to <hidden state ='off'--> 
     <kvm>
       <hidden state='on'/>
     </kvm>
@@ -58,6 +67,15 @@
     <feature policy='require' name='avx2'/>
     <feature policy='require' name='smep'/>
   </cpu>
+<!-- Note: To resolve clock issues experienced on Fedora 27 as described at top of file,
+     we need to add a timer. Replace the clock offset line with 
+
+     <clock offset='utc'/>
+       <timer name='tsc'/>
+     </clock>
+
+     Please remember to also change the kvm hidden state as well, as described above.
+-->
   <clock offset='utc'/>
   <on_poweroff>destroy</on_poweroff>
   <on_reboot>restart</on_reboot>
