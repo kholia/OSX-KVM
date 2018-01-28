@@ -9,6 +9,8 @@ Known to work on:
 
 * Fedora 25 running on i7-6600U CPU.
 
+* Fedora 27 running on i7-5820k CPU.
+
 * Ubuntu 17.04 running on i5-6500 CPU.
 
 * Gentoo (October-2017) running on AMD FX-8320 CPU with AMD RX 470 GPU
@@ -17,6 +19,8 @@ Known to work on:
 Tested with QEMU >= 2.10 (with an out-of-tree patch) and Linux 4.10.x / 4.12.x.
 A CPU with SSE4.1 support is required for macOS High Sierra. Intel VT-x / AMD
 SVM is required.
+
+Fedora 27 tested with QEMU 2.0.1-2.fc27 (current Fedora repository version as of 27-Jan-2018), kernel 4.14.14.
 
 
 ### Installation Preparation
