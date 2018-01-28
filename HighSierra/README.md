@@ -7,7 +7,9 @@
 
 Known to work on:
 
-* Fedora 25 running on i7-6600U CPU.
+* Fedora 27 running on i7-6600U CPU.
+
+* Fedora 27 running on i7-5820K CPU.
 
 * Ubuntu 17.04 running on i5-6500 CPU.
 

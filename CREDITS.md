@@ -29,3 +29,5 @@
 * Nikolay Dimitrov (nikidim) - Docker for Mac
 
 * Francisco de la Peña - libvirt XML file for macOS High Sierra
+
+* Christian Giliberto - libvirt XML tweaks
