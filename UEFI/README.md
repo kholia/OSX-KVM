@@ -119,6 +119,9 @@ I am running Ubuntu 17.04 on Intel i5-6500 + ASUS Z170-AR motherboard + NVIDIA
 Note: Many AMD GPU devices (e.g. AMD RX 480 & RX 580) should be natively
 supported in macOS High Sierra.
 
+Note: AMD GPU devices may require configuring Clover with `Graphics > RadeonDeInit`
+key enabled.
+
 ### USB passthrough notes
 
 These steps will need to be adapted for your particular setup.
