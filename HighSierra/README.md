@@ -7,6 +7,8 @@
 
 Known to work on:
 
+* Fedora 26/27 running on Ryzen 7 1800X CPU.
+
 * Fedora 27 running on i7-6600U CPU.
 
 * Fedora 27 running on i7-5820K CPU.
