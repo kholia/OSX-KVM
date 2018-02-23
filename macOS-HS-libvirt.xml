@@ -50,7 +50,7 @@
   </os>
   <features>
     <acpi/>
-<!-- Note: On Fedora 27 w/ an i7-5820K CPU and repository QEMU version as of 27-Jan-2018, the guest experienced severe clock issues. If you encounter these issues, try changing this to <hidden state ='off'-->
+<!-- Note: On Fedora 27 w/ an i7-5820K CPU and repository QEMU version as of 27-Jan-2018, the guest experienced severe clock issues. If you encounter these issues, try changing this to <hidden state ='off'/> -->
     <kvm>
       <hidden state='on'/>
     </kvm>
