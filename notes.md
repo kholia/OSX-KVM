@@ -123,6 +123,34 @@ For example, setting the resolution to 2560x1440x32 will not work. OS X will
 boot with the next lowest supported resolution which is 1920x1200x32. Instead,
 use 2560x1600x32 and it will work.
 
+### Higher Resolution (UEFI)
+
+If you want larger VNC/SPICE screen edit the Clover bootloader config in
+`/EFI/CLOVER/config.plist`. In the XML root `<dict>` section there is a
+`<key>GUI</key>` with values in a `<dict>` section. Set your resolution
+in the following key-value block; create it if it does not exist:
+
+```
+    <key>ScreenResolution</key>
+    <string>1360x768</string>
+```
+
+A simple way to configure this setting, even when you use a separated disk for
+Clover is by using the Clover Configurator tool, allowing to mount the disk
+image and setting this resolution from a simple interface.
+
+The resolution set there must be supported by the resolution list in UEFI
+configuration. EDK II OVMF UEFI resolution must be updated to match the
+resolution set in Clover configuration. Check the [README.md for High
+Sierra](HighSierra/README.md) for detailed instructions.
+
+EDK II supports more resolutions than SeaBIOS, however QEMU is currently
+limited to widths and heights that are multiple of 8. This means resolutions
+like 1366x768 won't be displayed properly because dividing 1366/8 does not
+return an integer value. For this particular case, select the nearer 1360x768
+resolution instead. VNC implementation may require a multiple of 16, so beware
+of setting 1080 vertical resolution or use SPICE instead.
+
 ### Accelerated Graphics
 
 Install VMsvga2 from [this location](https://sourceforge.net/projects/vmsvga2/). No support
