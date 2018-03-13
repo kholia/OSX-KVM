@@ -31,3 +31,7 @@
 * Francisco de la Peña - libvirt XML file for macOS High Sierra
 
 * Christian Giliberto - libvirt XML tweaks
+
+* José Roberto Meza Cabrera - AMD Ryzen testing
+
+* Paweł BB Drozd - UEFI resolution

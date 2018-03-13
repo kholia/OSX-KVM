@@ -18,6 +18,8 @@ Known to work on:
 * Gentoo (October-2017) running on AMD FX-8320 CPU with AMD RX 470 GPU
   passthrough.
 
+* Arch Linux (February-2018) on i7-6700HQ CPU.
+
 Tested with QEMU >= 2.10 (with an out-of-tree patch) and Linux 4.10.x / 4.12.x.
 A CPU with SSE4.1 support is required for macOS High Sierra. Intel VT-x / AMD
 SVM is required.
@@ -53,7 +55,8 @@ SVM is required.
   sudo apt-get install qemu uml-utilities libguestfs-tools
   ```
 
-* Build and use QEMU from source. See http://wiki.qemu-project.org/Hosts/Linux for help.
+* For QEMU versions < 2.10.1, build and use QEMU from source. See http://wiki.qemu-project.org/Hosts/Linux for
+  more help. QEMU 2.10.1 in with Fedora 27, and QEMU 2.11 in Arch Linux already work fine.
 
   ```
   # First edit /etc/apt/sources.list to add/uncomment deb-src lines
@@ -77,8 +80,6 @@ SVM is required.
   $ make clean; make -j8; make install
   ```
 
-  This step is not optional and is required. QEMU 2.10.1 shipped with Fedora 27 works fine too.
-
 * See [networking notes](../networking-qemu-kvm-howto.txt) to setup guest networking.
 
 * Create a virtual HDD image where macOS will be installed.
@@ -89,38 +90,45 @@ SVM is required.
 
 * Create bootable Clover disk.
 
+  Edit `clover/config.plist.stripped.qemu` and set the desired screen resolution (default is 1024x768).
 
   ```
   sudo ./clover-image.sh --iso Clover-v2.4k-4380-X64.iso --cfg clover/config.plist.stripped.qemu --img Clover.qcow2
   ```
 
-  Instead of building your own bootable Clover disk, you may use the included `Clover.qcow2` disk image.
+  Instead of building your own bootable Clover disk, you may use the included
+  `Clover.qcow2` disk image, which offers 1024x768 screen resolution.
 
 
 ### Installation
 
 To install macOS High Sierra, use the included `boot-macOS-HS.sh` script.
 
-Note: Ensure that the OVMF resolution is set to 1024x768. This can be done via
-the OVMF menu, which you can reach with a press of the ESC button during the
-OVMF boot logo.  In the OVMF menu settings, set Device Manager -> OVMF Platform
-Configuration -> Change Preferred Resolution for Next Boot to 1024x768 . Commit
-changes and exit the OVMF menu. Relaunch the `boot-macOS-HS.sh` script.
+Note: Ensure that the OVMF resolution is set equal to resolution set in your
+`Clover.qcow2` file (default is 1024x768). This can be done via the OVMF menu,
+which you can reach with a press of the ESC button during the OVMF boot logo
+(before Clover boot screen appears). In the OVMF menu settings, set Device
+Manager -> OVMF Platform Configuration -> Change Preferred Resolution for Next
+Boot to the desired value (default is 1024x768). Commit changes and exit the
+OVMF menu. Relaunch the `boot-macOS-HS.sh` script.
 
 #### Installer Steps
 
 * After booting, the initial language selection should show up.
 
-* After selecting the language, fire-up the Terminal program and prepare the
-  hard drive for installation.
+* After selecting the language, select Disk Utility and erase your target disk.
+
+  In some cases if the target disk doesn't appear in the Disk Utility, then
+  fire-up the Terminal program and prepare the hard drive for installation
+  manually.
 
   ```
   diskutil list
   diskutil eraseDisk JHFS+ macOS disk0  # adapt this according to your system
   ```
 
-  High Sierra's Disk Utility does not recognize unformatted disks, unless you
-  click View > Show All Devices, quit Disk Utility, then relaunch it.
+  High Sierra's (< 10.13.3) Disk Utility does not recognize unformatted disks,
+  unless you click View > Show All Devices, quit Disk Utility, then relaunch it.
 
   Thanks to https://tinyapps.org/blog/mac/ and xenadu02 for this tip.
 
