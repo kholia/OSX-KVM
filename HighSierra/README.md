@@ -13,7 +13,7 @@ Known to work on:
 
 * Fedora 27 running on i7-5820K CPU.
 
-* Ubuntu 17.04 running on i5-6500 CPU.
+* Ubuntu 18.04 running on i5-6500 CPU.
 
 * Gentoo (October-2017) running on AMD FX-8320 CPU with AMD RX 470 GPU
   passthrough.
@@ -56,7 +56,7 @@ SVM is required.
   ```
 
 * For QEMU versions < 2.10.1, build and use QEMU from source. See http://wiki.qemu-project.org/Hosts/Linux for
-  more help. QEMU 2.10.1 in with Fedora 27, and QEMU 2.11 in Arch Linux already work fine.
+  more help. QEMU 2.10.1 in Fedora 27, QEMU 2.11.1 in Ubuntu 18.04 LTS, and QEMU 2.11 in Arch Linux already work fine.
 
   ```
   # First edit /etc/apt/sources.list to add/uncomment deb-src lines
@@ -93,8 +93,10 @@ SVM is required.
   Edit `clover/config.plist.stripped.qemu` and set the desired screen resolution (default is 1024x768).
 
   ```
-  sudo ./clover-image.sh --iso Clover-v2.4k-4380-X64.iso --cfg clover/config.plist.stripped.qemu --img Clover.qcow2
+  sudo ./clover-image.sh --iso Clover-v2.4k-4449-X64.iso --cfg clover/config.plist.stripped.qemu --img Clover.qcow2
   ```
+
+  This command only works on a Fedora (>= 27) host machine.
 
   Instead of building your own bootable Clover disk, you may use the included
   `Clover.qcow2` disk image, which offers 1024x768 screen resolution.

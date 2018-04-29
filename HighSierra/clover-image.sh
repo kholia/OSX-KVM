@@ -148,8 +148,6 @@ fish mkdir                                     /ESP/EFI/CLOVER
 fish copy-in $WORK/EFI/BOOT                    /ESP/EFI
 fish copy-in $WORK/EFI/CLOVER/CLOVERX64.efi    /ESP/EFI/CLOVER
 fish copy-in $WORK/EFI/CLOVER/drivers64UEFI    /ESP/EFI/CLOVER
-fish copy-in $WORK/EFI/CLOVER/drivers-Off/drivers64UEFI/OsxAptioFix2Drv-64.efi \
-					       /ESP/EFI/CLOVER/drivers64UEFI
 fish copy-in $WORK/EFI/CLOVER/drivers-Off/drivers64UEFI/PartitionDxe-64.efi \
 					       /ESP/EFI/CLOVER/drivers64UEFI
 fish copy-in apfs.efi \
@@ -157,4 +155,14 @@ fish copy-in apfs.efi \
 
 fish copy-in $WORK/EFI/CLOVER/tools            /ESP/EFI/CLOVER
 fish copy-in $WORK/config.plist                /ESP/EFI/CLOVER
+
+nodef="$WORK/EFI/CLOVER/drivers-Off/drivers64UEFI"
+if test -f $nodef/OsxAptioFix3Drv-64.efi; then
+	echo "# -*- OsxAptioFix v3 -*-"
+	fish copy-in $nodef/OsxAptioFix3Drv-64.efi /ESP/EFI/CLOVER/drivers64UEFI
+else
+	echo "# -*- OsxAptioFix v2 -*-"
+	fish copy-in $nodef/OsxAptioFix2Drv-64.efi /ESP/EFI/CLOVER/drivers64UEFI
+fi
+fish ls /ESP/EFI/CLOVER/drivers64UEFI
 fish_fini

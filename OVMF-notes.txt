@@ -1,25 +1,41 @@
 Building OVMF
 -------------
 
+# Add tools and build dependencies:
+apt-get update
+apt-get install build-essential git lintian debhelper iasl nasm \
+  python uuid-dev -y
+
+
 git clone https://github.com/tianocore/edk2
 cd edk2
 make -C BaseTools
 . edksetup.sh BaseTools
 build -a X64 -t GCC5 -p OvmfPkg/OvmfPkgX64.dsc -b RELEASE
 
-The included blobs were built from commit 2913ebb2b550f50a.
+(OBSOLETE) The included blobs were built from commit 2913ebb2b550f50a.
+
 
 Host OS
 -------
 
-OVMF blobs (OVMF_CODE.fd, OVMF_VARS.fd) were built on Ubuntu 14.04.5 LTS
+OVMF blobs (OVMF_CODE.fd, OVMF_VARS.fd) were built on Ubuntu 18.04 LTS
+LTS based on https://github.com/thenickdude/edk2/tree/macos-support (commit
+d0976b9acce and d16b0bf52e).
+
+Older OVMF blobs (OVMF_CODE.fd, OVMF_VARS.fd) were built on Ubuntu 14.04.5 LTS
 (Trusty Tahr).
 
-OVMF_CODE-pure-efi.fd and OVMF_VARS-pure-efi.fd files come from the
-"edk2.git-ovmf-x64-0-20170922.b3006.gfe4049471b.noarch.rpm" archive
+OVMF_CODE-pure-efi.fd and OVMF_VARS-pure-efi.fd files (in backup folder) come
+from the "edk2.git-ovmf-x64-0-20170922.b3006.gfe4049471b.noarch.rpm" archive
 downloaded from https://www.kraxel.org/repos/jenkins/edk2/ site.
+
 
 References
 ----------
 
-https://www.contrib.andrew.cmu.edu/~somlo/OSXKVM/
+* https://www.contrib.andrew.cmu.edu/~somlo/OSXKVM/
+
+* https://www.nicksherlock.com/2018/04/patch-ovmf-to-support-macos-in-proxmox-5-1/
+
+* https://github.com/thenickdude/edk2 (macos-support branch)
