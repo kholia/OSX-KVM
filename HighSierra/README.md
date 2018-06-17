@@ -93,7 +93,7 @@ SVM is required.
   Edit `clover/config.plist.stripped.qemu` and set the desired screen resolution (default is 1024x768).
 
   ```
-  sudo ./clover-image.sh --iso Clover-v2.4k-4449-X64.iso --cfg clover/config.plist.stripped.qemu --img Clover.qcow2
+  sudo ./clover-image.sh --iso Clover-v2.4k-4542-X64.iso --cfg clover/config.plist.stripped.qemu --img Clover.qcow2
   ```
 
   This command only works on a Fedora (>= 27) host machine.
