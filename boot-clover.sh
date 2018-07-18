@@ -10,6 +10,8 @@
 
 MY_OPTIONS="+aes,+xsave,+avx,+xsaveopt,+xsavec,+xgetbv1,+xsaves,+avx2,+bmi2,+smep,+bmi1,+fma,+movbe"
 
+# Remove "+xsaves" for Ryzen and Threadripper processors.
+
 qemu-system-x86_64 -enable-kvm -m 3072 -cpu Penryn,kvm=on,vendor=GenuineIntel,+invtsc,vmware-cpuid-freq=on,$MY_OPTIONS\
 	  -machine pc-q35-2.9 \
 	  -smp 4,cores=2 \
