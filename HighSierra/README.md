@@ -13,16 +13,16 @@ Known to work on:
 
 * Fedora 27 running on i7-5820K CPU.
 
-* Ubuntu 18.04 running on i5-6500 CPU.
+* Ubuntu 18.04 running on i5-6500 and i7-8750H CPUs.
 
 * Gentoo (October-2017) running on AMD FX-8320 CPU with AMD RX 470 GPU
   passthrough.
 
 * Arch Linux (February-2018) on i7-6700HQ CPU.
 
-Tested with QEMU >= 2.10 (with an out-of-tree patch) and Linux 4.10.x / 4.12.x.
-A CPU with SSE4.1 support is required for macOS High Sierra. Intel VT-x / AMD
-SVM is required.
+Tested with QEMU >= 2.12 (QEMU 3.0 works too) and Linux Kernel >= 4.10. A CPU
+with SSE4.1 support is required for macOS High Sierra. Intel VT-x / AMD SVM is
+required.
 
 
 ### Installation Preparation
@@ -81,6 +81,9 @@ SVM is required.
   ```
 
 * See [networking notes](../networking-qemu-kvm-howto.txt) to setup guest networking.
+  * Note: The repository version of the `boot-macOS-HS.sh` script is configured
+    to use ['tap' networking](../networking-qemu-kvm-howto.txt#L28) - change
+    networking style and the boot script if your needs are different.
 
 * Create a virtual HDD image where macOS will be installed.
 
@@ -93,7 +96,7 @@ SVM is required.
   Edit `clover/config.plist.stripped.qemu` and set the desired screen resolution (default is 1024x768).
 
   ```
-  sudo ./clover-image.sh --iso Clover-v2.4k-4542-X64.iso --cfg clover/config.plist.stripped.qemu --img Clover.qcow2
+  sudo ./clover-image.sh --iso Clover-v2.4k-4644-X64.iso --cfg clover/config.plist.stripped.qemu --img Clover.qcow2
   ```
 
   This command only works on a Fedora (>= 27) host machine.
@@ -158,3 +161,5 @@ OVMF menu. Relaunch the `boot-macOS-HS.sh` script.
 * https://www.kraxel.org/blog/2017/09/running-macos-as-guest-in-kvm/
 
 * https://sourceforge.net/projects/cloverefiboot/files/Bootable_ISO/
+
+* https://github.com/JennyDavid/Apfs.efi-for-macOS-High-Sierra

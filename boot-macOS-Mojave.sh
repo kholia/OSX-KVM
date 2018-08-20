@@ -23,7 +23,7 @@ qemu-system-x86_64 -enable-kvm -m 3072 -cpu Penryn,kvm=on,vendor=GenuineIntel,+i
 	  -smbios type=2 \
 	  -device ich9-intel-hda -device hda-duplex \
 	  -device ide-drive,bus=ide.2,drive=Clover \
-	  -drive id=Clover,if=none,snapshot=on,format=qcow2,file=./'Clover.qcow2' \
+	  -drive id=Clover,if=none,snapshot=on,format=qcow2,file=./'Mojave/Clover.qcow2' \
 	  -device ide-drive,bus=ide.1,drive=MacHDD \
 	  -drive id=MacHDD,if=none,file=./mac_hdd.img,format=qcow2 \
 	  -device ide-drive,bus=ide.0,drive=MacDVD \

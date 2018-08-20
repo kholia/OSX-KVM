@@ -20,8 +20,8 @@ Host OS
 -------
 
 OVMF blobs (OVMF_CODE.fd, OVMF_VARS.fd) were built on Ubuntu 18.04 LTS
-LTS based on https://github.com/thenickdude/edk2/tree/macos-support (commit
-d0976b9acce and d16b0bf52e).
+LTS based on https://github.com/kholia/edk2 (upstream commit cc693906700 and
+local commit a6623dc0e44 from Nick Sherlock).
 
 Older OVMF blobs (OVMF_CODE.fd, OVMF_VARS.fd) were built on Ubuntu 14.04.5 LTS
 (Trusty Tahr).

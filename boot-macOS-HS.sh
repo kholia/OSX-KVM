@@ -27,6 +27,6 @@ qemu-system-x86_64 -enable-kvm -m 3072 -cpu Penryn,kvm=on,vendor=GenuineIntel,+i
 	  -device ide-drive,bus=ide.1,drive=MacHDD \
 	  -drive id=MacHDD,if=none,file=./mac_hdd.img,format=qcow2 \
 	  -device ide-drive,bus=ide.0,drive=MacDVD \
-	  -drive id=MacDVD,if=none,snapshot=on,media=cdrom,file=./'HighSierra-10.13.5.iso' \
+	  -drive id=MacDVD,if=none,snapshot=on,media=cdrom,file=./'HighSierra-10.13.6.iso' \
 	  -netdev tap,id=net0,ifname=tap0,script=no,downscript=no -device e1000-82545em,netdev=net0,id=net0,mac=52:54:00:c9:18:27 \
 	  -monitor stdio
