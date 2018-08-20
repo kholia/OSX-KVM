@@ -13,7 +13,7 @@ Known to work on:
 
 * Fedora 27 running on i7-5820K CPU.
 
-* Ubuntu 18.04 running on i5-6500 CPU.
+* Ubuntu 18.04 running on i5-6500 and i7-8750H CPUs.
 
 * Gentoo (October-2017) running on AMD FX-8320 CPU with AMD RX 470 GPU
   passthrough.
@@ -81,6 +81,7 @@ SVM is required.
   ```
 
 * See [networking notes](../networking-qemu-kvm-howto.txt) to setup guest networking.
+  * Note: The repository version of the `boot-macOS-HS.sh` script is configured to use ['tap' networking](../networking-qemu-kvm-howto.txt#L28) - change networking style and the boot script if your needs are different.
 
 * Create a virtual HDD image where macOS will be installed.
 
