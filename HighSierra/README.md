@@ -40,7 +40,7 @@ required.
   git clone https://github.com/kholia/OSX-KVM.git
   ```
 
-* Run the ISO creation script `create_iso_highsierra.sh` included in this
+* Run the ISO creation script `create_install_iso.sh` included in this
   folder. Run it with `sudo`.
 
 * Copy the generated ISO image from your Mac's Desktop to your QEMU/KVM machine.
