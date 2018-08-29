@@ -9,7 +9,8 @@
 	To install this file, you may place it at ~/.config/libvirt/qemu/
 	and run: virsh define macOS-HS-libvirt.xml.
 
-	This configuration has been tested in Fedora 27 with stock QEMU-KVM.
+	This configuration has been tested in Fedora 27 and Arch Linux with stock
+	QEMU-KVM.
 
 	Move/rename images and loader/nvmram files and paths as you wish.
 
@@ -28,14 +29,9 @@
 		Change interface to <interface type='user'>
 		and remove the <source bridge='virbr0'/>
 		Or use virt-manager to edit this line instead of virsh edit.
-
-	Note: Default configuration caused severe clock problems
-	under Fedora 27 w/ i7-5820K. This is because Darwin uses
-	tsc (time since last tick) for time, and for me did not
-	fall back to rtc in the event of a clock mismatch with
-	libvirt's default time source. Therefore we must explicitly
-	give the clock a tsc timer for kvm to pass to the guest.
-	See comments on the <kvm> and <clock> attributes.
+    
+	If you encounter problems with automatically closing menus toggle the
+	state of NUM lock on your keyboard.
 -->
   <name>macos-high-sierra</name>
   <uuid>2aca0dd6-cec9-4717-9ab2-0b7b13d111c3</uuid>
@@ -50,9 +46,8 @@
   </os>
   <features>
     <acpi/>
-<!-- Note: On Fedora 27 w/ an i7-5820K CPU and repository QEMU version as of 27-Jan-2018, the guest experienced severe clock issues. If you encounter these issues, try changing this to <hidden state ='off'/> -->
     <kvm>
-      <hidden state='on'/>
+      <hidden state='off'/>
     </kvm>
   </features>
   <cpu mode='custom' match='exact' check='full'>
@@ -66,18 +61,18 @@
     <feature policy='require' name='xsave'/>
     <feature policy='require' name='avx'/>
     <feature policy='require' name='xsaveopt'/>
-    <feature policy='require' name='avx2'/>
     <feature policy='require' name='smep'/>
+    <!-- Note: Remove the next line when your CPU does not support AVX2 -->
+    <feature policy='require' name='avx2'/> 
   </cpu>
-<!-- Note: To resolve clock issues experienced on Fedora 27 as described at top of file,
-     we need to add a timer. Replace the clock offset line with,
-
-     <clock offset='utc'>
-       <timer name='tsc'/>
-     </clock>
-
-     Please remember to also change the kvm hidden state as well, as described above.
--->
+  <clock offset='utc'>
+  <!-- Note: The frequency is required for KVMs "Suspend to Disk" feature and
+       must match your host CPUs TSC frequency (in Hz).
+       You can obtain the TSC frequency under Linux with "dmesg | grep -i tsc".
+       When you don't need "Suspend to Disk" delete the frequency attribute.
+  -->
+    <timer name='tsc' frequency='3400022000'/>
+  </clock>
   <clock offset='utc'/>
   <on_poweroff>destroy</on_poweroff>
   <on_reboot>restart</on_reboot>
@@ -141,8 +136,8 @@
       <address type='usb' bus='0' port='3'/>
     </input>
     <input type='keyboard' bus='ps2'/>
-    <graphics type='spice'>
-      <listen type='none'/>
+    <graphics type='spice' autoport='yes'>
+      <listen type='address'/>
     </graphics>
     <sound model='ich9'>
       <address type='pci' domain='0x0000' bus='0x02' slot='0x01' function='0x0'/>
@@ -159,11 +154,10 @@
     </hub>
     <memballoon model='none'/>
   </devices>
+  <!-- Note: Remove the next line when SELinux is not installed -->
   <seclabel type='dynamic' model='selinux' relabel='yes'/>
   <qemu:commandline>
     <qemu:arg value='-device'/>
     <qemu:arg value='isa-applesmc,osk=ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc'/>
-    <qemu:arg value='-smbios'/>
-    <qemu:arg value='type=2'/>
   </qemu:commandline>
 </domain>
