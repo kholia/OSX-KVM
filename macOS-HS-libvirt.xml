@@ -62,13 +62,15 @@
     <feature policy='require' name='avx'/>
     <feature policy='require' name='xsaveopt'/>
     <feature policy='require' name='smep'/>
+    <!-- Note: Remove the next line when your CPU does not support AVX2 -->
+    <feature policy='require' name='avx2'/> 
   </cpu>
+  <clock offset='utc'>
   <!-- Note: The frequency is required for KVMs "Suspend to Disk" feature and
        must match your host CPUs TSC frequency (in Hz).
        You can obtain the TSC frequency under Linux with "dmesg | grep -i tsc".
        When you don't need "Suspend to Disk" delete the frequency attribute.
   -->
-  <clock offset='utc'>
     <timer name='tsc' frequency='3400022000'/>
   </clock>
   <clock offset='utc'/>
