@@ -6,4 +6,4 @@ flags for ssse3, sse4.2, and popcnt to avoid Illegal Instruction crashes in the 
 subsystem after boot is complete (causing the top menu bar to flash on and off, and Finder
 to crash on open).
 
-Tested with Clover 4542.
+Tested with Clover 4674.

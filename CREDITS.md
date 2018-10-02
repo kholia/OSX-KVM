@@ -39,3 +39,5 @@
 * Jan Kuri (jkuri) - Mojave ISO creation fixes
 
 * Mike Hardy (mikehardy) - Network documentation improvements
+
+* CuriousTommy + pickled_monkey - Information on vmxnet3 network adapter
