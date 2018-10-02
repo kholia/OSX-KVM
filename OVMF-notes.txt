@@ -19,9 +19,9 @@ build -a X64 -t GCC5 -p OvmfPkg/OvmfPkgX64.dsc -b RELEASE
 Host OS
 -------
 
-OVMF blobs (OVMF_CODE.fd, OVMF_VARS.fd) were built on Ubuntu 18.04 LTS
-LTS based on https://github.com/kholia/edk2 (upstream commit cc693906700 and
-local commit a6623dc0e44 from Nick Sherlock).
+OVMF blobs (OVMF_CODE.fd, OVMF_VARS.fd) were built on Ubuntu 18.04 LTS based on
+https://github.com/kholia/edk2 (upstream commit 328409ce8de7f3 and some local
+commits).
 
 Older OVMF blobs (OVMF_CODE.fd, OVMF_VARS.fd) were built on Ubuntu 14.04.5 LTS
 (Trusty Tahr).

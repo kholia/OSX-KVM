@@ -329,6 +329,17 @@ Type the following after boot,
 
 * System Preferences -> Energy Saver -> Display sleep set to Never
 
+* If you are unable to wake Mojave from sleep using mouse or keyboard, you can
+  manually wake the VM up from sleep from the QEMU prompt by using the
+  `system_wakeup` command,
+
+  ```
+  (qemu) system_wakeup
+  (qemu)
+  ```
+
+  However, macOS crashes on wakeup.
+
 
 ### Installer Details (InstallESD.dmg)
 
