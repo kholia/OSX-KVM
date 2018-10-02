@@ -1,6 +1,6 @@
 ### Setting up UEFI enabled macOS
 
-**This is under development. Experiment at your own risk.**
+**Some parts of this document are outdated. Specifcally, we now use UEFI mode by default. Enoch bootloader is no longer used.**
 
 * Install macOS by following the usual Enoch method.
 

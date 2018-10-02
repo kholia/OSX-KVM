@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# See https://www.mail-archive.com/qemu-devel@nongnu.org/msg471657.html thread.
+# qemu-img create -f qcow2 mac_hdd.img 128G
 #
-# The "pc-q35-2.4" machine type was changed to "pc-q35-2.9" on 06-August-2017.
+# echo 1 > /sys/module/kvm/parameters/ignore_msrs (this is required)
 #
 # The "media=cdrom" part is needed to make Clover recognize the bootable ISO
 # image.
@@ -27,6 +27,6 @@ qemu-system-x86_64 -enable-kvm -m 3072 -cpu Penryn,kvm=on,vendor=GenuineIntel,+i
 	  -device ide-drive,bus=ide.1,drive=MacHDD \
 	  -drive id=MacHDD,if=none,file=./mac_hdd.img,format=qcow2 \
 	  -device ide-drive,bus=ide.0,drive=MacDVD \
-	  -drive id=MacDVD,if=none,snapshot=on,media=cdrom,file=./'Mojave.iso' \
-	  -netdev tap,id=net0,ifname=tap0,script=no,downscript=no -device e1000-82545em,netdev=net0,id=net0,mac=52:54:00:c9:18:27 \
+	  -drive id=MacDVD,if=none,snapshot=on,media=cdrom,file=./'Mojave-10.14.1.iso' \
+	  -netdev tap,id=net0,ifname=tap0,script=no,downscript=no -device vmxnet3,netdev=net0,id=net0,mac=52:54:00:c9:18:27 \
 	  -monitor stdio

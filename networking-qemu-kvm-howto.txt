@@ -10,19 +10,33 @@ slowest and is not visible via the outside network, but requires no host-side
 setup, so it's perfect if you just want internet but don't care about latency
 or about connecting to the VM from an external source.
 
-The problem that we run into here is that OS X is nitpicky about what emulated
-networking devices it is willing to accept, so we need to specify the network
-configuration to use the e1000 emulated card with SLiRP networking.
-
 In order to do this, change the line in your qemu-system-x86_64 command (found
 in boot-macOS.sh) to the following:
 
--netdev user,id=net0 -device e1000-82545em,netdev=net0,id=net0,mac=52:54:00:c9:18:27 \
+-netdev user,id=net0 -device network_adapter,netdev=net0,id=net0,mac=52:54:00:c9:18:27 \
 
-No further setup is required; your internet should Just Werk™ in your virtual machine!
+Once you set network_adapter to the perfered adapter, no further setup is required; your
+internet should Just Werk™ in your virtual machine!
 
 For further information on detailed configuration options, see QEMU's
 documentation on networking ( http://wiki.qemu.org/Documentation/Networking )
+
+Here is the list of network adapters supported by macOS,
+
+e1000-82545em - The problem that we run into here is that OS X is nitpicky
+about what emulated networking devices it is willing to accept. The
+e1000-82545em is a known adapter that can be used on pretty much any version of
+MacOS.
+
+To use this adapter, replace network_adapter with e1000-82545em
+
+vmxnet3 - An alternative solution to e1000 is to use vmxnet3 instead. Unlike
+the e1000, vmxnet3 is a paravirtualized NIC, which can allow for better
+performance (in theory). The only catch is that the you need to have a recent
+version of MacOS (10.11 or later).
+
+To use this adapter, replace network_adapter with vmxnet3
+
 
 -----------------------------------
 Tap Networking (Better Performance)
@@ -42,6 +56,7 @@ QEMU networking tip
 -------------------
 
 # printf '52:54:00:AB:%02X:%02X\n' $((RANDOM%256)) $((RANDOM%256))  # generates QEMU compatible mac addresses!
+
 
 ------------------
 Bridged Networking

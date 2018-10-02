@@ -297,6 +297,8 @@ Adapt these to your use case. These changes need to be made in the `boot-*`
 scripts. On the guest, install the included `Virtio-Net-Driver-0.9.4.pkg`
 package.
 
+Update: This is no longer recommended. Use `vmxnet3` adapter instead.
+
 ### Boot Notes
 
 Type the following after boot,
@@ -328,6 +330,17 @@ Type the following after boot,
 * System Preferences -> Energy Saver -> Computer sleep set to Never
 
 * System Preferences -> Energy Saver -> Display sleep set to Never
+
+* If you are unable to wake Mojave from sleep using mouse or keyboard, you can
+  manually wake the VM up from sleep from the QEMU prompt by using the
+  `system_wakeup` command,
+
+  ```
+  (qemu) system_wakeup
+  (qemu)
+  ```
+
+  However, macOS crashes on wakeup.
 
 
 ### Installer Details (InstallESD.dmg)

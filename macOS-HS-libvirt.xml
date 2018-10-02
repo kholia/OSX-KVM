@@ -44,9 +44,9 @@
   <currentMemory unit='KiB'>4194304</currentMemory>
   <vcpu placement='static'>4</vcpu>
   <os>
-    <type arch='x86_64' machine='pc-q35-2.10'>hvm</type>
-    <loader readonly='yes' type='pflash'>/home/CHANGEME/.local/share/gnome-boxes/images/OVMF_CODE.fd</loader>
-    <nvram>/home/CHANGEME/.local/share/gnome-boxes/images/OVMF_VARS.fd</nvram>
+    <type arch='x86_64' machine='pc-q35-2.11'>hvm</type>
+    <loader readonly='yes' type='pflash'>/home/CHANGEME/macOS/OVMF_CODE.fd</loader>
+    <nvram>/home/CHANGEME/macOS/OVMF_VARS.fd</nvram>
   </os>
   <features>
     <acpi/>
@@ -55,6 +55,7 @@
       <hidden state='on'/>
     </kvm>
   </features>
+  <!--
   <cpu mode='custom' match='exact' check='full'>
     <model fallback='forbid'>Penryn</model>
     <vendor>GenuineIntel</vendor>
@@ -68,7 +69,9 @@
     <feature policy='require' name='xsaveopt'/>
     <feature policy='require' name='avx2'/>
     <feature policy='require' name='smep'/>
+    <feature policy='require' name='vmware-cpuid-freq'/>
   </cpu>
+  -->
 <!-- Note: To resolve clock issues experienced on Fedora 27 as described at top of file,
      we need to add a timer. Replace the clock offset line with,
 
@@ -83,7 +86,7 @@
   <on_reboot>restart</on_reboot>
   <on_crash>restart</on_crash>
   <devices>
-    <emulator>/usr/bin/qemu-kvm</emulator>
+	  <emulator>/usr/bin/qemu-system-x86_64</emulator>
     <disk type='file' device='disk'>
       <driver name='qemu' type='qcow2' cache='writeback'/>
       <source file='/home/CHANGEME/.local/share/gnome-boxes/images/macos-high-sierra.qcow2'/>
@@ -141,8 +144,8 @@
       <address type='usb' bus='0' port='3'/>
     </input>
     <input type='keyboard' bus='ps2'/>
-    <graphics type='spice'>
-      <listen type='none'/>
+    <graphics type='spice' autoport='yes'>
+      <listen type='address'/>
     </graphics>
     <sound model='ich9'>
       <address type='pci' domain='0x0000' bus='0x02' slot='0x01' function='0x0'/>
@@ -159,11 +162,14 @@
     </hub>
     <memballoon model='none'/>
   </devices>
-  <seclabel type='dynamic' model='selinux' relabel='yes'/>
+  <!-- Note: Enable the next line when SELinux is enabled -->
+  <!-- seclabel type='dynamic' model='selinux' relabel='yes'/> -->
   <qemu:commandline>
     <qemu:arg value='-device'/>
     <qemu:arg value='isa-applesmc,osk=ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc'/>
     <qemu:arg value='-smbios'/>
     <qemu:arg value='type=2'/>
+    <qemu:arg value='-cpu'/>
+    <qemu:arg value='Penryn,kvm=on,vendor=GenuineIntel,+invtsc,vmware-cpuid-freq=on,+pcid,+ssse3,+sse4.2,+popcnt,+avx,+aes,+xsave,+xsaveopt,check'/>
   </qemu:commandline>
 </domain>
