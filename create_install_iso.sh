@@ -338,7 +338,11 @@ stage_start_nl "Mounting InstallESD.dmg"
 OSX_inst_inst_dmg="$OSX_inst_app"'/Contents/SharedSupport/InstallESD.dmg'
 OSX_inst_inst_dmg_mnt="$tmp_dir/InstallESD_dmg_mnt"
 hdiutil attach "$OSX_inst_inst_dmg" -kernel -readonly -nobrowse ${ver_opt+-noverify} -mountpoint "$OSX_inst_inst_dmg_mnt" || exit_with_error "Can't mount installation image. Reboot recommended before retry."
-OSX_inst_base_dmg="$OSX_inst_inst_dmg_mnt/BaseSystem.dmg" || exit_with_error
+if [ -f "$OSX_inst_app"'/Contents/SharedSupport/BaseSystem.dmg' ]; then
+    OSX_inst_base_dmg="$OSX_inst_app"'/Contents/SharedSupport/BaseSystem.dmg'
+else
+    OSX_inst_base_dmg="$OSX_inst_inst_dmg_mnt/BaseSystem.dmg" || exit_with_error
+fi
 stage_end_ok "Mounting succeed"
 
 stage_start "Calculating required image size"
