@@ -103,6 +103,8 @@ required.
 
   Instead of building your own bootable Clover disk, you may use the included
   `Clover.qcow2` disk image, which offers 1024x768 screen resolution.
+  * Note: you can edit the included `Clover.qcow2` using vim by searching and replacing 
+    `1024x768` with the desired screen resolution .
 
 
 ### Installation
