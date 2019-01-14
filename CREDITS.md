@@ -41,3 +41,5 @@
 * Mike Hardy (mikehardy) - Network documentation improvements
 
 * CuriousTommy + pickled_monkey - Information on vmxnet3 network adapter
+
+* Povilas Kanapickas (p12tic) - Flexible ISO generation
