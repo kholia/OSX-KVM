@@ -338,7 +338,7 @@ stage_start_nl "Mounting InstallESD.dmg"
 OSX_inst_inst_dmg="$OSX_inst_app"'/Contents/SharedSupport/InstallESD.dmg'
 OSX_inst_inst_dmg_mnt="$tmp_dir/InstallESD_dmg_mnt"
 hdiutil attach "$OSX_inst_inst_dmg" -kernel -readonly -nobrowse ${ver_opt+-noverify} -mountpoint "$OSX_inst_inst_dmg_mnt" || exit_with_error "Can't mount installation image. Reboot recommended before retry."
-OSX_inst_base_dmg="$OSX_inst_inst_dmg_mnt/BaseSystem.dmg" || exit_with_error
+OSX_inst_base_dmg="$OSX_inst_app"'/Contents/SharedSupport/BaseSystem.dmg' || exit_with_error
 stage_end_ok "Mounting succeed"
 
 stage_start "Calculating required image size"
@@ -526,8 +526,7 @@ stage_end_ok
 stage_start "Extracting kernel from Essentials.pkg (very slow step)"
 cd "$OSX_inst_img_rw_mnt"
 # "$script_dir/pbzx" "$OSX_inst_inst_dmg_mnt/Packages/Essentials.pkg" | cpio -idmu ./System/Library/Kernels || exit_with_error "Extraction of kernel failed"
-tar -xOf "$OSX_inst_inst_dmg_mnt/Packages/Essentials.pkg" Payload | python "$script_dir/parse_pbzx.py" | cpio -idmu ./System/Library/Kernels || exit_with_error "Extraction of kernel failed"
-cd "$work_dir"
+tar -xOf "$OSX_inst_inst_dmg_mnt/Packages/Core.pkg" Payload | python "$script_dir/parse_pbzx.py" | cpio -idmu ./System/Library/Kernels || exit_with_error "Extraction of kernel failed"cd "$work_dir"
 stage_end_ok
 
 # Inject kext(s) into ISO image
