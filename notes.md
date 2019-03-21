@@ -307,6 +307,33 @@ Type the following after boot,
 "KernelBooter_kexts"="Yes" "CsrActiveConfig"="103"
 ```
 
+### SIP notes
+
+Disable/enable System Integrity Protection (SIP),
+
+- Boot into Clover EFI Menu
+
+- Select Options (gear icon) using arrow keys
+
+- Select System Parameters
+
+- Select System Integrity Protection
+
+- Change to enable/disable
+
+  - Disable SIP - Check: Allow Untrusted Kexts, Allow Unrestricted FS, Allow
+    Task for PID, Allow Unrestricted Dtrace, Allow Unrestricted NVRAM
+  - Enable SIP - Uncheck everything
+
+- Select Return (multiple times as needed)
+
+- Boot macOS partition
+
+These instructions are borrowed from https://hackintosher.com/ forums.
+
+To make this change permanent, use `Clover Configurator` to change
+`CsrActivateConfig` in `config.plist`.
+
 ### Kernel Extraction (older alternate to "pbzx" method)
 
 * Install Pacifist on OS X.

@@ -52,7 +52,7 @@ required.
 * Install required software packages.
 
   ```
-  sudo apt-get install qemu uml-utilities libguestfs-tools
+  sudo apt-get install qemu uml-utilities libguestfs-tools virt-manager
   ```
 
 * For QEMU versions < 2.10.1, build and use QEMU from source. See http://wiki.qemu-project.org/Hosts/Linux for

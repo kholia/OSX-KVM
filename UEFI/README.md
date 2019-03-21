@@ -49,6 +49,9 @@ bottom of this file for exact requirements and other details.
 I am running Ubuntu 17.04 on Intel i5-6500 + ASUS Z170-AR motherboard + NVIDIA
 1050 Ti.
 
+Tip: Use https://github.com/Benjamin-Dobell/nvidia-update to install nVidia
+drivers on macOS.
+
 * Enable IOMMU support on the host machine.
 
   Add `iommu=pt intel_iommu=on video=efifb:off` to the `GRUB_CMDLINE_LINUX_DEFAULT` line in `/etc/default/grub` file.

@@ -1,3 +1,0 @@
-VoodooHDA.kext-289.zip
-
-RehabMan-FakeSMC-2018-0915.zip

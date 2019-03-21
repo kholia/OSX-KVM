@@ -1,3 +1,5 @@
+Update (March-2019): OVMF blobs built from https://github.com/kholia/edk2/tree/macOS-NG-v2.
+
 Building OVMF
 -------------
 

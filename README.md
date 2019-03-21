@@ -1,6 +1,12 @@
 ### Note
 
-For macOS High Sierra, follow [README.md for High Sierra](HighSierra/README.md).
+For macOS High Sierra, follow [README.md for High Sierra](HighSierra/README.md). NVIDIA
+GPUs are supported on this version of macOS.
+
+For macOS Mojave, follow [README.md for High Sierra](HighSierra/README.md) and
+[README.md for Mojave](Mojave/README.md). NVIDIA GPUs are *NOT* supported on
+this version of macOS.
+
 Consult this document for debugging and general tips.
 
 See the [debugging section below](https://github.com/kholia/OSX-KVM#debugging)
