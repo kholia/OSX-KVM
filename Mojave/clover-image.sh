@@ -159,6 +159,8 @@ fish copy-in $WORK/EFI/CLOVER/drivers-Off/drivers64UEFI/ApfsDriverLoader-64.efi 
 
 fish copy-in $WORK/EFI/CLOVER/tools            /ESP/EFI/CLOVER
 fish copy-in $WORK/config.plist                /ESP/EFI/CLOVER
+# AudioDxe introduced since Clover-v2.4k-4844-X64.iso hangs on boot
+fish rm /ESP/EFI/CLOVER/drivers64UEFI/AudioDxe-64.efi
 
 nodef="$WORK/EFI/CLOVER/drivers-Off/drivers64UEFI"
 fish ls /ESP/EFI/CLOVER/drivers64UEFI

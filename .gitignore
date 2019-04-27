@@ -3,3 +3,4 @@ pbzx-src/liblzma
 pbzx-src/xz-5.2.2
 pbzx-src/pbzx
 mac_hdd.img
+*.sha256sum
