@@ -45,3 +45,5 @@
 * Povilas Kanapickas (p12tic) - Flexible ISO generation
 
 * Dick Marinus (meeuw) - Allow usage of latest Clover
+
+* Foxlet (foxlet) - Allow installation without existing macOS

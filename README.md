@@ -1,209 +1,171 @@
 ### Note
 
-For macOS High Sierra, follow [README.md for High Sierra](HighSierra/README.md). NVIDIA
-GPUs are supported on this version of macOS.
+This `README` documents the new method to install macOS. The older `README` is
+available [here](README-OLD.md).
 
-For macOS Mojave, follow [README.md for High Sierra](HighSierra/README.md) and
-[README.md for Mojave](Mojave/README.md). NVIDIA GPUs are *NOT* supported on
-this version of macOS.
+This new method does *not* require an existing physical/virtual macOS
+installation. However, this `new method` requires internet access during the
+macOS installation process. This limitation will be addressed in a future
+commit.
 
-Consult this document for debugging and general tips.
+Note: All blobs and resources included in this repository are re-derivable (all
+instructions are included!).
 
-See the [debugging section below](https://github.com/kholia/OSX-KVM#debugging)
-and closed issues before opening a new issue.
 
-### Host System Details
+### Requirements
 
-Known to work on:
+* A modern Linux distribution. E.g. Ubuntu 18.04 LTS 64-bit.
 
-* Ubuntu 15.10 running on i5-6500 CPU.
+* QEMU > 2.11.1
 
-* Ubuntu 16.10 running on i7-3960X CPU.
+* A CPU with Intel VT-x / AMD SVM support is required
 
-* Fedora 24 running on i5-6500 + i7-6600U CPU.
+* A CPU with SSE4.1 support is required for macOS Sierra
 
-Tested with QEMU 2.4.1, 2.5, 2.6.1, and 2.8.
+* A CPU with AVX2 support is required for macOS Mojave
 
-AMD CPU(s) are known to be problematic. AMD FX-8350 works but Phenom II X3 720
-does not. A CPU with SSE4.1 support is required for macOS Sierra.
+Note: Older AMD CPU(s) are known to be problematic. AMD FX-8350 works but
+Phenom II X3 720 does not. Ryzen processors work just fine.
 
-Intel VT-x / AMD SVM is required.
 
 ### Installation Preparation
 
-#### Preparation steps on your current OS X / macOS
-
-* Download OS X El Capitan or macOS Sierra installer from Apple App Store.
-
-* Clone this repository. Files included in this repository are needed for ISO
-  creation.
+* KVM may need the following tweak on the host machine to work.
 
   ```
-  git clone https://github.com/kholia/OSX-KVM.git
+  # echo 1 > /sys/module/kvm/parameters/ignore_msrs
   ```
 
-* Run the ISO creation script `create_install_iso.sh` included in this
-  repository. Run it with `sudo`.
+  To make this change permanent, you may use the following command.
 
-  This script supports specifying the path to OS X / macOS installation
-  application manually via the `-a` option.
-
-* Copy the generated ISO from your Mac to your QEMU/KVM machine.
-
-#### Preparation steps on your QEMU system
-
-* Clone this repository again on your QEMU system. Files from this repository are used in the following steps.
+  ```
+  $ sudo cp kvm.conf /etc/modprobe.d/kvm.conf
+  ```
 
 * Install QEMU and other packages.
 
   ```
-  sudo apt-get install qemu uml-utilities virt-manager
+  sudo apt-get install qemu uml-utilities virt-manager dmg2img git wget
   ```
 
-* See [networking notes](networking-qemu-kvm-howto.txt) to setup guest networking.
+  This step may need to be adapted for your Linux distribution.
 
-* Create a virtual HDD image where the OS X operating system will be installed.
-  If you change the name of the disk image from `mac_hdd.img` to something
-  else, the boot scripts will need updating to point to the new image name. A
-  base install of OS X needs 10 GiB of space. Adding Xcode or other large
-  software obviously increases that requirement.
+* Clone this repository again on your QEMU system. Files from this repository
+  are used in the following steps.
 
   ```
-  qemu-img create -f qcow2 mac_hdd.img 64G
+  cd ~
+
+  git clone https://github.com/kholia/OSX-KVM.git
+
+  cd OSX-KVM
   ```
 
-  Now you are ready to install OS X / macOS.
+* Fetch macOS installer.
+
+  ```
+  ./fetch-macOS.py
+  ```
+
+  You can choose your desired macOS version here. After executing this step,
+  you should have the `BaseSystem.dmg` file in the current folder.
+
+  Next, convert this file into a usable format.
+
+  ```
+  dmg2img BaseSystem.dmg BaseSystem.img
+  ```
+
+* Create a virtual HDD image where macOS will be installed.  If you change the
+  name of the disk image from `mac_hdd.img` to something else, the boot scripts
+  will need updating to point to the new image name.
+
+  ```
+  qemu-img create -f qcow2 mac_hdd_ng.img 128G
+  ```
+
+* Setup quick networking by running the following commands.
+
+  ```
+  sudo ip tuntap add dev tap0 mode tap
+
+  sudo ip link set tap0 up promisc on
+
+  sudo brctl addif virbr0 tap0
+  ```
+
+* Now you are ready to install macOS 🚀
+
 
 ### Installation
 
-To install OS X, you can use the included `boot-macOS.sh` script for a more
-solid alternate to the following `virsh` method. Use either the `boot-macOS.sh`
-method or the following `virsh / virt-manager` method to install OS X / macOS.
-
-Update: The `virt-manager` method is no longer recommended, and no support is
-provided for it.
-
-* Edit `macOS-libvirt.xml` file and change file paths for `mac_hdd.qcow2` (HDD), `Install_OS_X_10.11_El_Capitan.iso` (bootable ISO image) and `enoch_rev2839_boot` suitably.
-
-* Create a VM by running the following command
-  ```bash
-  virsh --connect qemu:///system define macOS-libvirt.xml
+- CLI method (primary). Just run the `boot-macOS-NG.sh` script to start the
+  installation proces.
 
   ```
-
-* Start the VM in virt-manager and hit return in the console window.
-
-#### Installer Steps
-
-* After booting, the initial language selection should show up.
-![screenshot_01](https://cloud.githubusercontent.com/assets/731252/17645877/5136b1ac-61b2-11e6-8d90-29f5cc11ae01.png)
-
-* After selecting the language, fire-up the Disk Utility ...
-![screenshot_02](https://cloud.githubusercontent.com/assets/731252/17645881/513b6918-61b2-11e6-91f2-026d953cbe0b.png)
-
-* ... and initialize the new harddisk. If this step fails and the menu bar
-  shows "Language Chooser" then see the Debugging section below.
-
-![screenshot_03](https://cloud.githubusercontent.com/assets/731252/17645878/51373d48-61b2-11e6-8740-69c86bf92d31.png)
-![screenshot_04](https://cloud.githubusercontent.com/assets/731252/17645879/513ae704-61b2-11e6-9a54-109c37132783.png)
-
-* After disk initialization, open a terminal window (in the Utilities menu) and recursively copy the /Extra folder
-  to the newly initialized target volume using
-  ```bash
-   cp -av /Extra "/Volumes/NewVolumeName"
+  ./boot-macOS-NG.sh
   ```
-* When done, quit Terminal.
-![screenshot_05](https://cloud.githubusercontent.com/assets/731252/17645876/5136ad6a-61b2-11e6-84cd-cb7851119292.png)
 
-* Now, you can continue with the installation as usual
-![screenshot_06](https://cloud.githubusercontent.com/assets/731252/17645880/513b2c3c-61b2-11e6-889c-3e4f5a0612ca.png)
+  If you are new to installing macOS, see the [older README](README-OLD.md) for
+  help.
 
-* When finished, the VM will reboot automatically and the first time setup continues as usual.
-![screenshot_07](https://cloud.githubusercontent.com/assets/731252/17645882/51517a50-61b2-11e6-8bb5-70c810d80b2b.png)
 
-#### Post-Installation Recommendations
-* The `boot*.sh` scripts have the installation ISO listed in them but this is
-  only required for installation. Once installation is complete, comment out
-  the `-device` and `-drive` lines referring to MacDVD and the installation ISO.
+- GUI method (alternate - functional but needs further debugging work).
 
-* Inside the guest, you may modify the `/Extra/org.chameleon.Boot.plist` file
-  to change the default resolution of the virtual screen. See [notes](notes.md)
-  for instructions on how to do this and some limitations on the resolution
-  choices.
+  - Edit `macOS-libvirt-NG.xml` file and change the various file paths (search
+    for `CHANGEME` strings in that file). The following command should do the
+    trick usually.
 
-* Download a Chameleon wizard such as Chameleon Wizard or Champlist in order to
-  generate a usable smbios.plist. This file goes into `/Extra` and can be used
-  to assign a reasonable serial number to your virtual Mac. Generating this file
-  sometimes fixes software incompatibilities that occur when the software can't
-  determine what Apple hardware it is running on.
+    ```
+    sed -i "s/CHANGEME/$USER/g" macOS-libvirt-NG.xml
+    ```
 
-* For better mouse behavior, install https://github.com/pmj/QemuUSBTablet-OSX and
-  configure QEMU to use the "usb-tablet" absolute pointing device.
+  - Create a VM by running the following command.
+
+    ```bash
+    virsh --connect qemu:///system define macOS-libvirt-NG.xml
+    ```
+
+  - Launch `virt-manager`, start the `macOS` virtual machine and install macOS
+    as usual.
+
+    Note: You may need to run `sudo ip link delete tap0` command before
+    `virt-manager` is able to start the `macOS` VM.
+
+    Note: You may need to remove the following block from `macOS-libvirt-NG.xml`
+    and run `virsh --connect ...` again.
+
+    ```
+    <disk type='file' device='disk'>
+    <driver name='qemu' type='raw' cache='writeback'/>
+      <source file='/home/CHANGEME/OSX-KVM/BaseSystem.img'/>
+      <target dev='sdc' bus='sata'/>
+      <boot order='3'/>
+      <address type='drive' controller='0' bus='0' target='0' unit='2'/>
+    </disk>
+    ```
+
+
+### Post-Installation
+
+* See [networking notes](networking-qemu-kvm-howto.txt) to setup guest networking.
+
+  I have the following commands present in `/etc/rc.local`.
+
+  ```
+  #!/bin/bash
+
+  sudo ip tuntap add dev tap0 mode tap
+  sudo ip link set tap0 up promisc on
+  sudo brctl addif virbr0 tap0
+  ```
+
+  This has been enough for me so far.
 
 * To get sound on your virtual Mac, see the "Virtual Sound Device" in [notes](notes.md).
 
-### Debugging
+* To passthrough GPUs and other devices, see [these notes](UEFI/README.md).
 
-* For macOS Sierra change the CPU model from `core2duo` to `Penryn`. The
-  `boot-macOS.sh` script already has this change.
-
-* While booting from the macOS Sierra ISO installer, you might get stuck on the
-  "Language Chooser" menu bar (with no option to launch Disk Utility). The
-  solution is to use Ctrl+F2 and arrow keys to navigate the "macOS Installer"
-  menu bar, and to launch the "Disk Utility".
-
-  An alternate solution is to type `Super-T` (where `Super` is the Mac
-  command/clover key next to the `Alt` key). Type this sequence multiple times
-  until a terminal window opens up. In the termianl window type:
-
-  ```
-  diskutil list
-  ```
-
-  This will generate a list of all attached disks. Look for the disk with a
-  size similar to the `mac_hdd.img` created in an earlier step. Once identified,
-  note the disk number. Run a command to initialize the filesystem.
-
-  ```
-  diskutil eraseDisk JHFS+ <name of disk> <disk#>
-  ```
-
-  For example: `diskutil eraseDisk JHFS+ SYS disk2`
-
-  Then select your language and click the forward arrow to move to the next step.
-
-* Host machine may need the following tweak for this to work,
-
-  ```
-  echo 1 > /sys/module/kvm/parameters/ignore_msrs
-  ```
-
-* Type the following in the bootloader if the guest VM fails to boot (some
-  older ISO images may require this),
-
-  ```
-  "KernelBooter_kexts"="Yes" "CsrActiveConfig"="103"
-  ```
-
-* If you see "hdiutil: attach failed - Resource busy" error message during the
-  ISO creation step, quit the "Install macOS Sierra" program and unmount
-  (eject) the "Install macOS Sierra" device. Disk Utility can help for
-  unmouting disk images.
-
-  ```
-  $ hdiutil info
-  $ hdiutil detach /dev/disk2  # or something similar
-  ```
-
-* If the App Store doesn't work, check the [notes file](notes.md) for instructions on how to solve this.
-
-* If you are getting "Dont_Steal_MacOS" related errors, see `Building QEMU` (recommended option) and
-  `FakeSMC installation` sections in [notes file](notes.md).
-
-* If the boot process is getting stuck on the Apple logo, upgrade your host
-  kernel and QEMU. For example, Linux 3.16.x from Debian 8 is known to be
-  problematic, whereas Linux 4.9.x with QEMU 2.8.x works fine on the same
-  distribution.
 
 ### Is This Legal?
 
@@ -211,14 +173,22 @@ The "secret" Apple OSK string is widely available on the Internet. It is also in
 
 Gabriel Somlo also has [some thoughts](http://www.contrib.andrew.cmu.edu/~somlo/OSXKVM/#sec_4) on the legal aspects involved in running macOS under QEMU/KVM.
 
+
+### Motivation
+
+My aim is to enable macOS based builds + testing, kernel debugging, reversing
+and security tasks in an easy, reproducible manner without needing to invest in
+Apple's closed ecosystem (too heavily).
+
+Backstory: I was a (poor) student in Canada once and Apple made [my work on
+cracking Apple Keychains](https://github.com/magnumripper/JohnTheRipper/) a lot
+harder than it needed to be.
+
+
 ### References
 
-* https://github.com/Karlson2k/k2k-OSX-Tools
-
-* [Mac OS X 10.11 El Capitan – VM on unRAID](https://macosxvirtualmachinekvm.wordpress.com/guide-mac-os-x-10-11-el-capitan-vm-on-unraid/)
+* https://github.com/foxlet/macOS-Simple-KVM
 
 * http://www.contrib.andrew.cmu.edu/~somlo/OSXKVM/
 
 * https://www.kraxel.org/blog/2017/09/running-macos-as-guest-in-kvm/
-
-* http://forge.voodooprojects.org/p/chameleon/source/changes/HEAD/ (Enoch source)
