@@ -5,7 +5,7 @@
 	<key>Boot</key>
 	<dict>
 		<key>Arguments</key>
-		<string></string>
+		<string>-v</string>
 		<key>DefaultVolume</key>
 		<string>clover</string>
 		<key>Log</key>
@@ -13,7 +13,7 @@
 		<key>Secure</key>
 		<false/>
 		<key>Timeout</key>
-		<integer>3</integer>
+		<integer>5</integer>
 	</dict>
 	<key>GUI</key>
 	<dict>
@@ -44,7 +44,7 @@
 	<key>SystemParameters</key>
 	<dict>
 		<key>InjectKexts</key>
-		<false/>
+		<true/>
 		<key>InjectSystemID</key>
 		<true/>
 	</dict>
