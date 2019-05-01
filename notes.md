@@ -158,18 +158,22 @@ is provided for this unmaintained project!
 
 * Add `-vga vmware` to QEMU parameters in boot-macOS.sh.
 
-* Add the following to `/Extra/org.chameleon.Boot.plist` file.
+* For Chameleon (unused nowadays), add the following to `/Extra/org.chameleon.Boot.plist` file.
 
   ```
   <key>Kernel Flags</key>
   <string>vmw_options_fb=0x06</string>
   ```
 
-Thanks to Zhang Tong and Kfir Ozer for finding this.
+  Thanks to Zhang Tong and Kfir Ozer for finding this.
 
-See `UEFI/README.md` for GPU passthrough notes.
+* For Clover bootloader, add `wmv_option_fb=0x06` to the `<string>` tag of the
+  `Arguments` key of the `config.plist` you use when generating the
+  `CloverNG.qcow2`.
 
-Note: There is no working QXL driver for macOS so far.
+* See `UEFI/README.md` for GPU passthrough notes.
+
+* Note: There is no working QXL driver for macOS so far.
 
 ### Virtual Sound Device
 
