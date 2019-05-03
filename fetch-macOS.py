@@ -91,8 +91,8 @@ def replicate_url(full_url,
     local_file_path = relative_url
     # print("Downloading %s..." % full_url)
     if not installer:
-        # wget_cmd = ['/usr/bin/wget', "-c", "--quiet", "-x", "-nH", full_url]
-        wget_cmd = ['/usr/bin/wget', "-c", "--quiet", full_url]
+        wget_cmd = ['/usr/bin/wget', "-c", "--quiet", "-x", "-nH", full_url]
+        # wget_cmd = ['/usr/bin/wget', "-c", "--quiet", full_url]
     else:
         wget_cmd = ['/usr/bin/wget', "-c", full_url]
     try:
