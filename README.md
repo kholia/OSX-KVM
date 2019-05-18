@@ -2,6 +2,29 @@
 
 to add q35-speed-patch for libvirt, (4200 and 4920)
 
+
+# Speedpatch for q35 libvirt to remove slow performance with KVM
+
+svn co -r 4920 svn://svn.code.sf.net/p/cloverefiboot/code Clover
+
+
+http://s3.nicksherlock.com/forumposts/2016/clover-r4061-qemu-cpu-speed-patch.diff
+
+Download this patch to “edk2/Clover”. Change into that directory and run:
+
+svn patch clover-r4061-qemu-cpu-speed-patch.diff
+
+svn co -r 4920 svn://svn.code.sf.net/p/cloverefiboot/code Clover
+
+Change into the “edk2/Clover” directory, and run:
+
+./ebuild.sh
+
+The default options, which use XCode to build an X64 bootloader, are perfect for us.
+
+After that completes, run “cd CloverPackage; ./makepkg”. This will produce an installable package for us in “edk2/Clover/CloverPackage/sym/Clover_v2.4k_r4920.pkg.”.
+
+
 # ** FORKED THIS OUT OF IT DRIVING ME TO BRINK of,.q35?
 
 <br>
