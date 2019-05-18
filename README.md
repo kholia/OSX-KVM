@@ -1,5 +1,28 @@
 ### Note
 
+
+
+# ** FORKED THIS OUT OF IT DRIVING ME TO BRINK of,.q35?
+
+<br>
+todo: move q35-dsdt.aml ->
+<br>
+
+q35-acpi-dsdt.aml /Volumes/ESP/EFI/CLOVER/ACPI/origin/
+<br>
+
+
+(these qcow2's are built for KVM? q35 model in libvirt)
+<br>
+
+(q35-acpi-dsdt.aml appears missing?)
+<br>
+
+@q35-acpi-dsdt.aml EFI/CLOVER/ACPI/origin/
+<br>
+
+(in the clover image)
+
 This `README` documents the new method to install macOS. The older `README` is
 available [here](README-OLD.md).
 
