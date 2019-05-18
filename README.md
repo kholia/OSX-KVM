@@ -1,6 +1,6 @@
 ### Note
 
-
+to add q35-speed-patch for libvirt, (4200 and 4920)
 
 # ** FORKED THIS OUT OF IT DRIVING ME TO BRINK of,.q35?
 
