@@ -14,7 +14,6 @@ Download this patch to “edk2/Clover”. Change into that directory and run:
 
 svn patch clover-r4061-qemu-cpu-speed-patch.diff
 
-svn co -r 4920 svn://svn.code.sf.net/p/cloverefiboot/code Clover
 
 Change into the “edk2/Clover” directory, and run:
 
