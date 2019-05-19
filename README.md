@@ -94,9 +94,7 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
 
   ```
   sudo ip tuntap add dev tap0 mode tap
-
   sudo ip link set tap0 up promisc on
-
   sudo brctl addif virbr0 tap0
   ```
   If virbr0 is not present on your system, it has been [deactivated](https://bugs.archlinux.org/task/50693). To enable it, give `virsh net-autostart default` and reboot your system.
