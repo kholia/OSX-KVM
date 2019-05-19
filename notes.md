@@ -158,14 +158,17 @@ is provided for this unmaintained project!
 
 * Add `-vga vmware` to QEMU parameters in boot-macOS.sh.
 
+#### Chameleon
 * Add the following to `/Extra/org.chameleon.Boot.plist` file.
 
   ```
   <key>Kernel Flags</key>
   <string>vmw_options_fb=0x06</string>
   ```
-
 Thanks to Zhang Tong and Kfir Ozer for finding this.
+
+#### Clover
+* Add `wmv_option_fb=0x06` to the `<string>` tag of the `Arguments` key of the `config.plist` you use when generating the `CloverNG.qcow2`.
 
 See `UEFI/README.md` for GPU passthrough notes.
 
