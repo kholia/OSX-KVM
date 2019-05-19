@@ -99,6 +99,7 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
 
   sudo brctl addif virbr0 tap0
   ```
+Note for Archlinux users: virbr0 autogeneration has been [deactivated](https://bugs.archlinux.org/task/50693)
 
 * Now you are ready to install macOS 🚀
 
