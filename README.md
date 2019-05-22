@@ -83,11 +83,11 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
   ```
 
 * Create a virtual HDD image where macOS will be installed.  If you change the
-  name of the disk image from `mac_hdd.img` to something else, the boot scripts
+  name of the disk image from `macos.qcow2` to something else, the boot scripts
   will need updating to point to the new image name.
 
   ```
-  qemu-img create -f qcow2 mac_hdd_ng.img 128G
+  qemu-img create -f qcow2 macos.qcow2 128G
   ```
 
 * Setup quick networking by running the following commands.

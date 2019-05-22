@@ -117,7 +117,7 @@
 		<key>Scan</key>
 		<true/>
 		<key>ScreenResolution</key>
-		<string>800x600</string>
+		<string>1920x1080</string>
 		<key>Theme</key>
 		<string>embedded</string>
 	</dict>

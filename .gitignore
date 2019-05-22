@@ -3,6 +3,7 @@ pbzx-src/liblzma
 pbzx-src/xz-5.2.2
 pbzx-src/pbzx
 mac_hdd.img
+macos.qcow2
 *.sha256sum
 *.sucatalog
 *.img

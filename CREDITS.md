@@ -51,3 +51,5 @@
 * Ralph Kühnert (redradrat) - Debug fetch-macOS.py script
 
 * Pellegrino Prevete (tallero) - Better documentation
+
+* Morgan Lombard - Default Resolution 1920x1080

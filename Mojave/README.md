@@ -19,7 +19,7 @@ Old:
 
 Modern:
 
-`rm -f CloverNG.qcow2; sudo ./clover-image-ng.sh --iso Clover-v2.4k-4920-X64.iso --cfg clover/config.plist.stripped.qemu --img CloverNG.qcow2`
+`rm -f ../CloverNG-1920x1080.qcow2; sudo ./clover-image-ng.sh --iso Clover-v2.4k-4920-X64.iso --cfg clover/config.plist.stripped.qemu --img ../CloverNG-1920x1080.qcow2`
 
 The `modern` installation method (borrowed from https://github.com/foxlet/macOS-Simple-KVM) requires an internet connection
 (during macOS installation) to work.

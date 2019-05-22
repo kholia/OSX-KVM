@@ -46,7 +46,7 @@
   <os>
     <type arch='x86_64' machine='q35'>hvm</type>
     <loader readonly='yes' type='pflash'>/home/CHANGEME/OSX-KVM/OVMF_CODE.fd</loader>
-    <nvram>/home/CHANGEME/OSX-KVM/OVMF_VARS-1024x768.fd</nvram>
+    <nvram>/home/CHANGEME/OSX-KVM/OVMF_VARS-1920x1080.fd</nvram>
   </os>
   <features>
     <acpi/>
@@ -89,25 +89,25 @@
     <emulator>/usr/bin/qemu-system-x86_64</emulator>
     <disk type='file' device='disk'>
       <driver name='qemu' type='qcow2' cache='writeback'/>
-      <source file='/home/CHANGEME/OSX-KVM/Mojave/CloverNG.qcow2'/>
+      <source file='/home/CHANGEME/OSX-KVM/CloverNG-1920x1080.qcow2'/>
       <target dev='sda' bus='sata'/>
       <boot order='1'/>
       <address type='drive' controller='0' bus='0' target='0' unit='0'/>
     </disk>
     <disk type='file' device='disk'>
       <driver name='qemu' type='qcow2' cache='writeback'/>
-      <source file='/home/CHANGEME/OSX-KVM/mac_hdd_ng.img'/>
+      <source file='/home/CHANGEME/OSX-KVM/macos.qcow2'/>
       <target dev='sdb' bus='sata'/>
       <boot order='2'/>
       <address type='drive' controller='0' bus='0' target='0' unit='1'/>
     </disk>
-    <disk type='file' device='disk'>
+    <!-- <disk type='file' device='disk'>
       <driver name='qemu' type='raw' cache='writeback'/>
       <source file='/home/CHANGEME/OSX-KVM/BaseSystem.img'/>
       <target dev='sdc' bus='sata'/>
       <boot order='3'/>
       <address type='drive' controller='0' bus='0' target='0' unit='2'/>
-    </disk>
+    </disk> -->
     <controller type='sata' index='0'>
       <address type='pci' domain='0x0000' bus='0x00' slot='0x1f' function='0x2'/>
     </controller>
@@ -146,10 +146,10 @@
     <input type='keyboard' bus='usb'>
       <address type='usb' bus='0' port='2'/>
     </input>
-    <input type='mouse' bus='ps2'/>
     <input type='tablet' bus='usb'>
       <address type='usb' bus='0' port='3'/>
     </input>
+    <input type='mouse' bus='ps2'/>
     <input type='keyboard' bus='ps2'/>
     <graphics type='spice' autoport='yes'>
       <listen type='address'/>
