@@ -10,3 +10,7 @@
 * Try https://passthroughpo.st/hackintosh-kvm-guide-high-sierra-using-qemus-i440fx-chipset/ stuff.
 
 * Document (share) how you use this project to test open-source projects / get your stuff done.
+
+* Document how to use this project for iOS development.
+
+* Document how to use this project for XNU debugging and development.

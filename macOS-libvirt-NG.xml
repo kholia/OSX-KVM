@@ -111,16 +111,6 @@
     <controller type='sata' index='0'>
       <address type='pci' domain='0x0000' bus='0x00' slot='0x1f' function='0x2'/>
     </controller>
-    <controller type='pci' index='0' model='pcie-root'/>
-    <controller type='pci' index='1' model='dmi-to-pci-bridge'>
-      <model name='i82801b11-bridge'/>
-      <address type='pci' domain='0x0000' bus='0x00' slot='0x1e' function='0x0'/>
-    </controller>
-    <controller type='pci' index='2' model='pci-bridge'>
-      <model name='pci-bridge'/>
-      <target chassisNr='2'/>
-      <address type='pci' domain='0x0000' bus='0x01' slot='0x00' function='0x0'/>
-    </controller>
     <controller type='usb' index='0' model='ich9-ehci1'>
       <address type='pci' domain='0x0000' bus='0x00' slot='0x1d' function='0x7'/>
     </controller>

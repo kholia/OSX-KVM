@@ -53,8 +53,8 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
 
   This step may need to be adapted for your Linux distribution.
 
-* Clone this repository again on your QEMU system. Files from this repository
-  are used in the following steps.
+* Clone this repository on your QEMU system. Files from this repository are
+  used in the following steps.
 
   ```
   cd ~
@@ -147,7 +147,8 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
     `virt-manager` is able to start the `macOS` VM.
 
     Note: You may need to remove the following block from `macOS-libvirt-NG.xml`
-    and run `virsh --connect ...` again.
+    and run `virsh --connect ...` again. Alternate easier fix: Remove `SATA
+    Disk 3` from the macOS virtual machine in `virt-manager`.
 
     ```
     <disk type='file' device='disk'>

@@ -7,7 +7,7 @@
 * Build and use QEMU from https://github.com/kholia/qemu/. Use the "macOS"
   branch. Clover + macOS will fail to boot without this step.
 
-* Install the included `Clover_v2*.pkg` on the main macOS disk.
+* Install Clover (`Clover_v2*.pkg`) on the main macOS disk.
 
   * Hit the `Customize` button during Clover install.
 
