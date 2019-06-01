@@ -113,7 +113,8 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
 
 ### Installation
 
-- CLI method (primary). Just run the `boot-macOS-NG.sh` script to start the
+#### CLI method (primary)
+  Just run the `boot-macOS-NG.sh` script to start the
   installation proces.
 
   ```
@@ -123,22 +124,33 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
   If you are new to installing macOS, see the [older README](README-OLD.md) for
   help.
 
+#### GUI method (alternate)
 
-- GUI method (alternate - functional but needs further debugging work).
+  Edit `macOS-libvirt-NG.xml` file and change the various file paths (search
+  for `CHANGEME` strings in that file). The following command should do the
+  trick usually.
 
-  - Edit `macOS-libvirt-NG.xml` file and change the various file paths (search
-    for `CHANGEME` strings in that file). The following command should do the
-    trick usually.
+    $ sed -i "s/CHANGEME/$USER/g" macOS-libvirt-NG.xml
 
-    ```
-    sed -i "s/CHANGEME/$USER/g" macOS-libvirt-NG.xml
-    ```
+##### GNOME Boxes
+  Import the VM running
+  
+    $ virsh create macOS-libvirt-NG.xml
+    
+  Note: If the output of the previous command contains the error
+  
+    error: internal error: /usr/lib/qemu/qemu-bridge-helper --br=virbr0 --fd=27: failed to communicate with bridge helper: Transport endpoint is not connected
 
-  - Create a VM by running the following command.
+  you need to execute
+  
+    # mkdir /etc/qemu && chmod 755 /etc/qemu
+    # echo "allow virbr0" > /etc/qemu/bridge.conf 
+    # chmod 0644 /etc/qemu/bridge.conf
 
-    ```bash
+##### Virt manager
+  Create a VM by running the following command.
+  
     virsh --connect qemu:///system define macOS-libvirt-NG.xml
-    ```
 
   - Launch `virt-manager`, start the `macOS` virtual machine and install macOS
     as usual.
