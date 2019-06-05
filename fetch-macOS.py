@@ -93,14 +93,23 @@ def replicate_url(full_url,
     # local_file_path = os.path.join(root_dir, relative_url)
     local_file_path = relative_url
     # print("Downloading %s..." % full_url)
-    if not installer:
-        wget_cmd = ['/usr/bin/wget', "-c", "--quiet", "-x", "-nH", full_url]
-        # this doesn't work as there are multiple metadata files with the same name!
-        # wget_cmd = ['/usr/bin/wget', "-c", "--quiet", full_url]
+
+    if os.path.exists('/usr/bin/wget'):
+        if not installer:
+            download_cmd = ['/usr/bin/wget', "-c", "--quiet", "-x", "-nH", full_url]
+            # this doesn't work as there are multiple metadata files with the same name!
+            # download_cmd = ['/usr/bin/wget', "-c", "--quiet", full_url]
+        else:
+            download_cmd = ['/usr/bin/wget', "-c", full_url]
     else:
-        wget_cmd = ['/usr/bin/wget', "-c", full_url]
+        if not installer:
+            download_cmd = ['/usr/bin/curl', "--silent", "--show-error", "-o", local_file_path, "--create-dirs", full_url]
+        else:
+            local_file_path = os.path.basename(local_file_path)
+            download_cmd = ['/usr/bin/curl', "-o", local_file_path, full_url]
+
     try:
-        subprocess.check_call(wget_cmd)
+        subprocess.check_call(download_cmd)
     except subprocess.CalledProcessError as err:
         raise ReplicationError(err)
     return local_file_path
