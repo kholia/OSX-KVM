@@ -53,3 +53,5 @@
 * Pellegrino Prevete (tallero) - Better documentation
 
 * Niklas Korz (niklaskorz) - Stop using brctl
+
+* Mike Bybee (stereoplegic) - Higher resolution documentation

@@ -73,6 +73,20 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
   You can choose your desired macOS version here. After executing this step,
   you should have the `BaseSystem.dmg` file in the current folder.
 
+  Sample run:
+
+  ```
+  $ ./fetch-macOS.py
+  #    ProductID    Version    Build   Post Date  Title
+  1    041-47723    10.14.4  18E2034  2019-03-25  macOS Mojave
+  2    091-95155    10.13.6    17G66  2019-01-08  macOS High Sierra
+  3    041-64745    10.14.5   18F203  2019-05-22  macOS Mojave
+  4    041-59913    10.14.5   18F132  2019-05-13  macOS Mojave
+  5    041-71284      10.15  19A471t  2019-06-03  macOS 10.15 Beta
+
+  Choose a product to download (1-5): 5
+  ```
+
   Attention: Modern NVIDIA GPUs are supported on HighSierra but not on Mojave
   (yet).
 
@@ -123,6 +137,7 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
   If you are new to installing macOS, see the [older README](README-OLD.md) for
   help.
 
+  For macOS Catalina, use `boot-macOS-Catalina.sh` script.
 
 - GUI method (alternate - functional but needs further debugging work).
 
@@ -182,7 +197,8 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
 
 * To passthrough GPUs and other devices, see [these notes](UEFI/README.md).
 
-* Need a different resolution? Check various notes included in this repository.
+* Need a different resolution? Check out the [notes](notes.md) included in this
+  repository.
 
 
 ### Is This Legal?

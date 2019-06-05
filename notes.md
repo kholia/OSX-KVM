@@ -106,66 +106,31 @@ recommended instead.
   cp usr/standalone/i386/boot enoch_rev2848_boot
   ```
 
-### Higher Resolution
+### Higher Resolution (UEFI + Clover)
 
-If you want a larger VNC screen add the following to the bootloader config in /Extra/org.chameleon.Boot.plist:
+Follow the steps below to get a higher resolution:
 
-```
-<key>Graphics Mode</key>
-<string>1440x900x32</string>
-```
+1. Set the desired Clover screen resolution in the relevant
+   `config.plist.stripped.qemu` file and regenerate the corresponding
+   `Clover*.qcow2` file (process documented in `Mojave/README.md`).
 
-Make sure to pick a resolution that is supported by the SeaBIOS used by QEMU.
-The full list can be found in the source for SeaBIOS located
-[here](http://git.qemu-project.org/?p=seabios.git;a=blob_plain;f=vgasrc/bochsvga.c;hb=HEAD).
+2. Ensure that the OVMF resolution is set equal to resolution set in your
+   Clover.qcow2 file (default is 1024x768). This can be done via the OVMF menu,
+   which you can reach with a press of the ESC button during the OVMF boot logo
+   (before Clover boot screen appears). In the OVMF menu settings, set Device
+   Manager -> OVMF Platform Configuration -> Change Preferred Resolution for Next
+   Boot to the desired value (default is 1024x768). Commit changes and exit the
+   OVMF menu.
 
-For example, setting the resolution to 2560x1440x32 will not work. OS X will
-boot with the next lowest supported resolution which is 1920x1200x32. Instead,
-use 2560x1600x32 and it will work.
-
-### Higher Resolution (UEFI)
-
-If you want larger VNC/SPICE screen edit the Clover bootloader config in
-`/EFI/CLOVER/config.plist`. In the XML root `<dict>` section there is a
-`<key>GUI</key>` with values in a `<dict>` section. Set your resolution
-in the following key-value block; create it if it does not exist:
-
-```
-    <key>ScreenResolution</key>
-    <string>1360x768</string>
-```
-
-A simple way to configure this setting, even when you use a separated disk for
-Clover is by using the Clover Configurator tool, allowing to mount the disk
-image and setting this resolution from a simple interface.
-
-The resolution set there must be supported by the resolution list in UEFI
-configuration. EDK II OVMF UEFI resolution must be updated to match the
-resolution set in Clover configuration. Check the [README.md for High
-Sierra](HighSierra/README.md) for detailed instructions.
-
-EDK II supports more resolutions than SeaBIOS, however QEMU is currently
-limited to widths and heights that are multiple of 8. This means resolutions
-like 1366x768 won't be displayed properly because dividing 1366/8 does not
-return an integer value. For this particular case, select the nearer 1360x768
-resolution instead. VNC implementation may require a multiple of 16, so beware
-of setting 1080 vertical resolution or use SPICE instead.
+3. Relaunch the boot script.
 
 ### Accelerated Graphics
 
 Install VMsvga2 from [this location](https://sourceforge.net/projects/vmsvga2/). No support
 is provided for this unmaintained project!
 
-* Add `-vga vmware` to QEMU parameters in boot-macOS.sh.
-
-* For Chameleon (unused nowadays), add the following to `/Extra/org.chameleon.Boot.plist` file.
-
-  ```
-  <key>Kernel Flags</key>
-  <string>vmw_options_fb=0x06</string>
-  ```
-
-  Thanks to Zhang Tong and Kfir Ozer for finding this.
+* Add `-vga vmware` to QEMU parameters in the booot script (e.g.
+  boot-macOS.sh), if required.
 
 * For Clover bootloader, add `wmv_option_fb=0x06` to the `<string>` tag of the
   `Arguments` key of the `config.plist` you use when generating the

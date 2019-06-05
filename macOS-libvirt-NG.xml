@@ -130,8 +130,8 @@
       <mac address='52:54:00:8e:e2:66'/>
       <source bridge='virbr0'/>
       <target dev='tap0'/>
-      <model type='e1000-82545em'/>
-      <address type='pci' domain='0x0000' bus='0x02' slot='0x02' function='0x0'/>
+      <model type='vmxnet3'/>
+      <address type='pci' domain='0x0000' bus='0x0' slot='0x02' function='0x0'/>
     </interface>
     <input type='keyboard' bus='usb'>
       <address type='usb' bus='0' port='2'/>

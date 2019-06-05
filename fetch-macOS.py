@@ -45,13 +45,13 @@ if sys.version_info[0] < 3:
 else:
     import urllib.parse as urlstuff
 
-"""
 # https://github.com/foxlet/macOS-Simple-KVM/blob/master/tools/FetchMacOS/fetch-macos.py (unused)
-catalogs = {"CustomerSeed":"https://swscan.apple.com/content/catalogs/others/index-10.14customerseed-10.14-10.13-10.12-10.11-10.10-10.9-mountainlion-lion-snowleopard-leopard.merged-1.sucatalog",
-            "DeveloperSeed":"https://swscan.apple.com/content/catalogs/others/index-10.14seed-10.14-10.13-10.12-10.11-10.10-10.9-mountainlion-lion-snowleopard-leopard.merged-1.sucatalog",
-            "PublicSeed":"https://swscan.apple.com/content/catalogs/others/index-10.14beta-10.14-10.13-10.12-10.11-10.10-10.9-mountainlion-lion-snowleopard-leopard.merged-1.sucatalog",
-            "PublicRelease":"https://swscan.apple.com/content/catalogs/others/index-10.14-10.13-10.12-10.11-10.10-10.9-mountainlion-lion-snowleopard-leopard.merged-1.sucatalog"}
-"""
+catalogs = {
+    "CustomerSeed":"https://swscan.apple.com/content/catalogs/others/index-10.15customerseed-10.15-10.14-10.13-10.12-10.11-10.10-10.9-mountainlion-lion-snowleopard-leopard.merged-1.sucatalog",
+    "DeveloperSeed":"https://swscan.apple.com/content/catalogs/others/index-10.15seed-10.15-10.14-10.13-10.12-10.11-10.10-10.9-mountainlion-lion-snowleopard-leopard.merged-1.sucatalog",
+    "PublicSeed":"https://swscan.apple.com/content/catalogs/others/index-10.15beta-10.15-10.14-10.13-10.12-10.11-10.10-10.9-mountainlion-lion-snowleopard-leopard.merged-1.sucatalog",
+    "PublicRelease":"https://swscan.apple.com/content/catalogs/others/index-10.15-10.14-10.13-10.12-10.11-10.10-10.9-mountainlion-lion-snowleopard-leopard.merged-1.sucatalog"
+}
 
 DEFAULT_SUCATALOGS = {
     '17': 'https://swscan.apple.com/content/catalogs/others/'
@@ -60,13 +60,14 @@ DEFAULT_SUCATALOGS = {
     '18': 'https://swscan.apple.com/content/catalogs/others/'
           'index-10.14-10.13-10.12-10.11-10.10-10.9'
           '-mountainlion-lion-snowleopard-leopard.merged-1.sucatalog',
+    'something': 'https://swscan.apple.com/content/catalogs/others/index-10.15seed-10.15-10.14-10.13-10.12-10.11-10.10-10.9-mountainlion-lion-snowleopard-leopard.merged-1.sucatalog'
 }
 
 def get_default_catalog():
     '''Returns the default softwareupdate catalog for the current OS'''
     # darwin_major = os.uname()[2].split('.')[0]
     # return DEFAULT_SUCATALOGS.get(darwin_major)
-    return DEFAULT_SUCATALOGS.get('18')
+    return DEFAULT_SUCATALOGS.get('something')
 
 
 class ReplicationError(Exception):
