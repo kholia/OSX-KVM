@@ -151,6 +151,8 @@ return an integer value. For this particular case, select the nearer 1360x768
 resolution instead. VNC implementation may require a multiple of 16, so beware
 of setting 1080 vertical resolution or use SPICE instead.
 
+Alternative Clover screen resolution note by stereoplegic: Clover Configurator resulution not sticking for me, but editing the desired Clover screen resolution in `HighSierra/config.plist.stripped.qemu` or `Mojave/config.plist.stripped.qemu` and following instructions in the {README.md for High Sierra](HighSierra/README.md) or [README.md for Mojave](Mojave/README.md) cause the set resolution to persist in Clover (EDK II OVMF UEFI instructions still apply, especially to avoid issues in fullscreen caused by resolution change in Clover).
+
 ### Accelerated Graphics
 
 Install VMsvga2 from [this location](https://sourceforge.net/projects/vmsvga2/). No support
