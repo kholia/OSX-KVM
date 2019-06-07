@@ -13,6 +13,10 @@ Note: Use `create_iso_mojave.sh` for generating a macOS Mojave based ISO image.
 
 Note: Use 64-bit Ubuntu 18.04.2 LTS as the host for "best" results.
 
+Note: Tested working on Ubuntu 19.04 host.
+
+With either method, edit the desired Clover screen resolution in `./config.plist.stripped.qemu` (and set to match in EDK II OVMF UEFI, or else bad things happen when resolution changes on Clover startup in fullscreen).
+
 Old:
 
 `rm -f Clover.qcow2; sudo ./clover-image.sh --iso Clover-v2.4k-4934-X64.iso --cfg clover/config.plist.stripped.qemu --img CloverNG.qcow2`
