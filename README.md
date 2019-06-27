@@ -96,6 +96,12 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
   dmg2img BaseSystem.dmg BaseSystem.img
   ```
 
+  Note: You can also use the following command to convert it, if your QEMU version >= 4.0.0.
+
+  ```
+  qemu-img convert BaseSystem.dmg -O raw BaseSystem.img
+  ```
+
 * Create a virtual HDD image where macOS will be installed.  If you change the
   name of the disk image from `mac_hdd.img` to something else, the boot scripts
   will need updating to point to the new image name.
