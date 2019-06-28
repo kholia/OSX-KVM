@@ -268,6 +268,23 @@ package.
 
 Update: This is no longer recommended. Use `vmxnet3` adapter instead.
 
+### Using virtio-blk-pci with macOS
+
+Newer MacOS (namely Mojave) has supported some virtio drivers.
+
+One can enable it by applying the following changes at `boot-macOS-NG.sh` to get some performance gain.
+
+```diff
+          -device ide-hd,bus=sata.3,drive=InstallMedia \
+          -drive id=InstallMedia,if=none,file=BaseSystem.img,format=raw \
+          -drive id=MacHDD,if=none,file=./mac_hdd_ng.img,format=qcow2 \
+-         -device ide-hd,bus=sata.4,drive=MacHDD \
++         -device virtio-blk-pci,drive=MacHDD \
+          -netdev tap,id=net0,ifname=tap0,script=no,downscript=no -device vmxnet3,netdev=net0,id=net0,mac=52:54:00:c
+          -monitor stdio \
+          -vga vmware                                 
+```
+
 ### Boot Notes
 
 Type the following after boot,
