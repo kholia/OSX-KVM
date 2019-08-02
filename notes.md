@@ -171,7 +171,7 @@ $ make clean; make; make install
 ```
 
 ### Connect iPhone / iPad to macOS guest
-
+Passthrough a PCIe USB card to the virtual machine to be able to connect iDevices to it
 Some folks are using https://www.virtualhere.com/ to connect iPhone / iPad to
 the macOS guest.
 
