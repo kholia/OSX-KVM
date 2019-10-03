@@ -145,39 +145,41 @@ msg "copy files to disk image"
 cp -v "$cfg" $WORK/config.plist
 fish mkdir                                     /ESP/EFI
 fish mkdir                                     /ESP/EFI/CLOVER
+fish mkdir                                     /ESP/EFI/CLOVER/kexts
+fish mkdir                                     /ESP/EFI/CLOVER/kexts/Other
 fish copy-in $WORK/EFI/BOOT                    /ESP/EFI
 fish copy-in $WORK/EFI/CLOVER/CLOVERX64.efi    /ESP/EFI/CLOVER
 
 
-# With the inclusion of PartitionDxe-64.efi and ApfsDriverLoader-64.efi in your
+# With the inclusion of PartitionDxe.efi and ApfsDriverLoader.efi in your
 # drivers64UEFI folder there will no longer be a need to add apfs.efi manually.
 # - Borrowed from https://hackintosher.com/ forums.
-fish copy-in $WORK/EFI/CLOVER/drivers64UEFI    /ESP/EFI/CLOVER
-fish copy-in $WORK/EFI/CLOVER/drivers-Off/drivers64UEFI/PartitionDxe-64.efi \
-					       /ESP/EFI/CLOVER/drivers64UEFI
-fish copy-in $WORK/EFI/CLOVER/drivers-Off/drivers64UEFI/ApfsDriverLoader-64.efi \
-					       /ESP/EFI/CLOVER/drivers64UEFI
+fish copy-in $WORK/EFI/CLOVER/drivers /ESP/EFI/CLOVER
+fish copy-in $WORK/EFI/CLOVER/drivers/off/PartitionDxe.efi \
+					       /ESP/EFI/CLOVER/drivers/UEFI
+fish copy-in $WORK/EFI/CLOVER/drivers/off/ApfsDriverLoader.efi \
+					       /ESP/EFI/CLOVER/drivers/UEFI
 
 # Reversed from https://github.com/foxlet/macOS-Simple-KVM/blob/master/ESP.qcow2. Thanks!
 fish copy-in startup.nsh /
-fish copy-in $WORK/EFI/CLOVER/drivers-Off/drivers64UEFI/OsxAptioFix3Drv-64.efi /ESP/EFI/CLOVER/drivers64UEFI
 # FileVault2
-fish copy-in $WORK/EFI/CLOVER/drivers-Off/drivers64UEFI/FileVault2/AppleImageCodec-64.efi /ESP/EFI/CLOVER/drivers64UEFI
-fish copy-in $WORK/EFI/CLOVER/drivers-Off/drivers64UEFI/FileVault2/FirmwareVolume-64.efi /ESP/EFI/CLOVER/drivers64UEFI
-fish copy-in $WORK/EFI/CLOVER/drivers-Off/drivers64UEFI/FileVault2/AppleKeyAggregator-64.efi /ESP/EFI/CLOVER/drivers64UEFI
-fish copy-in $WORK/EFI/CLOVER/drivers-Off/drivers64UEFI/FileVault2/AppleUITheme-64.efi /ESP/EFI/CLOVER/drivers64UEFI
-fish copy-in $WORK/EFI/CLOVER/drivers-Off/drivers64UEFI/FileVault2/AppleKeyFeeder-64.efi /ESP/EFI/CLOVER/drivers64UEFI
+fish copy-in $WORK/EFI/CLOVER/drivers/off/AppleImageCodec.efi /ESP/EFI/CLOVER/drivers/UEFI
+fish copy-in $WORK/EFI/CLOVER/drivers/off/FirmwareVolume.efi /ESP/EFI/CLOVER/drivers/UEFI
+fish copy-in $WORK/EFI/CLOVER/drivers/off/AppleKeyAggregator.efi /ESP/EFI/CLOVER/drivers/UEFI
+fish copy-in $WORK/EFI/CLOVER/drivers/off/AppleUITheme.efi /ESP/EFI/CLOVER/drivers/UEFI
+fish copy-in $WORK/EFI/CLOVER/drivers/off/AppleKeyFeeder.efi /ESP/EFI/CLOVER/drivers/UEFI
 
-fish copy-in $WORK/EFI/CLOVER/drivers64UEFI/VBoxHfs-64.efi /ESP/EFI/CLOVER/drivers64UEFI
-fish copy-in $WORK/EFI/CLOVER/drivers64UEFI/FSInject-64.efi /ESP/EFI/CLOVER/drivers64UEFI
-fish copy-in $WORK/EFI/CLOVER/drivers64UEFI/SMCHelper-64.efi /ESP/EFI/CLOVER/drivers64UEFI
-fish copy-in $WORK/EFI/CLOVER/drivers64UEFI/DataHubDxe-64.efi /ESP/EFI/CLOVER/drivers64UEFI
+fish copy-in $WORK/EFI/CLOVER/drivers/UEFI/OsxAptioFix3Drv.efi /ESP/EFI/CLOVER/drivers/UEFI
+fish copy-in $WORK/EFI/CLOVER/drivers/UEFI/VBoxHfs.efi /ESP/EFI/CLOVER/drivers/UEFI
+fish copy-in $WORK/EFI/CLOVER/drivers/UEFI/FSInject.efi /ESP/EFI/CLOVER/drivers/UEFI
+fish copy-in $WORK/EFI/CLOVER/drivers/UEFI/SMCHelper.efi /ESP/EFI/CLOVER/drivers/UEFI
+fish copy-in $WORK/EFI/CLOVER/drivers/UEFI/DataHubDxe.efi /ESP/EFI/CLOVER/drivers/UEFI
 
 fish copy-in $WORK/EFI/CLOVER/tools            /ESP/EFI/CLOVER
 fish copy-in $WORK/config.plist                /ESP/EFI/CLOVER
 # AudioDxe introduced since Clover-v2.4k-4844-X64.iso hangs on boot
-fish rm /ESP/EFI/CLOVER/drivers64UEFI/AudioDxe-64.efi
+fish rm /ESP/EFI/CLOVER/drivers/UEFI/AudioDxe.efi
 
-nodef="$WORK/EFI/CLOVER/drivers-Off/drivers64UEFI"
-fish ls /ESP/EFI/CLOVER/drivers64UEFI
+nodef="$WORK/EFI/CLOVER/drivers/off"
+fish ls /ESP/EFI/CLOVER/drivers/UEFI
 fish_fini
