@@ -168,6 +168,7 @@ fish copy-in $WORK/EFI/CLOVER/drivers/off/FirmwareVolume.efi /ESP/EFI/CLOVER/dri
 fish copy-in $WORK/EFI/CLOVER/drivers/off/AppleKeyAggregator.efi /ESP/EFI/CLOVER/drivers/UEFI
 fish copy-in $WORK/EFI/CLOVER/drivers/off/AppleUITheme.efi /ESP/EFI/CLOVER/drivers/UEFI
 fish copy-in $WORK/EFI/CLOVER/drivers/off/AppleKeyFeeder.efi /ESP/EFI/CLOVER/drivers/UEFI
+fish copy-in $WORK/EFI/CLOVER/drivers/off/HashServiceFix.efi /ESP/EFI/CLOVER/drivers/UEFI
 
 fish copy-in $WORK/EFI/CLOVER/drivers/UEFI/OsxAptioFix3Drv.efi /ESP/EFI/CLOVER/drivers/UEFI
 fish copy-in $WORK/EFI/CLOVER/drivers/UEFI/VBoxHfs.efi /ESP/EFI/CLOVER/drivers/UEFI
