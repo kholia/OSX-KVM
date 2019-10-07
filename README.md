@@ -48,7 +48,7 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
 * Install QEMU and other packages.
 
   ```
-  sudo apt-get install qemu uml-utilities virt-manager dmg2img git wget
+  sudo apt-get install qemu uml-utilities virt-manager dmg2img git wget libguestfs-tools
   ```
 
   This step may need to be adapted for your Linux distribution.
@@ -94,6 +94,13 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
 
   ```
   dmg2img BaseSystem.dmg BaseSystem.img
+  ```
+
+  Note: You can also use the following command to do this conversion, if your
+  QEMU version is >= 4.0.0.
+
+  ```
+  qemu-img convert BaseSystem.dmg -O raw BaseSystem.img
   ```
 
 * Create a virtual HDD image where macOS will be installed.  If you change the

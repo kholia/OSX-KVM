@@ -55,3 +55,7 @@
 * Niklas Korz (niklaskorz) - Stop using brctl
 
 * Mike Bybee (stereoplegic) - Higher resolution documentation
+
+* Yarkhan - Passthrough for making iDevices work
+
+* Yu-Chen Lin (npes87184) - Virtio and qemu-img notes

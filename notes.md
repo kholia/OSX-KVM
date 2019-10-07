@@ -175,6 +175,11 @@ $ make clean; make; make install
 Some folks are using https://www.virtualhere.com/ to connect iPhone / iPad to
 the macOS guest.
 
+Update: It appears that VirtualHere doesn't work on modern macOS versions.
+
+Please passthrough a PCIe USB card to the virtual machine to be able to connect
+iDevices to it.
+
 ### Exposing AES-NI instructions to macOS
 
 Add `+aes` argument to the `-cpu` option in `boot-macOS.sh` file.
@@ -267,6 +272,18 @@ scripts. On the guest, install the included `Virtio-Net-Driver-0.9.4.pkg`
 package.
 
 Update: This is no longer recommended. Use `vmxnet3` adapter instead.
+
+### Using virtio-blk-pci with macOS
+
+Newer macOS (namely Mojave+) have support for some virtio drivers.
+
+This can be enabled by applying the following change to `boot-macOS-NG.sh` to
+get some performance gain.
+
+```diff
+-         -device ide-hd,bus=sata.4,drive=MacHDD \
++         -device virtio-blk-pci,drive=MacHDD \
+```
 
 ### Boot Notes
 
