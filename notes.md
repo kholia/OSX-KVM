@@ -16,7 +16,7 @@ This fix was found by Glnk2012 of https://www.tonymacx86.com/ site.
 Also tweaking the `smbios.plist` file using `Chameleon Wizard` can help with
 App Store problems.
 
-### Enoch Bootloader
+### Enoch Bootloader (obsolete)
 
 * Download Enoch bootloader from http://www.insanelymac.com/forum/ (requires
   registration).
@@ -175,6 +175,11 @@ $ make clean; make; make install
 Some folks are using https://www.virtualhere.com/ to connect iPhone / iPad to
 the macOS guest.
 
+Update: It appears that VirtualHere doesn't work on modern macOS versions.
+
+Please passthrough a PCIe USB card to the virtual machine to be able to connect
+iDevices to it.
+
 ### Exposing AES-NI instructions to macOS
 
 Add `+aes` argument to the `-cpu` option in `boot-macOS.sh` file.
@@ -268,6 +273,18 @@ package.
 
 Update: This is no longer recommended. Use `vmxnet3` adapter instead.
 
+### Using virtio-blk-pci with macOS
+
+Newer macOS (namely Mojave+) have support for some virtio drivers.
+
+This can be enabled by applying the following change to `boot-macOS-NG.sh` to
+get some performance gain.
+
+```diff
+-         -device ide-hd,bus=sata.4,drive=MacHDD \
++         -device virtio-blk-pci,drive=MacHDD \
+```
+
 ### Boot Notes
 
 Type the following after boot,
@@ -302,6 +319,12 @@ These instructions are borrowed from https://hackintosher.com/ forums.
 
 To make this change permanent, use `Clover Configurator` to change
 `CsrActivateConfig` in `config.plist`.
+
+### Permission problems with libvirt / qemu?
+
+```
+sudo setfacl -m u:libvirt-qemu:rx <path>  # fix virt-manager perm problems
+```
 
 ### Kernel Extraction (older alternate to "pbzx" method)
 
