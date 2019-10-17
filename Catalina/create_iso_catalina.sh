@@ -28,7 +28,7 @@ else
 fi
 
 # Borrrowed from multiple internet sources
-hdiutil create -o "$iso_path.cdr" -size 7g -layout SPUD -fs HFS+J
+hdiutil create -o "$iso_path.cdr" -size 9g -layout SPUD -fs HFS+J
 hdiutil attach "$iso_path.cdr.dmg" -noverify -mountpoint /Volumes/install_build
 sudo "$in_path/Contents/Resources/createinstallmedia" --volume /Volumes/install_build --nointeraction
 hdiutil detach "/Volumes/Install macOS Catalina"
