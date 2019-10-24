@@ -61,3 +61,5 @@
 * Yu-Chen Lin (npes87184) - Virtio and qemu-img notes
 
 * Wen-He - Catalina related fixes
+
+* Alexander Galato (alet) - OVMF build documentation fixes
