@@ -11,6 +11,7 @@ apt-get install build-essential git lintian debhelper iasl nasm \
 
 git clone https://github.com/tianocore/edk2
 cd edk2
+git submodule update --init
 make -C BaseTools
 . edksetup.sh BaseTools
 build -a X64 -t GCC5 -p OvmfPkg/OvmfPkgX64.dsc -b RELEASE
