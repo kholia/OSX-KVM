@@ -190,7 +190,7 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
   I have the following commands present in `/etc/rc.local`.
 
   ```
-  #!/bin/bash
+  #!/usr/bin/env bash
 
   sudo ip tuntap add dev tap0 mode tap
   sudo ip link set tap0 up promisc on
