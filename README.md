@@ -11,9 +11,14 @@ EFI/CLOVER/config.plist
 
 <p align="center"><img src="https://github.com/c4pt000/OSX-KVM/raw/master/YOUR-CLOVER-config-plist-EFI.png" width="800"></p>
 virt-manager settings
+<br>
 (q35-2.11)
+<br>
 penryn cpu type required
-manual cirrus typed in video card model
+<br>
+manual cirrus typed in video card model 
+<br>
+change from spice to vnc
 <p align="center"><img src="https://github.com/c4pt000/OSX-KVM/raw/master/VIRT_MANAGER-settings.png" width="800"></p>
 
 boot options enabled "esc at load" OVMF platform settings? resoloution internal
