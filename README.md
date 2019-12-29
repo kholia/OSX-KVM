@@ -1,4 +1,4 @@
-
+```
 grub.conf
  intel_iommu=on iommu=pt cgroup_enable=memory,namespace systemd.unified_cgroup_hierarchy=0 pcie_acs_override=downstream"
 
@@ -16,7 +16,7 @@ options kvm ignore_msrs=1
 options kvm_intel nested=1
 options vfio_iommu_type1 allow_unsafe_interrupts=1
 #options kvm_amd nested=1
-
+```
 
 
 
