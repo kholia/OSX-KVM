@@ -18,6 +18,7 @@ options vfio_iommu_type1 allow_unsafe_interrupts=1
 #options kvm_amd nested=1
 ```
 
+<p align="center"><img src="https://github.com/c4pt000/OSX-KVM/raw/master/YOUR-CLOVER-config-plist-EFI.png" width="800"></p>
 
 
 ### Note
