@@ -21,6 +21,15 @@ options vfio_iommu_type1 allow_unsafe_interrupts=1
 <p align="center"><img src="https://github.com/c4pt000/OSX-KVM/raw/master/YOUR-CLOVER-config-plist-EFI.png" width="800"></p>
 
 
+<p align="center"><img src="https://github.com/c4pt000/OSX-KVM/raw/master/VIRT_MANAGER-settings.png" width="800"></p>
+
+
+<p align="center"><img src="https://github.com/c4pt000/OSX-KVM/raw/master/OVMF-CONFIG-RESO.png" width="800"></p>
+
+
+<p align="center"><img src="https://github.com/c4pt000/OSX-KVM/raw/master/KVM-modprobe.png" width="800"></p>
+
+
 ### Note
 
 to add q35-speed-patch for libvirt, (4200 and 4920)
