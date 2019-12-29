@@ -1,0 +1,78 @@
+Index: CloverPackage/package/po/clover.pot
+===================================================================
+--- CloverPackage/package/po/clover.pot	(revision 4061)
++++ CloverPackage/package/po/clover.pot	(working copy)
+@@ -6,8 +6,8 @@
+ #, fuzzy
+ msgid ""
+ msgstr ""
+-"Project-Id-Version: Clover v2.3k-r3944\n"
+-"POT-Creation-Date: 2016-11-23 20:42+0300\n"
++"Project-Id-Version: Clover v2.4k-r4061\n"
++"POT-Creation-Date: 2017-04-20 17:18+1200\n"
+ "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+ "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+ "Language-Team: LANGUAGE <LL@li.org>\n"
+Index: rEFIt_UEFI/Platform/DataHubCpu.c
+===================================================================
+--- rEFIt_UEFI/Platform/DataHubCpu.c	(revision 4061)
++++ rEFIt_UEFI/Platform/DataHubCpu.c	(working copy)
+@@ -383,6 +383,10 @@
+ //      case CPU_MODEL_PENRYN:
+         FrontSideBus = DivU64x32(FrontSideBus, 4);
+         break;
++      case CPU_MODEL_PENRYN: //fix for Penryn Qemu vCPU
++        DBG("Using workaround for Penryn Qemu vCPU in DataHubCpu.c.\n");
++        FrontSideBus = gCPUStructure.FSBFrequency;
++      break;
+       default:
+         break;
+     }
+Index: rEFIt_UEFI/refit/main.c
+===================================================================
+--- rEFIt_UEFI/refit/main.c	(revision 4061)
++++ rEFIt_UEFI/refit/main.c	(working copy)
+@@ -1927,22 +1927,27 @@
+   if (gSettings.QEMU) {
+ //    UINT64 Msrflex = 0ULL;
+ 
+-    if (!gSettings.UserChange) {
+-      gSettings.BusSpeed = 200000;
+-    }
+-    gCPUStructure.MaxRatio = (UINT32)DivU64x32(gCPUStructure.TSCCalibr, gSettings.BusSpeed * kilo);
+-    DBG("Set MaxRatio for QEMU: %d\n", gCPUStructure.MaxRatio);
+-    gCPUStructure.MaxRatio *= 10;
+-    gCPUStructure.MinRatio = 60;
+-/*    AsmWriteMsr64(MSR_FLEX_RATIO, ((6ULL << 40) + //(1ULL << 16) +
+-                                   (gCPUStructure.MaxRatio << 8)));
+-    DBG("check if flex is RW\n");
+-    Msrflex = AsmReadMsr64(MSR_FLEX_RATIO); //0 == not Rw :(
+-    DBG("MSR_FLEX_RATIO = %lx\n", Msrflex);
+- */
+-    gCPUStructure.FSBFrequency = DivU64x32(MultU64x32(gCPUStructure.CPUFrequency, 10),
+-                                           (gCPUStructure.MaxRatio == 0) ? 1 : gCPUStructure.MaxRatio);
+-    gCPUStructure.ExternalClock = (UINT32)DivU64x32(gCPUStructure.FSBFrequency, kilo);
++    DBG("Starting QEMU vCPU workaround...\n");
++    //fake values for correct calculations
++    gCPUStructure.MaxRatio = 40;
++    gCPUStructure.MinRatio = 40;
++    gCPUStructure.Turbo = 40;
++    gCPUStructure.Turbo1 = 40;
++    gCPUStructure.Turbo2 = 40;
++    gCPUStructure.Turbo3 = 40;
++    gCPUStructure.Turbo4 = 40;
++    gCPUStructure.FSBFrequency = gCPUStructure.CPUFrequency / 4;
++    gCPUStructure.Stepping = 3;
++    gCPUStructure.Model = 23;
++    gCPUStructure.Family = 6;
++    gCPUStructure.Type = 0;
++    gCPUStructure.Extmodel = 1;
++    gCPUStructure.ARTFrequency = 0;
++    gCPUStructure.SubDivider = 0;
++    //these seem to be constants. need further testing by differnt host machines
++    gCPUStructure.ExternalClock = 1133825;
++    gCPUStructure.ProcessorInterconnectSpeed = 2147057130;
++    gCPUStructure.Signature = 0x010673;
+   }
+ 
+   dropDSM = 0xFFFF; //by default we drop all OEM _DSM. They have no sense for us.
