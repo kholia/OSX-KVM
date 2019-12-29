@@ -7,6 +7,7 @@ grub.conf
 
 
 ```
+EFI/CLOVER/config.plist
 
 <p align="center"><img src="https://github.com/c4pt000/OSX-KVM/raw/master/YOUR-CLOVER-config-plist-EFI.png" width="800"></p>
 
