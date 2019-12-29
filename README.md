@@ -12,7 +12,7 @@ EFI/CLOVER/config.plist
 <p align="center"><img src="https://github.com/c4pt000/OSX-KVM/raw/master/YOUR-CLOVER-config-plist-EFI.png" width="800"></p>
 virt-manager settings
 (q35-2.11)
-
+penryn processor required
 <p align="center"><img src="https://github.com/c4pt000/OSX-KVM/raw/master/VIRT_MANAGER-settings.png" width="800"></p>
 
 
