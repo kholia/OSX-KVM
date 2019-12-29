@@ -1,3 +1,25 @@
+
+grub.conf
+ intel_iommu=on iommu=pt cgroup_enable=memory,namespace systemd.unified_cgroup_hierarchy=0 pcie_acs_override=downstream"
+
+──╼ #cat /etc/modprobe.d/kvm.conf 
+###
+### This configuration file was provided by the qemu package.
+### Feel free to update as needed.
+###
+
+###
+### Set these options to enable nested virtualization
+###
+
+options kvm ignore_msrs=1
+options kvm_intel nested=1
+options vfio_iommu_type1 allow_unsafe_interrupts=1
+#options kvm_amd nested=1
+
+
+
+
 ### Note
 
 to add q35-speed-patch for libvirt, (4200 and 4920)
