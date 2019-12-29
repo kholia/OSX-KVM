@@ -13,6 +13,7 @@ EFI/CLOVER/config.plist
 virt-manager settings
 (q35-2.11)
 penryn cpu type required
+manual cirrus typed in video card model
 <p align="center"><img src="https://github.com/c4pt000/OSX-KVM/raw/master/VIRT_MANAGER-settings.png" width="800"></p>
 
 boot options enabled "esc at load" OVMF platform settings? resoloution internal
