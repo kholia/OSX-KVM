@@ -15,7 +15,7 @@ virt-manager settings
 penryn cpu type required
 <p align="center"><img src="https://github.com/c4pt000/OSX-KVM/raw/master/VIRT_MANAGER-settings.png" width="800"></p>
 
-
+boot options enabled "esc at load" OVMF platform settings? resoloution internal
 <p align="center"><img src="https://github.com/c4pt000/OSX-KVM/raw/master/OVMF-CONFIG-RESO.png" width="800"></p>
 
 
