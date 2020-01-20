@@ -1,0 +1,136 @@
+<domain xmlns:qemu="http://libvirt.org/schemas/domain/qemu/1.0" type="kvm">
+  <name>MacOSCatalina</name>
+  <uuid>093f12c7-fbf4-46b3-9d04-ffce6d828d1f</uuid>
+  <memory unit="KiB">8388608</memory>
+  <currentMemory unit="KiB">8388608</currentMemory>
+  <vcpu placement="static">4</vcpu>
+  <os>
+    <type arch="x86_64" machine="pc-q35-4.0">hvm</type>
+    <loader readonly="yes" type="pflash">/opt/OSX-KVM/OVMF_CODE.fd</loader>
+    <nvram>/opt/OSX-KVM/OVMF_VARS-1024x768.fd</nvram>
+  </os>
+  <features>
+    <acpi/>
+    <apic/>
+    <kvm>
+      <hidden state="off"/>
+    </kvm>
+  </features>
+  <cpu mode="custom" match="exact" check="full">
+    <model fallback="forbid">Penryn</model>
+    <vendor>GenuineIntel</vendor>
+    <feature policy="disable" name="x2apic"/>
+    <feature policy="disable" name="vme"/>
+    <feature policy="disable" name="pcid"/>
+    <feature policy="disable" name="avx2"/>
+    <feature policy="require" name="hypervisor"/>
+    <feature policy="require" name="popcnt"/>
+    <feature policy="require" name="ssse3"/>
+    <feature policy="require" name="sse4.2"/>
+    <feature policy="require" name="aes"/>
+    <feature policy="require" name="xsave"/>
+    <feature policy="require" name="xsaveopt"/>
+    <feature policy="require" name="invtsc"/>
+  </cpu>
+  <clock offset="utc">
+    <timer name="tsc"/>
+  </clock>
+  <on_poweroff>destroy</on_poweroff>
+  <on_reboot>restart</on_reboot>
+  <on_crash>destroy</on_crash>
+  <devices>
+    <emulator>/usr/bin/qemu-system-x86_64</emulator>
+    <disk type="file" device="disk">
+      <driver name="qemu" type="qcow2"/>
+      <source file="/opt/exports/CloverCata.qcow2"/>
+      <backingStore/>
+      <target dev="sda" bus="sata"/>
+      <boot order="1"/>
+      <address type="drive" controller="0" bus="0" target="0" unit="0"/>
+    </disk>
+    <disk type="file" device="disk">
+      <driver name="qemu" type="qcow2"/>
+      <source file="/opt/exports/MacOSCatalinaQEMU.qcow2"/>
+      <target dev="sdb" bus="sata"/>
+      <boot order="2"/>
+      <address type="drive" controller="0" bus="0" target="0" unit="1"/>
+    </disk>
+    <controller type="usb" index="0" model="ich9-ehci1">
+      <address type="pci" domain="0x0000" bus="0x00" slot="0x1d" function="0x7"/>
+    </controller>
+    <controller type="usb" index="0" model="ich9-uhci1">
+      <master startport="0"/>
+      <address type="pci" domain="0x0000" bus="0x00" slot="0x1d" function="0x0" multifunction="on"/>
+    </controller>
+    <controller type="usb" index="0" model="ich9-uhci2">
+      <master startport="2"/>
+      <address type="pci" domain="0x0000" bus="0x00" slot="0x1d" function="0x1"/>
+    </controller>
+    <controller type="usb" index="0" model="ich9-uhci3">
+      <master startport="4"/>
+      <address type="pci" domain="0x0000" bus="0x00" slot="0x1d" function="0x2"/>
+    </controller>
+    <controller type="sata" index="0">
+      <address type="pci" domain="0x0000" bus="0x00" slot="0x1f" function="0x2"/>
+    </controller>
+    <controller type="pci" index="0" model="pcie-root"/>
+    <controller type="pci" index="1" model="pcie-root-port">
+      <model name="pcie-root-port"/>
+      <target chassis="1" port="0x10"/>
+      <address type="pci" domain="0x0000" bus="0x00" slot="0x02" function="0x0" multifunction="on"/>
+    </controller>
+    <controller type="pci" index="2" model="pcie-root-port">
+      <model name="pcie-root-port"/>
+      <target chassis="2" port="0x11"/>
+      <address type="pci" domain="0x0000" bus="0x00" slot="0x02" function="0x1"/>
+    </controller>
+    <controller type="pci" index="3" model="pcie-root-port">
+      <model name="pcie-root-port"/>
+      <target chassis="3" port="0x12"/>
+      <address type="pci" domain="0x0000" bus="0x00" slot="0x02" function="0x2"/>
+    </controller>
+    <controller type="pci" index="4" model="pcie-root-port">
+      <model name="pcie-root-port"/>
+      <target chassis="4" port="0x13"/>
+      <address type="pci" domain="0x0000" bus="0x00" slot="0x02" function="0x3"/>
+    </controller>
+    <controller type="pci" index="5" model="pcie-to-pci-bridge">
+      <model name="pcie-pci-bridge"/>
+      <address type="pci" domain="0x0000" bus="0x01" slot="0x00" function="0x0"/>
+    </controller>
+    <interface type="bridge">
+      <mac address="52:54:00:2d:46:f9"/>
+      <source bridge="virbr0"/>
+      <model type="e1000-82545em"/>
+      <link state="up"/>
+      <address type="pci" domain="0x0000" bus="0x05" slot="0x01" function="0x0"/>
+    </interface>
+    <input type="keyboard" bus="usb">
+      <address type="usb" bus="0" port="1"/>
+    </input>
+    <input type="mouse" bus="usb">
+      <address type="usb" bus="0" port="2"/>
+    </input>
+    <input type="mouse" bus="ps2"/>
+    <input type="keyboard" bus="ps2"/>
+    <graphics type="spice" autoport="yes">
+      <listen type="address"/>
+      <image compression="off"/>
+      <gl enable="no" rendernode="/dev/dri/by-path/pci-0000:00:02.0-render"/>
+    </graphics>
+    <video>
+      <model type="qxl" ram="65536" vram="65536" vgamem="16384" heads="1" primary="yes"/>
+      <address type="pci" domain="0x0000" bus="0x00" slot="0x01" function="0x0"/>
+    </video>
+    <memballoon model="virtio">
+      <address type="pci" domain="0x0000" bus="0x02" slot="0x00" function="0x0"/>
+    </memballoon>
+  </devices>
+  <qemu:commandline>
+    <qemu:arg value="-device"/>
+    <qemu:arg value="isa-applesmc,osk=ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc"/>
+    <qemu:arg value="-smbios"/>
+    <qemu:arg value="type=2"/>
+  </qemu:commandline>
+</domain>
+
