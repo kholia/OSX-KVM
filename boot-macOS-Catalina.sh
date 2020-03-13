@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # qemu-img create -f qcow2 mac_hdd_ng.img 128G
 #

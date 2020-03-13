@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # run-diagnostics.sh: checks common virtualization programs, modules and
 # options. Written by Foxlet <foxlet@furcode.co>. Modified by Dhiru for OSX-KVM

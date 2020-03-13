@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Script for building bootable .iso images from downloaded macOS upgrade
 # Copyright (C) 2015-2017 Karlson2k (Evgeny Grin)

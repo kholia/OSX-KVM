@@ -63,3 +63,5 @@
 * Wen-He - Catalina related fixes
 
 * Alexander Galato (alet) - OVMF build documentation fixes
+
+* zimbatm - portability enhancements

@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # encoding: utf-8
 #
 # https://github.com/munki/macadmin-scripts/blob/master/installinstallmacos.py
@@ -29,6 +29,10 @@ empty disk image'''
 # https://github.com/foxlet/macOS-Simple-KVM/blob/master/tools/FetchMacOS/fetch-macos.py
 # is pretty similar.
 
+
+# Bad hack
+import warnings
+warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 import os
 import gzip
@@ -74,6 +78,9 @@ class ReplicationError(Exception):
     '''A custom error when replication fails'''
     pass
 
+def cmd_exists(cmd):
+    return subprocess.call("type " + cmd, shell=True,
+        stdout=subprocess.PIPE, stderr=subprocess.PIPE) == 0
 
 def replicate_url(full_url,
                   root_dir='/tmp',
@@ -95,19 +102,19 @@ def replicate_url(full_url,
     local_file_path = relative_url
     # print("Downloading %s..." % full_url)
 
-    if os.path.exists('/usr/bin/wget'):
+    if cmd_exists('wget'):
         if not installer:
-            download_cmd = ['/usr/bin/wget', "-c", "--quiet", "-x", "-nH", full_url]
+            download_cmd = ['wget', "-c", "--quiet", "-x", "-nH", full_url]
             # this doesn't work as there are multiple metadata files with the same name!
-            # download_cmd = ['/usr/bin/wget', "-c", "--quiet", full_url]
+            # download_cmd = ['wget', "-c", "--quiet", full_url]
         else:
-            download_cmd = ['/usr/bin/wget', "-c", full_url]
+            download_cmd = ['wget', "-c", full_url]
     else:
         if not installer:
-            download_cmd = ['/usr/bin/curl', "--silent", "--show-error", "-o", local_file_path, "--create-dirs", full_url]
+            download_cmd = ['curl', "--silent", "--show-error", "-o", local_file_path, "--create-dirs", full_url]
         else:
             local_file_path = os.path.basename(local_file_path)
-            download_cmd = ['/usr/bin/curl', "-o", local_file_path, full_url]
+            download_cmd = ['curl', "-o", local_file_path, full_url]
 
     try:
         subprocess.check_call(download_cmd)

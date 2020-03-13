@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # See https://www.mail-archive.com/qemu-devel@nongnu.org/msg471657.html thread.
 #
