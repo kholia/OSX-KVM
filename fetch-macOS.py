@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python2
 # encoding: utf-8
 #
 # https://github.com/munki/macadmin-scripts/blob/master/installinstallmacos.py
