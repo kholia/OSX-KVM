@@ -11,6 +11,70 @@ It seems that the `Content Caching` functionality is not available when macOS
 is running in a virtual machine.
 
 
+#### March 2020 Update
+
+Instead of trying to hack things from within the VM, we can turn off VMM
+detection from the outside.
+
+See [boot-macOS-Catalina.sh](./boot-macOS-Catalina.sh) to see how it is done.
+Essentially, we add `hypervisor=off,vmx=on,kvm=off` flags to the QEMU's CPU
+configuration.
+
+Once this is done,
+
+```
+$ sysctl -a | grep VMM
+<nothing>
+
+$ sudo /usr/bin/AssetCacheManagerUtil activate
+2020-03-14 19:05:21.416 AssetCacheManagerUtil[1313:53576] Content caching activated.
+2020-03-14 19:05:21.417 AssetCacheManagerUtil[1313:53576] Restart devices to take advantage of content caching immediately
+
+$ sudo /usr/bin/AssetCacheManagerUtil status
+2020-03-14 19:10:31.154 AssetCacheManagerUtil[1362:54464] Content caching status: {
+    Activated = 1;
+    Active = 1;
+    CacheDetails =     {
+    };
+    CacheFree = 119663451136;
+    CacheLimit = 0;
+    CacheStatus = OK;
+    CacheUsed = 0;
+    Parents =     (
+    );
+    Peers =     (
+    );
+    PersonalCacheFree = 119663451136;
+    PersonalCacheLimit = 0;
+    PersonalCacheUsed = 0;
+    Port = 49363;
+    PrivateAddresses =     (
+        "192.168.100.137"
+    );
+    PublicAddress = "11.XX.YY.ZZ";
+    RegistrationStatus = 1;
+    RestrictedMedia = 0;
+    ServerGUID = "XXX";
+    StartupStatus = OK;
+    TotalBytesAreSince = "2020-03-15 02:05:06 +0000";
+    TotalBytesDropped = 0;
+    TotalBytesImported = 0;
+    TotalBytesReturnedToChildren = 0;
+    TotalBytesReturnedToClients = 0;
+    TotalBytesReturnedToPeers = 0;
+    TotalBytesStoredFromOrigin = 0;
+    TotalBytesStoredFromParents = 0;
+    TotalBytesStoredFromPeers = 0;
+}
+```
+
+w00t!
+
+I found this technique from [this article](https://superuser.com/questions/1387935/hiding-virtual-machine-status-from-guest-operating-system). Thanks!
+
+This was tested on macOS Mojave 10.14.6 and on macOS Catalina 10.15.3.
+
+
 ####  CPU flags
 
 ```
