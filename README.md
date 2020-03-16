@@ -15,6 +15,25 @@ Note: Checkout [ideas.md](ideas.md). This project can always use your help,
 time and attention.
 
 
+### Ideas
+
+I am looking for help (pull-requests!) with the following work items:
+
+* Create *full* installation (ISO) image without requiring an existing macOS
+  physical/virtual installation.
+
+* An Ansible playbook to automate all-the-things!
+
+* Test `accel=hvf` flag on QEMU + macOS Mojave on MacBook Pro.
+
+* Document (share) how you use this project to test open-source projects / get
+  your stuff done.
+
+* Document how to use this project for iOS development.
+
+* Document how to use this project for XNU kernel debugging and development.
+
+
 ### Requirements
 
 * A modern Linux distribution. E.g. Ubuntu 18.04 LTS 64-bit.
