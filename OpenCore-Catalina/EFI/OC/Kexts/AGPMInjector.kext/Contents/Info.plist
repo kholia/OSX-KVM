@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>BuildMachineOSBuild</key>
+	<string>18A391011</string>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleGetInfoString</key>
+	<string>111.1.18, Copyright 2008-2016 Apple Inc. All rights reserved.</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.apple.driver.AGPMInjector</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>AGPMInjector</string>
+	<key>CFBundlePackageType</key>
+	<string>KEXT</string>
+	<key>CFBundleShortVersionString</key>
+	<string>2.7.3-AGPMInjector</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>111.1.18</string>
+	<key>IOKitPersonalities</key>
+	<dict>
+		<key>AGPM</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.apple.driver.AGPM</string>
+			<key>IOClass</key>
+			<string>AGPMController</string>
+			<key>IONameMatch</key>
+			<string>AGPMEnabler</string>
+			<key>IOProviderClass</key>
+			<string>IOPlatformPluginDevice</string>
+			<key>Machines</key>
+			<dict>
+				<key>iMacPro1,1</key>
+				<dict>
+					<key>GFX0</key>
+					<dict>
+						<key>AGDCEnabled</key>
+						<integer>1</integer>
+						<key>Heuristic</key>
+						<dict>
+							<key>ID</key>
+							<integer>4</integer>
+						</dict>
+						<key>control-id</key>
+						<integer>17</integer>
+						<key>max-power-state</key>
+						<integer>15</integer>
+						<key>min-power-state</key>
+						<integer>0</integer>
+					</dict>
+				</dict>
+			</dict>
+		</dict>
+	</dict>
+	<key>NSHumanReadableCopyright</key>
+	<string>Copyright © 2008-2016 Apple Inc. All rights reserved.</string>
+	<key>OSBundleRequired</key>
+	<string>Safe Boot</string>
+</dict>
+</plist>

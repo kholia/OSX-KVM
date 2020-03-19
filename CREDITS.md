@@ -64,4 +64,6 @@
 
 * Alexander Galato (alet) - OVMF build documentation fixes
 
-* zimbatm - portability enhancements
+* zimbatm - portability enhancements, cool crazy ideas (thanks!)
+
+* https://github.com/Leoyzen/KVM-Opencore - OpenCore support

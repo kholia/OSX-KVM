@@ -11,13 +11,11 @@ commit.
 Note: All blobs and resources included in this repository are re-derivable (all
 instructions are included!).
 
-Note: Checkout [ideas.md](ideas.md). This project can always use your help,
-time and attention.
 
+### Contributing Back
 
-### Ideas
-
-I am looking for help (pull-requests!) with the following work items:
+This project can always use your help, time and attention. I am looking for
+help (pull-requests!) with the following work items:
 
 * Create *full* installation (ISO) image without requiring an existing macOS
   physical/virtual installation.
@@ -26,12 +24,15 @@ I am looking for help (pull-requests!) with the following work items:
 
 * Test `accel=hvf` flag on QEMU + macOS Mojave on MacBook Pro.
 
-* Document (share) how you use this project to test open-source projects / get
-  your stuff done.
+* Document (share) how you use this project to build + test open-source
+  projects / get your stuff done.
 
 * Document how to use this project for iOS development.
 
 * Document how to use this project for XNU kernel debugging and development.
+
+* Document the process to create and reuse VM snapshots. Instantaneous macOS
+  boots would be nice this way.
 
 
 ### Requirements
