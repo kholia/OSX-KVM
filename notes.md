@@ -13,19 +13,26 @@ Finally reboot, and then use the App Store without problems.
 
 This fix was found by Glnk2012 of https://www.tonymacx86.com/ site.
 
-Also tweaking the `smbios.plist` file using `Chameleon Wizard` can help with
-App Store problems.
+Also tweaking the `smbios.plist` file can help (?).
 
-### Enoch Bootloader (obsolete)
 
-* Download Enoch bootloader from http://www.insanelymac.com/forum/ (requires
-  registration).
+### Change resolution in OpenCore
 
-* Using Pacifist open the “Enoch-rev.####.pkg” file and extract the file called
-  "boot" from Core.pkg/usr/standalone/i386/boot
-
-* Rename boot to enoch_rev####_boot.
-
+```diff
+diff --git a/OpenCore-Catalina/config.plist b/OpenCore-Catalina/config.plist
+index 4754e8c..489570f 100644
+--- a/OpenCore-Catalina/config.plist
++++ b/OpenCore-Catalina/config.plist
+@@ -692,7 +692,7 @@
+                        <key>ConsoleMode</key>
+                        <string></string>
+                        <key>Resolution</key>
+-                       <string>Max</string>
++                       <string>1920x1080</string>
+                        <key>ClearScreenOnModeSwitch</key>
+                        <false/>
+                        <key>IgnoreTextInGraphics</key>
+```
 
 ### FakeSMC installation
 
@@ -90,20 +97,6 @@ recommended instead.
   $ sudo kpartx -d /dev/nbd0
 
   $ sudo qemu-nbd -d /dev/nbd0
-  ```
-
-### Enoch Bootloader (alternate extraction method)
-
-* Build xar from http://mackyle.github.io/xar/ on a Linux box.
-
-* Extract "boot" from using the following steps,
-
-  ```
-  xar -x -f Enoch-rev.2848.pkg
-
-  gunzip -c Core.pkg/Payload | cpio -i
-
-  cp usr/standalone/i386/boot enoch_rev2848_boot
   ```
 
 ### Higher Resolution (UEFI + Clover)

@@ -98,17 +98,21 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
   ```
   $ ./fetch-macOS.py
   #    ProductID    Version    Build   Post Date  Title
-  1    041-47723    10.14.4  18E2034  2019-03-25  macOS Mojave
-  2    091-95155    10.13.6    17G66  2019-01-08  macOS High Sierra
-  3    041-64745    10.14.5   18F203  2019-05-22  macOS Mojave
-  4    041-59913    10.14.5   18F132  2019-05-13  macOS Mojave
-  5    041-71284      10.15  19A471t  2019-06-03  macOS 10.15 Beta
+  1    061-26578    10.14.5  18F2059  2019-10-14  macOS Mojave
+  2    061-26589    10.14.6   18G103  2019-10-14  macOS Mojave
+  3    041-91758    10.13.6    17G66  2019-10-19  macOS High Sierra
+  4    041-88800    10.14.4  18E2034  2019-10-23  macOS Mojave
+  5    041-90855    10.13.5   17F66a  2019-10-23  Install macOS High Sierra Beta
+  6    061-44345    10.15.2   19C39d  2019-11-15  macOS Catalina Beta
+  7    061-77704    10.15.4  19E242d  2020-02-26  macOS Catalina Beta
+  8    061-86291    10.15.3  19D2064  2020-03-23  macOS Catalina
+  9    061-96006    10.15.4   19E287  2020-04-08  macOS Catalina
 
-  Choose a product to download (1-5): 5
+  Choose a product to download (1-9): 9
   ```
 
-  Attention: Modern NVIDIA GPUs are supported on HighSierra but not on Mojave
-  (yet).
+  Attention: Modern NVIDIA GPUs are supported on HighSierra but not on later
+  versions (yet).
 
   Next, convert this file into a usable format.
 
@@ -165,6 +169,8 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
   help.
 
   For macOS Catalina, use `boot-macOS-Catalina.sh` script.
+
+  Experimental: Use the `OpenCore-Boot.sh` to maximize fun ;)
 
 - GUI method (alternate - functional but needs further debugging work).
 
