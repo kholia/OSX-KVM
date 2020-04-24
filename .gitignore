@@ -9,3 +9,4 @@ mac_hdd.img
 *.dist
 *.smd
 *.dmg
+OVMF_VARS-1024x768.fd

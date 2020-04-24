@@ -34,72 +34,158 @@ index 4754e8c..489570f 100644
                         <key>IgnoreTextInGraphics</key>
 ```
 
-### FakeSMC installation
+### GPU passthrough notes
 
-This option is not recommended. Building latest QEMU from Git repository is
-recommended instead.
+These steps will need to be adapted for your particular setup. A host machine
+with IOMMU support is required. Consult the Arch Wiki article linked to at the
+bottom of this file for exact requirements and other details.
 
-* Do the following steps as `root` user on the Virtual Machine (VM).
+I am running Ubuntu 17.04 on Intel i5-6500 + ASUS Z170-AR motherboard + NVIDIA
+1050 Ti.
 
-  ```
-  cp -a FakeSMC.kext /System/Library/Extensions/
-  cd /System/Library/Extensions/
-  chmod -R 755 FakeSMC.kext
-  chown -R root:wheel FakeSMC.kext
-  rm -R /System/Library/Caches/com.apple.kext.caches
-  touch /System/Library/Extensions && kextcache -u /  # optional step
-  ```
+Tip: Use https://github.com/Benjamin-Dobell/nvidia-update to install nVidia
+drivers on macOS.
 
-* Remove the `-device isa-applesmc,osk=... \` line completely from `boot*.sh` file(s).
+* Enable IOMMU support on the host machine.
 
-* If you are using the `virsh` boot method, then remove the following lines from your `virsh` XML file,
+  Add `iommu=pt intel_iommu=on video=efifb:off` to the `GRUB_CMDLINE_LINUX_DEFAULT` line in `/etc/default/grub` file.
+
+* Uninstall NVIDIA drivers from the host machine and blacklist the required modules.
 
   ```
-  <qemu:arg value='-device'/>
-  <qemu:arg value='isa-applesmc,osk=XXX'/>
+  $ cat /etc/modprobe.d/blacklist.conf
+  ... <existing stuff>
+
+  blacklist radeon
+  blacklist nouveau
+  blacklist nvidia
   ```
 
-* Reboot the VM for changes to take effect. Use `kextstat` to verify that `FakeSMC.kext` is loaded.
-
-* Latest `FakeSMC.kext` version can be downloaded from [this location](https://bitbucket.org/RehabMan/os-x-fakesmc-kozlek).
-
-* If your updated VM is failing to boot and it doesn't have `FakeSMC.kext` installed, the following steps can used to inject `FakeSMC.kext` into the VM disk image,
+* Enable the required kernel modules.
 
   ```
-  $ sudo modprobe nbd  # all steps to be executed on the QEMU/KVM host
+  # echo "vfio" >> /etc/modules
+  # echo "vfio_iommu_type1" >> /etc/modules
+  # echo "vfio_pci" >> /etc/modules
+  # echo "vfio_virqfd" >> /etc/modules
+  ```
 
-  $ sudo qemu-nbd -c /dev/nbd0 -n mac_hdd.img
+* Isolate the passthrough PCIe devices with vfio-pci, with the help of `lspci
+  -nnk` command. Adapt these commands to suit your hardware setup.
 
-  $ sudo fdisk -l /dev/nbd0
+  ```
+  $ lspci -nn
   ...
-  Device          Start       End   Sectors   Size Type
-  /dev/nbd0p1        40    409639    409600   200M EFI System
-  /dev/nbd0p2    409640 132948151 132538512  63.2G Apple HFS/HFS+
-  /dev/nbd0p3 132948152 134217687   1269536 619.9M Apple boot
-
-  $ sudo kpartx -a /dev/nbd0
-
-  $ mkdir mnt
-
-  $ sudo mount -t hfsplus -o force,rw /dev/mapper/nbd0p2 mnt
-
-  $ cd mnt
-
-  $ ls
-  Applications  bin  Chameleon.Backups  cores  dev  etc...
-
-  # Install FakeSMC.kext using the above mentioned steps
-
-  $ cd ..
-
-  $ sudo umount mnt
-
-  $ sudo kpartx -d /dev/nbd0
-
-  $ sudo qemu-nbd -d /dev/nbd0
+  01:00.0 ... NVIDIA Corporation [GeForce GTX 1050 Ti] [10de:1c82]
+  01:00.1 Audio device: NVIDIA Corporation Device [10de:0fb9]
+  03:00.0 USB controller: ASMedia ASM1142 USB 3.1 Host Controller [1b21:1242]
   ```
 
-### Higher Resolution (UEFI + Clover)
+  ```
+  # echo "options vfio-pci ids=10de:1c82,10de:0fb9 disable_vga=1" > /etc/modprobe.d/vfio.conf
+  ```
+
+* Update initramfs, GRUB and then reboot.
+
+  ```
+  $ sudo update-grub2
+  $ sudo update-initramfs -k all -u
+  ```
+
+* Verify that the IOMMU is enabled, and vfio_pci is working as expected.
+  Consult Arch Wiki again for help on this.
+
+* On the macOS VM, install a NVIDIA Web Driver version which is appropriate for
+  the macOS version. Consult http://www.macvidcards.com/drivers.html for more
+  information.
+
+  For example, macOS 10.12.5 requires version `378.05.05.15f01` whereas macOS
+  10.12.6 requires version `378.05.05.25f01`.
+
+* Boot the macOS VM using the `boot-passthrough.sh` script. At this point, the
+  display connected to your passthrough PCIe device should turn on, and you
+  should see the Clover boot screen. Using the keyboard, navigate to Options ->
+  Graphics Injectord, and enable `Use NVIDIA Web Driver`, then boot macOS.
+
+* Updating SMBIOS for the macOS to `iMac14,2` might be required. I did not do
+  so myself.
+
+* To reuse the keyboard and mouse devices from the host, setup "Automatic
+  login" in System Preferences in macOS and configure Synergy software.
+
+Note: Many AMD GPU devices (e.g. AMD RX 480 & RX 580) should be natively
+supported in macOS High Sierra.
+
+Note: AMD GPU devices may require configuring Clover with `Graphics > RadeonDeInit`
+key enabled.
+
+
+### USB passthrough notes
+
+These steps will need to be adapted for your particular setup.
+
+* Isolate the passthrough PCIe devices with vfio-pci, with the help of `lspci
+  -nnk` command.
+
+  ```
+  $ lspci -nn
+  ...
+  01:00.0 ... NVIDIA Corporation [GeForce GTX 1050 Ti] [10de:1c82]
+  01:00.1 Audio device: NVIDIA Corporation Device [10de:0fb9]
+  03:00.0 USB controller: ASMedia ASM1142 USB 3.1 Host Controller [1b21:1242]
+  ```
+
+  Add `1b21:1242` to `/etc/modprobe.d/vfio.conf` file in the required format.
+
+* Update initramfs, and then reboot.
+
+  ```
+  $ sudo update-initramfs -k all -u
+  ```
+
+* Use the helper scripts to isolate the USB controller.
+
+  ```
+  $ scripts/lsgroup.sh
+  ### Group 7 ###
+      00:1c.0 PCI bridge: Intel Corporation Sunrise ...
+  ### Group 15 ###
+      06:00.0 Audio device: Creative Labs Sound Core3D ...
+  ### Group 5 ###
+      00:17.0 SATA controller: Intel Corporation Sunrise ...
+  ### Group 13 ###
+      03:00.0 USB controller: ASMedia ASM1142 USB 3.1 Host Controller
+  ```
+
+  ```
+  $ scripts/vfio-group.sh 13
+  ```
+
+* Add `-device vfio-pci,host=03:00.0,bus=pcie.0 \` line to the
+  `boot-passthrough.sh` script.
+
+* Boot the VM, and devices attached to the ASMedia USB controller should just
+  work under macOS.
+
+
+### Synergy Notes
+
+* Get Synergy from https://sourceforge.net/projects/synergy-stable-builds.
+
+  I installed "synergy-v1.8.8-stable-MacOSX-x86_64.dmg" on the macOS guest and
+  configured it as a client.
+
+  For automatically starting Synergy on macOS, add Synergy to "Login Items",
+  System Preferences -> Users & Groups -> Select your user account -> Login Items
+  -> Add a login item
+
+* On the Linux host machine, install "synergy-v1.8.8-stable-Linux-x86_64.deb"
+  or newer, configure `~/.synergy.conf` and run `synergys` command.
+
+* The included `.synergy.conf` will need to be adapted according to your setup.
+
+
+### Higher Resolution (for "UEFI + Clover")
 
 Follow the steps below to get a higher resolution:
 
@@ -117,6 +203,7 @@ Follow the steps below to get a higher resolution:
 
 3. Relaunch the boot script.
 
+
 ### Accelerated Graphics
 
 Install VMsvga2 from [this location](https://sourceforge.net/projects/vmsvga2/). No support
@@ -133,6 +220,7 @@ is provided for this unmaintained project!
 
 * Note: There is no working QXL driver for macOS so far.
 
+
 ### Virtual Sound Device
 
 No support is provided for this. You are on your own. The sound output is known
@@ -146,6 +234,7 @@ to be choppy and distorted.
 
 Note: It seems that playback of Flash videos requires an audio device to be
 present.
+
 
 ### Building QEMU from source
 
@@ -163,6 +252,7 @@ $ ./configure --prefix=/home/$(whoami)/QEMU --target-list=x86_64-softmmu --audio
 $ make clean; make; make install
 ```
 
+
 ### Connect iPhone / iPad to macOS guest
 
 Some folks are using https://www.virtualhere.com/ to connect iPhone / iPad to
@@ -172,6 +262,7 @@ Update: It appears that VirtualHere doesn't work on modern macOS versions.
 
 Please passthrough a PCIe USB card to the virtual machine to be able to connect
 iDevices to it.
+
 
 ### Exposing AES-NI instructions to macOS
 
@@ -210,6 +301,7 @@ openssl speed aes-128-cbc
 openssl speed -evp aes-128-cbc  # uses AES-NI
 ```
 
+
 ### Exposing AVX and AVX2 instructions to macOS
 
 Exposing AVX and AVX2 instructions to macOS requires support for these
@@ -238,6 +330,7 @@ machdep.cpu.leaf7_features: SMEP BMI1 AVX2 BMI2
 machdep.cpu.leaf7_feature_bits: 424
 ```
 
+
 ### Running Docker for Mac
 
 Docker for Mac requires enabling nested virtualization on your host machine,
@@ -249,6 +342,7 @@ modprobe kvm_intel nested=1
 
 Also you have to add `vmx,rdtscp` arguments to the `-cpu` option in
 `boot-macOS.sh` file.
+
 
 ### Using virtio-net-osx with macOS
 
@@ -266,6 +360,7 @@ package.
 
 Update: This is no longer recommended. Use `vmxnet3` adapter instead.
 
+
 ### Using virtio-blk-pci with macOS
 
 Newer macOS (namely Mojave+) have support for some virtio drivers.
@@ -278,40 +373,6 @@ get some performance gain.
 +         -device virtio-blk-pci,drive=MacHDD \
 ```
 
-### Boot Notes
-
-Type the following after boot,
-
-```
-"KernelBooter_kexts"="Yes" "CsrActiveConfig"="103"
-```
-
-### SIP notes
-
-Disable/enable System Integrity Protection (SIP),
-
-- Boot into Clover EFI Menu
-
-- Select Options (gear icon) using arrow keys
-
-- Select System Parameters
-
-- Select System Integrity Protection
-
-- Change to enable/disable
-
-  - Disable SIP - Check: Allow Untrusted Kexts, Allow Unrestricted FS, Allow
-    Task for PID, Allow Unrestricted Dtrace, Allow Unrestricted NVRAM
-  - Enable SIP - Uncheck everything
-
-- Select Return (multiple times as needed)
-
-- Boot macOS partition
-
-These instructions are borrowed from https://hackintosher.com/ forums.
-
-To make this change permanent, use `Clover Configurator` to change
-`CsrActivateConfig` in `config.plist`.
 
 ### Permission problems with libvirt / qemu?
 
@@ -319,60 +380,6 @@ To make this change permanent, use `Clover Configurator` to change
 sudo setfacl -m u:libvirt-qemu:rx <path>  # fix virt-manager perm problems
 ```
 
-### Kernel Extraction (older alternate to "pbzx" method)
-
-* Install Pacifist on OS X.
-
-* Mount "InstallESD.dmg" file.
-
-* With Pacifist browse to the above volume (use the "Open Apple Installers"
-  menu option) and then open "Essentials.pkg". Extract the folder & file
-  (Kernels/kernel) located at /System/Library/Kernels/kernel location.
-
-* After extracting the Kernels folder, place it in the same directory as the
-  ISO creation script.
-
-
-### Post Installation
-
-* Put "org.chameleon.Boot.plist" in /Extra folder.
-
-* System Preferences -> Sharing -> enable Screen Sharing and Remote Login
-
-* System Preferences -> Energy Saver -> Computer sleep set to Never
-
-* System Preferences -> Energy Saver -> Display sleep set to Never
-
-* If you are unable to wake Mojave from sleep using mouse or keyboard, you can
-  manually wake the VM up from sleep from the QEMU prompt by using the
-  `system_wakeup` command,
-
-  ```
-  (qemu) system_wakeup
-  (qemu)
-  ```
-
-  However, macOS crashes on wakeup.
-
-
-### Installer Details (InstallESD.dmg)
-
-```
-Name: Mac OS X El Capitan
-Version: 10.11.1 (15B42) InstallESD
-Mac Platform: Intel
-
-Untouched InstallESD.dmg file from the full 10.11.1 (Build 15B42) installer.
-"Install OS X El Capitan.app/Contents/SharedSupport/InstallESD.dmg"
-MD5: 3332a4e05713366343e03ee6777c3374
-Release Date: October 21, 2015
-```
-
-``jar -xf <zipfile>`` is pretty neat.
-
-Move 'InstallESD.dmg' to '/Applications/Install OS X El Capitan.app/Contents/SharedSupport/InstallESD.dmg' location.
-
-Move 'InstallESD.dmg' to '/Applications/Install macOS Sierra.app/Contents/SharedSupport/' location (for macOS Sierra).
 
 ### Clover References
 

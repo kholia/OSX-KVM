@@ -8,10 +8,62 @@ AssetCacheManagerUtil[] Failed to activate content caching: Error Domain=ACSMErr
 ```
 
 It seems that the `Content Caching` functionality is not available when macOS
-is running in a virtual machine.
+is running in a virtual machine. How can we enable this feature on our macOS
+VM?
+
+
+#### April 2020 Update
+
+I was able to patch the Catalina 10.15.4 kernel to disable the VMM detection.
+
+Original function:
+
+![Original function](screenshots/macOS-kernel-patching-1.png)
+
+Patched function:
+
+![Patched function](screenshots/macOS-kernel-patching-2.png)
+
+
+```
+static int
+cpu_features SYSCTL_HANDLER_ARGS
+{
+    __unused struct sysctl_oid *unused_oidp = oidp;
+    __unused void *unused_arg1 = arg1;
+    __unused int unused_arg2 = arg2;
+    char buf[512];
+
+    buf[0] = '\0';
+    // cpuid_get_feature_names(cpuid_features(), buf, sizeof(buf));
+    cpuid_get_feature_names(cpuid_features(), buf, sizeof(buf)); // NOP this <-- NOTE!
+
+    return SYSCTL_OUT(req, buf, strlen(buf) + 1);
+}
+
+...
+"bsd/dev/i386/sysctl.c" 980 lines --13%--
+```
+
+See `bsd/dev/i386/sysctl.c 138: cpuid_get_feature_names(cpuid_features` too.
+
+Useful commands:
+
+```
+sudo mount -uw /
+
+sudo mv /System/Library/Kernels/kernel /System/Library/Kernels/kernel.bak
+
+sudo kextcache -i /
+```
 
 
 #### March 2020 Update
+
+Update: This approach causes the macOS VM to consume multiple CPU(s) 100% on
+the host!
+
+See `osfmk/i386/tsc.c 142: if (cpuid_vmm_present()) {` for details.
 
 Instead of trying to hack things from within the VM, we can turn off VMM
 detection from the outside.
@@ -520,3 +572,10 @@ Note: However, it seems that more reversing and patching work is required.
 
 * Can we use DTrace on macOS to trace execution of this call in a system-wide
   fashion?
+
+
+### References
+
+* https://geosn0w.github.io/Debugging-macOS-Kernel-For-Fun/
+
+* https://www.hex-rays.com/wp-content/uploads/2019/12/xnu_debugger_primer.pdf

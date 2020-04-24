@@ -11,6 +11,8 @@
 # NOTE: Tweak the "MY_OPTIONS" line in case you are having booting problems!
 ############################################################################
 
+OVMF="./backup"
+
 MY_OPTIONS="+pcid,+ssse3,+sse4.2,+popcnt,+avx,+aes,+xsave,+xsaveopt,check"
 
 qemu-system-x86_64 -enable-kvm -m 3072 -cpu Penryn,kvm=on,vendor=GenuineIntel,+invtsc,vmware-cpuid-freq=on,$MY_OPTIONS\
@@ -18,8 +20,8 @@ qemu-system-x86_64 -enable-kvm -m 3072 -cpu Penryn,kvm=on,vendor=GenuineIntel,+i
 	  -smp 4,cores=2 \
 	  -usb -device usb-kbd -device usb-tablet \
 	  -device isa-applesmc,osk="ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc" \
-	  -drive if=pflash,format=raw,readonly,file=OVMF_CODE.fd \
-	  -drive if=pflash,format=raw,file=OVMF_VARS-1024x768.fd \
+	  -drive if=pflash,format=raw,readonly,file=$OVMF/OVMF_CODE.fd \
+	  -drive if=pflash,format=raw,file=$OVMF/OVMF_VARS-1024x768.fd \
 	  -smbios type=2 \
 	  -device ich9-intel-hda -device hda-duplex \
 	  -device ide-drive,bus=ide.2,drive=Clover \
