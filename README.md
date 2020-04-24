@@ -1,9 +1,9 @@
 ### Note
 
-This `README` documents the new method to install macOS. The older `README` is
-available [here](README-OLD.md).
+This `README` documents the `new method` to install macOS. The older `README`
+is available [here](README-OLD.md).
 
-This new method does *not* require an existing physical/virtual macOS
+This `new method` does *not* require an existing physical/virtual macOS
 installation. However, this `new method` requires internet access during the
 macOS installation process. This limitation may be addressed in a future
 commit.
@@ -34,18 +34,29 @@ help (pull-requests!) with the following work items:
 * Document the process to create and reuse VM snapshots. Instantaneous macOS
   boots would be nice this way.
 
+* Document the process to launch a bunch of headless macOS VMs (build farm).
+
+* Document usage of [munki](https://github.com/munki/munki) to deploy software
+  to such a `build farm`.
+
+* Enable SSH support out of the box or more easily.
+
+* Better support + docs for AMD Ryzen.
+
+* Patches to unify the various scripts we have. Robustness improvements.
+
 
 ### Requirements
 
-* A modern Linux distribution. E.g. Ubuntu 18.04 LTS 64-bit.
+* A modern Linux distribution. E.g. Ubuntu 18.04 LTS 64-bit or later.
 
 * QEMU > 2.11.1
 
 * A CPU with Intel VT-x / AMD SVM support is required
 
-* A CPU with SSE4.1 support is required for macOS Sierra
+* A CPU with SSE4.1 support is required for >= macOS Sierra
 
-* A CPU with AVX2 support is required for macOS Mojave
+* A CPU with AVX2 support is required for >= macOS Mojave
 
 Note: Older AMD CPU(s) are known to be problematic. AMD FX-8350 works but
 Phenom II X3 720 does not. Ryzen processors work just fine.
@@ -158,55 +169,42 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
 
 ### Installation
 
-- CLI method (primary). Just run the `boot-macOS-NG.sh` script to start the
+- CLI method (primary). Just run the `boot-macOS-Catalina.sh` script to start the
   installation proces.
 
   ```
-  ./boot-macOS-NG.sh
+  ./boot-macOS-Catalina.sh
   ```
+
+  Experimental: Use the `OpenCore-Boot.sh` script to maximize fun ;)
 
   If you are new to installing macOS, see the [older README](README-OLD.md) for
   help.
 
-  For macOS Catalina, use `boot-macOS-Catalina.sh` script.
+- You are all set! 🙌
 
-  Experimental: Use the `OpenCore-Boot.sh` to maximize fun ;)
+- (OPTIONAL) Use this macOS VM disk with libvirt (virt-manager / virsh stuff).
 
-- GUI method (alternate - functional but needs further debugging work).
-
-  - Edit `macOS-libvirt-NG.xml` file and change the various file paths (search
+  - Edit `macOS-libvirt-Catalina.xml` file and change the various file paths (search
     for `CHANGEME` strings in that file). The following command should do the
     trick usually.
 
     ```
-    sed -i "s/CHANGEME/$USER/g" macOS-libvirt-NG.xml
+    sed -i "s/CHANGEME/$USER/g" macOS-libvirt-Catalina.xml
+
+    virt-xml-validate macOS-libvirt-Catalina.xml
     ```
 
   - Create a VM by running the following command.
 
     ```bash
-    virsh --connect qemu:///system define macOS-libvirt-NG.xml
+    virsh --connect qemu:///system define macOS-libvirt-Catalina.xml
     ```
 
-  - Launch `virt-manager`, start the `macOS` virtual machine and install macOS
-    as usual.
+  - Launch `virt-manager` and start the `macOS` virtual machine.
 
     Note: You may need to run `sudo ip link delete tap0` command before
     `virt-manager` is able to start the `macOS` VM.
-
-    Note: You may need to remove the following block from `macOS-libvirt-NG.xml`
-    and run `virsh --connect ...` again. Alternate easier fix: Remove `SATA
-    Disk 3` from the macOS virtual machine in `virt-manager`.
-
-    ```
-    <disk type='file' device='disk'>
-    <driver name='qemu' type='raw' cache='writeback'/>
-      <source file='/home/CHANGEME/OSX-KVM/BaseSystem.img'/>
-      <target dev='sdc' bus='sata'/>
-      <boot order='3'/>
-      <address type='drive' controller='0' bus='0' target='0' unit='2'/>
-    </disk>
-    ```
 
 
 ### Post-Installation
@@ -228,7 +226,7 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
 
 * To get sound on your virtual Mac, see the "Virtual Sound Device" in [notes](notes.md).
 
-* To passthrough GPUs and other devices, see [these notes](UEFI/README.md).
+* To passthrough GPUs and other devices, see [these notes](notes.md).
 
 * Need a different resolution? Check out the [notes](notes.md) included in this
   repository.
@@ -250,12 +248,3 @@ Apple's closed ecosystem (too heavily).
 Backstory: I was a (poor) student in Canada once and Apple made [my work on
 cracking Apple Keychains](https://github.com/magnumripper/JohnTheRipper/) a lot
 harder than it needed to be.
-
-
-### References
-
-* http://www.contrib.andrew.cmu.edu/~somlo/OSXKVM/
-
-* https://www.kraxel.org/blog/2017/09/running-macos-as-guest-in-kvm/
-
-* https://github.com/foxlet/macOS-Simple-KVM

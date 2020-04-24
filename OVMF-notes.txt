@@ -1,4 +1,8 @@
-Update (29-April-2019): OVMF blobs built from https://github.com/kholia/edk2/tree/macOS-NG-v2.
+Current OVMF blobs are borrowed from the following URL,
+
+http://download.proxmox.com/debian/dists/buster/pve-no-subscription/binary-amd64/pve-edk2-firmware_2.20200229-1_all.deb
+
+OVMF for non-OpenCore boot loaders: https://github.com/kholia/edk2/tree/macOS-NG-v3.
 
 Building OVMF
 -------------
@@ -15,24 +19,6 @@ git submodule update --init
 make -C BaseTools
 . edksetup.sh BaseTools
 build -a X64 -t GCC5 -p OvmfPkg/OvmfPkgX64.dsc -b RELEASE
-
-(OBSOLETE) The included blobs were built from commit 2913ebb2b550f50a.
-
-
-Host OS
--------
-
-OVMF blobs (OVMF_CODE.fd, OVMF_VARS.fd) were built on Ubuntu 18.04 LTS based on
-https://github.com/kholia/edk2 (upstream commit 328409ce8de7f3 and some local
-commits).
-
-Older OVMF blobs (OVMF_CODE.fd, OVMF_VARS.fd) were built on Ubuntu 14.04.5 LTS
-(Trusty Tahr).
-
-OVMF_CODE-pure-efi.fd and OVMF_VARS-pure-efi.fd files (in backup folder) come
-from the "edk2.git-ovmf-x64-0-20170922.b3006.gfe4049471b.noarch.rpm" archive
-downloaded from https://www.kraxel.org/repos/jenkins/edk2/ site.
-
 
 References
 ----------

@@ -143,11 +143,15 @@ fish mkdir                                     /ESP/EFI
 fish mkdir                                     /ESP/EFI/OC
 fish mkdir                                     /ESP/EFI/OC/Kexts
 fish mkdir                                     /ESP/EFI/OC/ACPI
+fish mkdir                                     /ESP/EFI/OC/Resources
+fish mkdir                                     /ESP/EFI/OC/Tools
 fish copy-in $WORK/EFI/BOOT                    /ESP/EFI
 fish copy-in $WORK/EFI/OC/OpenCore.efi         /ESP/EFI/OC
 fish copy-in $WORK/EFI/OC/Drivers              /ESP/EFI/OC/
 fish copy-in $WORK/EFI/OC/Kexts                /ESP/EFI/OC/
 fish copy-in $WORK/EFI/OC/ACPI                 /ESP/EFI/OC/
+fish copy-in $WORK/EFI/OC/Resources            /ESP/EFI/OC/
+fish copy-in $WORK/EFI/OC/Tools                /ESP/EFI/OC/
 
 # Note
 fish copy-in startup.nsh /
