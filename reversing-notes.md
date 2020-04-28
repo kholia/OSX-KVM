@@ -57,6 +57,8 @@ sudo mv /System/Library/Kernels/kernel /System/Library/Kernels/kernel.bak
 sudo kextcache -i /
 ```
 
+Update: Use `resources/kernel_autopatcher.py` to patch your kernels! :-)
+
 
 #### March 2020 Update
 
