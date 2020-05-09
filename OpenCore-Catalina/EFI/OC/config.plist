@@ -546,6 +546,11 @@
 			</dict>
 		</array>
 	</dict>
+	<key>GUI</key>
+	 <dict>
+		 <key>Language</key>
+	 	<string>en:0</string>
+	 </dict>
 	<key>NVRAM</key>
 	<dict>
 		<key>Add</key>
@@ -570,7 +575,7 @@
 				<string>keepsyms=1</string>
 				<key>csr-active-config</key>
 				<data>AAAAAA==</data>
-				<key>prev-lang:kbd</key>
+				<key>prev-lang:kbd=en:0</key>
 				<data>ZW4tVVM6MA==</data>
 			</dict>
 		</dict>
@@ -609,7 +614,7 @@
 				<string>flagstate</string>
 				<string>fmm-computer-name</string>
 				<string>nvda_drv</string>
-				<string>prev-lang:kbd</string>
+				<string>prev-lang:kbd=en:0</string>
 			</array>
 			<key>8BE4DF61-93CA-11D2-AA0D-00E098032B8C</key>
 			<array>
