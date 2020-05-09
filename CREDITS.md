@@ -69,3 +69,5 @@
 * https://github.com/Leoyzen/KVM-Opencore - OpenCore support
 
 * Kyle Dayton - UEFI, Clover, and GPU passthrough notes
+
+- foxtrotdragon - OpenCore language fixes
