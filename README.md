@@ -11,6 +11,10 @@ commit.
 Note: All blobs and resources included in this repository are re-derivable (all
 instructions are included!).
 
+:green_heart: Looking for commercial support with this stuff? I am [available
+over email](mailto:dhiru.kholia@gmail.com?subject=[GitHub]%20OSX-KVM%20Commercial%20Support)
+for a chat.
+
 
 ### Contributing Back
 

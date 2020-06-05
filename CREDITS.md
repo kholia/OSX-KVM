@@ -71,3 +71,5 @@
 * Kyle Dayton - UEFI, Clover, and GPU passthrough notes
 
 - foxtrotdragon - OpenCore language fixes
+
+- hoshsadiq (Hosh) - fetch-macOS.py improvements

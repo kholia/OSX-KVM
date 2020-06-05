@@ -1,7 +1,7 @@
-https://github.com/acidanthera/virtualsmc/releases - 1.1.2
+https://github.com/acidanthera/virtualsmc/releases - 1.1.4
 
-https://github.com/acidanthera/Lilu/releases - 1.4.3
+https://github.com/acidanthera/Lilu/releases - 1.4.5
 
-https://github.com/acidanthera/WhateverGreen/releases - 1.3.8
+https://github.com/acidanthera/WhateverGreen/releases - 1.4.0
 
-https://github.com/acidanthera/AppleALC/releases - 1.4.8
+https://github.com/acidanthera/AppleALC/releases - 1.5.0
