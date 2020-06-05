@@ -2,7 +2,8 @@
 
 # All credits for OpenCore support go to https://github.com/Leoyzen/KVM-Opencore and
 # https://github.com/thenickdude/KVM-Opencore/. Thanks!
-
+#
+# https://github.com/qemu/qemu/blob/master/docs/usb2.txt
 
 # qemu-img create -f qcow2 mac_hdd_ng.img 128G
 #
@@ -22,10 +23,15 @@ OVMF="./"
 # This causes high cpu usage on the *host* side
 # qemu-system-x86_64 -enable-kvm -m 3072 -cpu Penryn,vendor=GenuineIntel,+invtsc,vmware-cpuid-freq=on,hypervisor=off,vmx=on,kvm=off,$MY_OPTIONS\
 
+
 qemu-system-x86_64 -enable-kvm -m 3072 -cpu Penryn,kvm=on,vendor=GenuineIntel,+invtsc,vmware-cpuid-freq=on,$MY_OPTIONS\
 	  -machine q35 \
 	  -smp 4,cores=2 \
-	  -usb -device usb-kbd -device usb-mouse \
+	  -usb \
+	  -device usb-ehci,id=ehci \
+	  -device usb-kbd,bus=ehci.0 \
+	  -device usb-mouse,bus=ehci.0 \
+	  -device nec-usb-xhci,id=xhci \
 	  -device isa-applesmc,osk="ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc" \
 	  -drive if=pflash,format=raw,readonly,file=$OVMF/OVMF_CODE.fd \
 	  -drive if=pflash,format=raw,file=$OVMF/OVMF_VARS-1024x768.fd \

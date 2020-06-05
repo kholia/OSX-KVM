@@ -2,7 +2,7 @@
 
 Catalina installs the same way as [Mojave](../Mojave/README.md).
 
-Tested with macOS Catalina 10.15 with OpenCore-0.5.8-DEBUG.zip (from May, 2020).
+Tested with macOS Catalina 10.15 with OpenCore-0.5.9-DEBUG.zip (from June, 2020).
 
 Note: Use `create_iso_catalina.sh` for generating a macOS Catalina based ISO
 image.
@@ -26,6 +26,8 @@ for customizing `OpenCore.qcow2`. Thanks Nick! :)
 * https://github.com/acidanthera/OpenCorePkg/releases
 
 * https://opencore.slowgeek.com/ (neat!)
+
+* https://github.com/chris1111/USB-3.0-NEC/releases (thanks Chris!)
 
 * https://github.com/khronokernel/Opencore-Vanilla-Desktop-Guide/blob/master/clover-conversion/clover-efi.md
 

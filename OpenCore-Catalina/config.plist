@@ -39,7 +39,7 @@
 				<string>SSDT-PLUG.aml</string>
 			</dict>
 		</array>
-		<key>Block</key>
+		<key>Delete</key>
 		<array>
 			<dict>
 				<key>All</key>
@@ -195,7 +195,7 @@
 				<string>pci8086,2916</string>
 			</dict>
 		</dict>
-		<key>Block</key>
+		<key>Delete</key>
 		<dict>
 			<key>PciRoot(0x0)/Pci(0x1b,0x0)</key>
 			<array>
@@ -207,6 +207,22 @@
 	<dict>
 		<key>Add</key>
 		<array>
+			<dict>
+				<key>BundlePath</key>
+				<string>mXHCD.kext</string>
+				<key>Comment</key>
+				<string>Hello There</string>
+				<key>Enabled</key>
+				<true/>
+				<key>ExecutablePath</key>
+				<string>Contents/MacOS/mXHCD</string>
+				<key>MaxKernel</key>
+				<string></string>
+				<key>MinKernel</key>
+				<string></string>
+				<key>PlistPath</key>
+				<string>Contents/Info.plist</string>
+			</dict>
 			<dict>
 				<key>BundlePath</key>
 				<string>Lilu.kext</string>
@@ -576,7 +592,7 @@
 				<data>ZW4tVVM6MA==</data>
 			</dict>
 		</dict>
-		<key>Block</key>
+		<key>Delete</key>
 		<dict>
 			<key>4D1EDE05-38C7-4A6A-9CC6-4BCCA8B38C14</key>
 			<array>
@@ -724,8 +740,6 @@
 			<false/>
 			<key>ConsoleMode</key>
 			<string></string>
-			<key>DirectGopCacheMode</key>
-			<string></string>
 			<key>DirectGopRendering</key>
 			<false/>
 			<key>IgnoreTextInGraphics</key>
@@ -784,7 +798,7 @@
 			<false/>
 			<key>ReleaseUsbOwnership</key>
 			<false/>
-			<key>RequestBootVarFallback</key>
+			<key>DeduplicateBootOrder</key>
 			<true/>
 			<key>RequestBootVarRouting</key>
 			<true/>

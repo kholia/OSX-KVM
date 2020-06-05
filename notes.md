@@ -381,8 +381,16 @@ sudo setfacl -m u:libvirt-qemu:rx <path>  # fix virt-manager perm problems
 ```
 
 
-### Clover References
+### Extract .pkg files
 
-* https://clover-wiki.zetam.org/Development
+* http://mackyle.github.io/xar/ is unmaintained and fails for many `.pkg` files.
 
-* https://sourceforge.net/p/cloverefiboot/code/HEAD/log/?path=
+* Use a modern version of `7-Zip` instead.
+
+  ```
+  7z l example.pkg
+
+  7z x example.pkg
+
+  gunzip -c <something>.pkg/Payload | cpio -i
+  ```
