@@ -104,6 +104,10 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
   ```
   ./fetch-macOS.py
   ```
+  In case this command fails, you can try:
+  ```
+  python3 ./fetch-macOS.py
+  ```
 
   You can choose your desired macOS version here. After executing this step,
   you should have the `BaseSystem.dmg` file in the current folder.
