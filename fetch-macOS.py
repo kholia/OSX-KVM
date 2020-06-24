@@ -40,9 +40,10 @@ import gzip
 import argparse
 import plistlib
 import subprocess
-# import xattr
+
 from xml.dom import minidom
 from xml.parsers.expat import ExpatError
+
 
 import sys
 
@@ -53,28 +54,17 @@ else:
 
 # https://github.com/foxlet/macOS-Simple-KVM/blob/master/tools/FetchMacOS/fetch-macos.py (unused)
 catalogs = {
-    "CustomerSeed": "https://swscan.apple.com/content/catalogs/others/index-10.15customerseed-10.15-10.14-10.13-10.12-10.11-10.10-10.9-mountainlion-lion-snowleopard-leopard.merged-1.sucatalog",
-    "DeveloperSeed": "https://swscan.apple.com/content/catalogs/others/index-10.15seed-10.15-10.14-10.13-10.12-10.11-10.10-10.9-mountainlion-lion-snowleopard-leopard.merged-1.sucatalog",
-    "PublicSeed": "https://swscan.apple.com/content/catalogs/others/index-10.15beta-10.15-10.14-10.13-10.12-10.11-10.10-10.9-mountainlion-lion-snowleopard-leopard.merged-1.sucatalog",
-    "PublicRelease": "https://swscan.apple.com/content/catalogs/others/index-10.15-10.14-10.13-10.12-10.11-10.10-10.9-mountainlion-lion-snowleopard-leopard.merged-1.sucatalog"
-}
-
-DEFAULT_SUCATALOGS = {
-    '17': 'https://swscan.apple.com/content/catalogs/others/'
-          'index-10.13-10.12-10.11-10.10-10.9'
-          '-mountainlion-lion-snowleopard-leopard.merged-1.sucatalog',
-    '18': 'https://swscan.apple.com/content/catalogs/others/'
-          'index-10.14-10.13-10.12-10.11-10.10-10.9'
-          '-mountainlion-lion-snowleopard-leopard.merged-1.sucatalog',
-    'something': 'https://swscan.apple.com/content/catalogs/others/index-10.15seed-10.15-10.14-10.13-10.12-10.11-10.10-10.9-mountainlion-lion-snowleopard-leopard.merged-1.sucatalog'
+    "CustomerSeed": "https://swscan.apple.com/content/catalogs/others/index-10.16customerseed-10.16-10.15-10.14-10.13-10.12-10.11-10.10-10.9-mountainlion-lion-snowleopard-leopard.merged-1.sucatalog",
+    "DeveloperSeed": "https://swscan.apple.com/content/catalogs/others/index-10.16seed-10.16-10.15-10.14-10.13-10.12-10.11-10.10-10.9-mountainlion-lion-snowleopard-leopard.merged-1.sucatalog",
+    "PublicSeed": "https://swscan.apple.com/content/catalogs/others/index-10.16beta-10.16-10.15-10.14-10.13-10.12-10.11-10.10-10.9-mountainlion-lion-snowleopard-leopard.merged-1.sucatalog",
+    "PublicRelease": "https://swscan.apple.com/content/catalogs/others/index-10.16-10.15-10.14-10.13-10.12-10.11-10.10-10.9-mountainlion-lion-snowleopard-leopard.merged-1.sucatalog"
 }
 
 
 def get_default_catalog():
     '''Returns the default softwareupdate catalog for the current OS'''
-    # darwin_major = os.uname()[2].split('.')[0]
-    # return DEFAULT_SUCATALOGS.get(darwin_major)
-    return DEFAULT_SUCATALOGS.get('something')
+    # return catalogs["PublicRelease"]
+    return catalogs["DeveloperSeed"]
 
 
 class ReplicationError(Exception):
@@ -91,12 +81,13 @@ def replicate_url(full_url,
                   root_dir='/tmp',
                   show_progress=False,
                   ignore_cache=False,
-                  attempt_resume=False, installer=False):
+                  attempt_resume=False, installer=False, one_more_hack=False):
     '''Downloads a URL and stores it in the same relative path on our
     filesystem. Returns a path to the replicated file.'''
 
     # hack
-    if installer and "BaseSystem.dmg" not in full_url:
+    print("[+] Fetching %s" % full_url)
+    if installer and "BaseSystem.dmg" not in full_url and not one_more_hack:
         return
     attempt_resume = True
     # path = urllib.parse.urlsplit(full_url)[2]
@@ -392,6 +383,8 @@ def main():
                              'less available disk space and is faster.')
     parser.add_argument('--ignore-cache', action='store_true',
                         help='Ignore any previously cached files.')
+    parser.add_argument('--big-sur', action='store_true',
+                        help='(Temporary) Hack to fetch Big Sur.')
     args = parser.parse_args()
 
     su_catalog_url = get_default_catalog()
@@ -402,6 +395,32 @@ def main():
     # download sucatalog and look for products that are for macOS installers
     catalog = download_and_parse_sucatalog(
         su_catalog_url, args.workdir, ignore_cache=args.ignore_cache)
+
+    # (Temporary) Hack to fetch Big Sur
+    if args.big_sur:
+        products = catalog['Products']
+        product = products["001-18401-003"]
+        workdir = "."
+        ignore_cache = False
+        for package in product.get('Packages', []):
+            if 'URL' in package:
+                try:
+                    replicate_url(
+                        package['URL'], root_dir=workdir,
+                        show_progress=True, ignore_cache=ignore_cache,
+                        attempt_resume=(not ignore_cache), installer=True, one_more_hack=True)
+                except ReplicationError as err:
+                    print('Could not replicate %s: %s' % (package['URL'], err))
+                    exit(-1)
+            if 'MetadataURL' in package:
+                try:
+                    replicate_url(package['MetadataURL'], root_dir=workdir,
+                                  ignore_cache=ignore_cache, installer=True)
+                except ReplicationError as err:
+                    print('Could not replicate %s: %s' % (package['MetadataURL'], err))
+                    exit(-1)
+        exit(-1)
+
     product_info = os_installer_product_info(
         catalog, args.workdir, ignore_cache=args.ignore_cache)
 

@@ -15,6 +15,8 @@ instructions are included!).
 over email](mailto:dhiru.kholia@gmail.com?subject=[GitHub]%20OSX-KVM%20Commercial%20Support)
 for a chat.
 
+Looking for `Big Sur` support? See these [notes](Big-Sur.md).
+
 
 ### Contributing Back
 
