@@ -322,7 +322,9 @@ def determine_version(version, product_info):
                 return product_id
 
         print("Could not find version {}. Versions available are:".format(version))
-        [print("- {}".format(product_info[pid]['version'])) for _, pid in enumerate(product_info)]
+        for _, pid in enumerate(product_info):
+            print("- {}".format(product_info[pid]['version']))
+
         exit(1)
 
     # display a menu of choices (some seed catalogs have multiple installers)
