@@ -73,3 +73,7 @@
 - foxtrotdragon - OpenCore language fixes
 
 - hoshsadiq (Hosh) - fetch-macOS.py improvements
+
+- philffm - Typo fix in `Big-Sur.md`
+
+- jviotti - Headless mode fixes

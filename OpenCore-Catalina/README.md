@@ -16,6 +16,8 @@ git submodule update --init --recursive
 cp -a ../resources/OcBinaryData/Resources EFI/OC/Resources  # symlink hacks don't work
 
 rm -f OpenCore.qcow2; sudo ./opencore-image-ng.sh  --cfg config.plist --img OpenCore.qcow2
+
+rm -f OpenCore.qcow2; sudo ./opencore-image-ng.sh  --cfg config-nopicker.plist --img OpenCore-nopicker.qcow2  # ShowPicker disabled
 ```
 
 Note: https://github.com/thenickdude/KVM-Opencore is one of the best resources

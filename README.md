@@ -11,9 +11,8 @@ commit.
 Note: All blobs and resources included in this repository are re-derivable (all
 instructions are included!).
 
-:green_heart: Looking for commercial support with this stuff? I am [available
-over email](mailto:dhiru.kholia@gmail.com?subject=[GitHub]%20OSX-KVM%20Commercial%20Support)
-for a chat.
+:green_heart: Looking for **commercial** support with this stuff? I am [available
+over email](mailto:dhiru.kholia@gmail.com?subject=[GitHub]%20OSX-KVM%20Commercial%20Support%20Request&body=Hi%20-%20We%20are%20interested%20in%20purchasing%20commercial%20support%20options%20for%20your%20project.) for a chat for **commercial support options only**.
 
 Looking for `Big Sur` support? See these [notes](Big-Sur.md).
 
@@ -27,6 +26,9 @@ help (pull-requests!) with the following work items:
   physical/virtual installation.
 
 * An Ansible playbook to automate all-the-things!
+
+* Documentation around running macOS on popular cloud providers (GCP, AWS). See
+  the `Is This Legal?` section and associated references.
 
 * Test `accel=hvf` flag on QEMU + macOS Mojave on MacBook Pro.
 
