@@ -36,7 +36,7 @@
   make
   ```
 
-- Extract `BaseSystem.dmg` from the downloaded `InstallAssistant.pkg` file (around 9 GB).
+- Extract `SharedSupport.dmg` from the downloaded `InstallAssistant.pkg` file (around 9 GB).
 
   ```
   $ ~/xar/xar/src/xar -tf InstallAssistant.pkg
