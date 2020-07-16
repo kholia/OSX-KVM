@@ -169,6 +169,10 @@
     <input type='keyboard' bus='ps2'>
       <alias name='input3'/>
     </input>
+    <!-- We use video model none here, so we can later set video device to vmware-svga for better graphics -->
+    <video>
+      <model type='none'/>
+    </video>
     <!-- If you wanna passthrough GPU, make sure the gfx and audio are in the same bus (like 0x01) but different function (0x00 and 0x01)-->
     <!-- <hostdev mode='subsystem' type='pci' managed='yes'>
       <driver name='vfio'/>
@@ -202,6 +206,8 @@
     <qemu:arg value='isa-applesmc,osk=ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc'/>
     <qemu:arg value='-smbios'/>
     <qemu:arg value='type=2'/>
+    <qemu:arg value='-device'/>
+    <qemu:arg value='vmware-svga'/>
     <qemu:arg value='-cpu'/>
     <qemu:arg value='Penryn,kvm=on,vendor=GenuineIntel,+invtsc,vmware-cpuid-freq=on,+pcid,+ssse3,+sse4.2,+popcnt,+avx,+aes,+xsave,+xsaveopt,check'/>
     <!-- <qemu:arg value='Penryn,vendor=GenuineIntel,+hypervisor,+invtsc,kvm=on,+fma,+avx,+avx2,+aes,+ssse3,+sse4_2,+popcnt,+sse4a,+bmi1,+bmi2'/> -->
