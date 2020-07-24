@@ -77,3 +77,7 @@
 - philffm - Typo fix in `Big-Sur.md`
 
 - jviotti - Headless mode fixes
+
+- offlinehacker - libvirt support
+
+- hellodeibu - Big Sur support
