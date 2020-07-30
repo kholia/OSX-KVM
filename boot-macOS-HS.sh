@@ -17,7 +17,9 @@ CPU_THREADS="4"
 REPO_PATH="./"
 OVMF_DIR="."
 
-qemu-system-x86_64 -enable-kvm -m "$ALLOCATED_RAM" -cpu host,kvm=on,vendor=GenuineIntel,+invtsc,vmware-cpuid-freq=on \
+MY_OPTIONS="+aes,+xsave,+avx,+xsaveopt,avx2,+smep"
+
+qemu-system-x86_64 -enable-kvm -m "$ALLOCATED_RAM" -cpu Penryn,kvm=on,vendor=GenuineIntel,+invtsc,vmware-cpuid-freq=on,$MY_OPTIONS \
 	-machine pc-q35-2.9 -usb \
 	-smp "$CPU_THREADS",cores="$CPU_CORES",sockets="$CPU_SOCKETS" \
 	-drive if=pflash,format=raw,readonly,file="$REPO_PATH/$OVMF_DIR/OVMF_CODE.fd" \
