@@ -1,18 +1,12 @@
 ### Note
 
-This `README` documents the `new method` to install macOS. The older `README`
-is available [here](README-OLD.md).
+This `README` documents the `new method` to install macOS. The older `README` is available [here](README-OLD.md).
 
-This `new method` does *not* require an existing physical/virtual macOS
-installation. However, this `new method` requires internet access during the
-macOS installation process. This limitation may be addressed in a future
-commit.
+This `new method` does *not* require an existing physical/virtual macOS installation. However, this `new method` requires internet access during the macOS installation process. This limitation may be addressed in a future commit.
 
-Note: All blobs and resources included in this repository are re-derivable (all
-instructions are included!).
+Note: All blobs and resources included in this repository are re-derivable (all instructions are included!).
 
-:green_heart: Looking for **commercial** support with this stuff? I am [available
-over email](mailto:dhiru.kholia@gmail.com?subject=[GitHub]%20OSX-KVM%20Commercial%20Support%20Request&body=Hi%20-%20We%20are%20interested%20in%20purchasing%20commercial%20support%20options%20for%20your%20project.) for a chat for **commercial support options only**.
+:green_heart: Looking for **commercial** support with this stuff? I am [available over email](mailto:dhiru.kholia@gmail.com?subject=[GitHub]%20OSX-KVM%20Commercial%20Support%20Request&body=Hi%20-%20We%20are%20interested%20in%20purchasing%20commercial%20support%20options%20for%20your%20project.) for a chat for **commercial support options only**.
 
 Looking for `Big Sur` support? See these [notes](Big-Sur.md).
 
@@ -44,8 +38,7 @@ help (pull-requests!) with the following work items:
 
 * Document the process to launch a bunch of headless macOS VMs (build farm).
 
-* Document usage of [munki](https://github.com/munki/munki) to deploy software
-  to such a `build farm`.
+* Document usage of [munki](https://github.com/munki/munki) to deploy software to such a `build farm`.
 
 * Enable SSH support out of the box or more easily.
 
@@ -87,7 +80,7 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
 * Install QEMU and other packages.
 
   ```
-  sudo apt-get install qemu uml-utilities virt-manager dmg2img git wget libguestfs-tools
+  sudo apt-get install qemu uml-utilities virt-manager dmg2img git wget libguestfs-tools -y
   ```
 
   This step may need to be adapted for your Linux distribution.
@@ -219,7 +212,7 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
 
 * See [networking notes](networking-qemu-kvm-howto.txt) to setup guest networking.
 
-  I have the following commands present in `/etc/rc.local`.
+  I have the following commands present in `/etc/rc.local` (which may not work on more current versions of Ubuntu and [need to be manually setup](https://linuxmedium.com/how-to-enable-etc-rc-local-with-systemd-on-ubuntu-20-04/))
 
   ```
   #!/usr/bin/env bash
@@ -236,8 +229,9 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
 
 * To passthrough GPUs and other devices, see [these notes](notes.md).
 
-* Need a different resolution? Check out the [notes](notes.md) included in this
-  repository.
+* Need a different resolution? Check out the [notes](notes.md) included in this repository.
+
+* To generate your own SMBIOS, use [GenSMBIOS](https://github.com/corpnewt/GenSMBIOS)
 
 
 ### Is This Legal?
@@ -249,10 +243,6 @@ Gabriel Somlo also has [some thoughts](http://www.contrib.andrew.cmu.edu/~somlo/
 
 ### Motivation
 
-My aim is to enable macOS based builds + testing, kernel debugging, reversing
-and security tasks in an easy, reproducible manner without needing to invest in
-Apple's closed ecosystem (too heavily).
+My aim is to enable macOS based builds + testing, kernel debugging, reversing and security tasks in an easy, reproducible manner without needing to invest in Apple's closed ecosystem (too heavily).
 
-Backstory: I was a (poor) student in Canada once and Apple made [my work on
-cracking Apple Keychains](https://github.com/magnumripper/JohnTheRipper/) a lot
-harder than it needed to be.
+Backstory: I was a (poor) student in Canada once and Apple made [my work on cracking Apple Keychains](https://github.com/magnumripper/JohnTheRipper/) a lot harder than it needed to be.

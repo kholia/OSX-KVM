@@ -8,7 +8,7 @@ something else). Use "ifconfig" command to verify this.
 
 * If the wired ethernet connection is not called "en0", then then go to Network
 in System Preferences and delete all the devices, and apply the changes. Next,
-delete /Library/Preferences/SystemConfiguration/NetworkInterfaces.plist file.
+go to the console and type in `sudo rm /Library/Preferences/SystemConfiguration/NetworkInterfaces.plist` file.
 Finally reboot, and then use the App Store without problems.
 
 This fix was found by Glnk2012 of https://www.tonymacx86.com/ site.
@@ -48,7 +48,15 @@ drivers on macOS.
 
 * Enable IOMMU support on the host machine.
 
-  Add `iommu=pt intel_iommu=on video=efifb:off` to the `GRUB_CMDLINE_LINUX_DEFAULT` line in `/etc/default/grub` file.
+  Append the given line to `GRUB_CMDLINE_LINUX_DEFAULT` in `/etc/default/grub`.
+
+  ##### Intel Systems
+
+  `iommu=pt intel_iommu=on rd.driver.pre=vfio-pci video=vesafb:off,efifb:off`
+
+  ##### AMD Systems
+
+  `iommu=pt amd_iommu=on rd.driver.pre=vfio-pci video=vesafb:off,efifb:off`
 
 * Uninstall NVIDIA drivers from the host machine and blacklist the required modules.
 
@@ -70,22 +78,27 @@ drivers on macOS.
   # echo "vfio_virqfd" >> /etc/modules
   ```
 
-* Isolate the passthrough PCIe devices with vfio-pci, with the help of `lspci
-  -nnk` command. Adapt these commands to suit your hardware setup.
+* Isolate the passthrough PCIe devices
 
-  ```
+  *Adapt these commands to suit your hardware setup*
+
+  **Method 1:** Using initramfs with vfio-pci, with the help of `lspci -nnk` command. 	
+
+    ```
   $ lspci -nn
   ...
   01:00.0 ... NVIDIA Corporation [GeForce GTX 1050 Ti] [10de:1c82]
   01:00.1 Audio device: NVIDIA Corporation Device [10de:0fb9]
   03:00.0 USB controller: ASMedia ASM1142 USB 3.1 Host Controller [1b21:1242]
-  ```
+    ```
 
   ```
-  # echo "options vfio-pci ids=10de:1c82,10de:0fb9 disable_vga=1" > /etc/modprobe.d/vfio.conf
+  # echo "options vfio-pci ids=10de:1c82,10de:0fb9 disable_vga=1" >> /etc/modprobe.d/vfio.conf
   ```
 
-* Update initramfs, GRUB and then reboot.
+  **Method 2:** Instruct GRUB to disregard devices that need to be passed through by modifying `/etc/default/grub` and appending `vfio_pci.ids=10de:1c82,10de:0fb9` to `GRUB_CMDLINE_LINUX_DEFAULT`
+
+* Regardless of method, update initramfs, GRUB and then reboot.
 
   ```
   $ sudo update-grub2
@@ -93,7 +106,7 @@ drivers on macOS.
   ```
 
 * Verify that the IOMMU is enabled, and vfio_pci is working as expected.
-  Consult Arch Wiki again for help on this.
+  Consult Arch Wiki again for help on this. (Often running `lspci -vvv` and verifying that the expected devices are using `vfio-pci` as their `Kernel driver in use` is sufficient)
 
 * On the macOS VM, install a NVIDIA Web Driver version which is appropriate for
   the macOS version. Consult http://www.macvidcards.com/drivers.html for more
@@ -124,22 +137,22 @@ key enabled.
 
 These steps will need to be adapted for your particular setup.
 
-* Isolate the passthrough PCIe devices with vfio-pci, with the help of `lspci
-  -nnk` command.
+* Isolate the passthrough PCIe devices with vfio-pci, with the help of `lspci -nnk` command.
 
-  ```
+```
   $ lspci -nn
   ...
   01:00.0 ... NVIDIA Corporation [GeForce GTX 1050 Ti] [10de:1c82]
   01:00.1 Audio device: NVIDIA Corporation Device [10de:0fb9]
   03:00.0 USB controller: ASMedia ASM1142 USB 3.1 Host Controller [1b21:1242]
+```
+
+Run `echo "options vfio-pci ids=1b21:1242" >> /etc/modprobe.d/vfio.conf` with root privileges, edit `/etc/default/grub` and add the ID to the file as shown in **GPU Passthrough Notes**
+
+* Update initramfs, GRUB and then reboot.
+
   ```
-
-  Add `1b21:1242` to `/etc/modprobe.d/vfio.conf` file in the required format.
-
-* Update initramfs, and then reboot.
-
-  ```
+  $ sudo update-grub2
   $ sudo update-initramfs -k all -u
   ```
 
@@ -161,11 +174,9 @@ These steps will need to be adapted for your particular setup.
   $ scripts/vfio-group.sh 13
   ```
 
-* Add `-device vfio-pci,host=03:00.0,bus=pcie.0 \` line to the
-  `boot-passthrough.sh` script.
+* Add `-device vfio-pci,host=03:00.0,bus=pcie.0 \` line to `boot-passthrough.sh`.
 
-* Boot the VM, and devices attached to the ASMedia USB controller should just
-  work under macOS.
+* Boot the VM, and devices attached to the ASMedia USB controller should just work under macOS.
 
 
 ### Synergy Notes
@@ -206,11 +217,11 @@ Follow the steps below to get a higher resolution:
 
 ### Accelerated Graphics
 
-Install VMsvga2 from [this location](https://sourceforge.net/projects/vmsvga2/). No support
-is provided for this unmaintained project!
+*Note: There is no working QXL driver for macOS so far. No support is provided for this unmaintained project!*
 
-* Add `-vga vmware` to QEMU parameters in the booot script (e.g.
-  boot-macOS.sh), if required.
+Install VMsvga2 from [this location](https://sourceforge.net/projects/vmsvga2/).
+
+Add `-vga vmware` to QEMU parameters in the booot script (e.g. boot-macOS.sh), if required.
 
 * For Clover bootloader, add `wmv_option_fb=0x06` to the `<string>` tag of the
   `Arguments` key of the `config.plist` you use when generating the
@@ -218,22 +229,15 @@ is provided for this unmaintained project!
 
 * See `UEFI/README.md` for GPU passthrough notes.
 
-* Note: There is no working QXL driver for macOS so far.
-
-
 ### Virtual Sound Device
 
-No support is provided for this. You are on your own. The sound output is known
-to be choppy and distorted.
+*Warning: The OpenCore distribution that comes with OSX-KVM already has AppleALC, do not mix VoodooHDA with AppleALC. You may want to consider HDA passthrough if it is practical or use HDMI audio instead*
 
-* Add `-device ich9-intel-hda -device hda-duplex` to the VM configuration.
-  `boot-macOS.sh` already has this change.
+No support is provided for this. You are on your own. The sound output is known to be choppy and distorted.
 
-* To get sound on your virtual Mac, install the VoodooHDA driver from
-  [here](https://sourceforge.net/projects/voodoohda/files/).
+* Add `-device ich9-intel-hda -device hda-duplex` to the VM configuration. `boot-macOS.sh` already has this change.
 
-Note: It seems that playback of Flash videos requires an audio device to be
-present.
+* To get sound on your virtual Mac, install the VoodooHDA driver from [here](https://sourceforge.net/projects/voodoohda/files/).
 
 
 ### Building QEMU from source
@@ -242,26 +246,11 @@ See http://wiki.qemu-project.org/Hosts/Linux for help.
 
 ```
 $ git clone https://github.com/kholia/qemu.git
-
 $ cd qemu
-
 $ git checkout macOS
-
 $ ./configure --prefix=/home/$(whoami)/QEMU --target-list=x86_64-softmmu --audio-drv-list=pa
-
 $ make clean; make; make install
 ```
-
-
-### Connect iPhone / iPad to macOS guest
-
-Some folks are using https://www.virtualhere.com/ to connect iPhone / iPad to
-the macOS guest.
-
-Update: It appears that VirtualHere doesn't work on modern macOS versions.
-
-Please passthrough a PCIe USB card to the virtual machine to be able to connect
-iDevices to it.
 
 
 ### Exposing AES-NI instructions to macOS
@@ -297,7 +286,6 @@ check AES-NI performance,
 
 ```
 openssl speed aes-128-cbc
-
 openssl speed -evp aes-128-cbc  # uses AES-NI
 ```
 
@@ -340,26 +328,6 @@ modprobe -r kvm_intel
 modprobe kvm_intel nested=1
 ```
 
-Also you have to add `vmx,rdtscp` arguments to the `-cpu` option in
-`boot-macOS.sh` file.
-
-
-### Using virtio-net-osx with macOS
-
-Configuration options for macOS Sierra (thanks to virtio-net-osx project users),
-
-```
--netdev user,id=hub0port0 \
--device virtio-net,netdev=hub0port0,id=eth0 \
--set device.eth0.vectors=0
-```
-
-Adapt these to your use case. These changes need to be made in the `boot-*`
-scripts. On the guest, install the included `Virtio-Net-Driver-0.9.4.pkg`
-package.
-
-Update: This is no longer recommended. Use `vmxnet3` adapter instead.
-
 
 ### Using virtio-blk-pci with macOS
 
@@ -389,8 +357,72 @@ sudo setfacl -m u:libvirt-qemu:rx <path>  # fix virt-manager perm problems
 
   ```
   7z l example.pkg
-
-  7z x example.pkg
-
+7z x example.pkg
   gunzip -c <something>.pkg/Payload | cpio -i
-  ```
+```
+
+### QEMU quits with `gtk initialization failed`
+
+Append the `display=none` argument to your QEMU execution script (this has already been done for `boot-passthrough.sh`)
+
+### `createinstallmedia`-generated install medium not detected
+
+In OpenCore's `config.plist` and set `ScanPolicy` to `0` ([For more information, check the Dortania Troubleshooting Guide](https://dortania.github.io/OpenCore-Install-Guide/troubleshooting/troubleshooting.html#can-t-see-macos-partitions))
+
+### Attach physical drive to QEMU VM
+
+*Note: If using NVME, passing the controller may be a better option then passing it as a block device*
+
+Run `ls -la /dev/disk/by-id/` to get the unique mapping for the device you want to attach to the VM (like `sda`, `sdb`, `nvme0n1`, while you can attach only a partition like `sda1`, this is not recommended)
+
+```
+$ ls -la /dev/disk/by-id
+total 0
+drwxr-xr-x 2 root root 360 Jul 29 08:14 .
+drwxr-xr-x 8 root root 160 Jul 29 08:14 ..
+lrwxrwxrwx 1 root root   9 Jul 29 08:14 ata-ST2000FFFFF-FFFFFF_FFFFFFFF -> ../../sda
+lrwxrwxrwx 1 root root  10 Jul 29 08:14 ata-ST2000FFFFF-FFFFFF_FFFFFFFF-part1 -> ../../sda1
+lrwxrwxrwx 1 root root  10 Jul 29 08:14 ata-ST2000FFFFF-FFFFFF_FFFFFFFF-part2 -> ../../sda2
+lrwxrwxrwx 1 root root  13 Jul 29 08:14 nvme-eui.ffffffffffffffff -> ../../nvme0n1
+lrwxrwxrwx 1 root root  15 Jul 29 08:14 nvme-eui.ffffffffffffffff-part1 -> ../../nvme0n1p1
+lrwxrwxrwx 1 root root  15 Jul 29 08:14 nvme-eui.ffffffffffffffff-part2 -> ../../nvme0n1p2
+lrwxrwxrwx 1 root root  13 Jul 29 08:14 nvme-Samsung_SSD_960_EVO_512GB_FFFFFFFFFFFFFFF -> ../../nvme0n1
+lrwxrwxrwx 1 root root  15 Jul 29 08:14 nvme-Samsung_SSD_960_EVO_512GB_FFFFFFFFFFFFFFF-part1 -> ../../nvme0n1p1
+lrwxrwxrwx 1 root root  15 Jul 29 08:14 nvme-Samsung_SSD_960_EVO_512GB_FFFFFFFFFFFFFFF-part2 -> ../../nvme0n1p2
+lrwxrwxrwx 1 root root   9 Jul 29 08:14 wwn-0xffffffffffffffff -> ../../sda
+lrwxrwxrwx 1 root root  10 Jul 29 08:14 wwn-0xffffffffffffffff-part1 -> ../../sda1
+lrwxrwxrwx 1 root root  10 Jul 29 08:14 wwn-0xffffffffffffffff-part2 -> ../../sda2
+```
+
+Then edit your QEMU launch script and add these lines (adapt to it your hardware), then launch the script using `sudo` (because you cannot write to a block device without `root` permissions)
+
+```
+-drive id=NVMEDrive,if=none,file=/dev/disk/by-id/nvme-Samsung_SSD_960_EVO_512GB_FFFFFFFFFFFFFFF,format=raw \
+-device ide-hd,bus=sata.4,drive=NVMEDrive \
+```
+
+### Run the Virtual Machine on Boot
+
+* Edit your QEMU launch script and set the absolute path of `OSX-KVM` as the value of `REPO_PATH`
+
+* Edit `/etc/rc.local` and add the absolute path of the script (with or without `sudo` depending on your needs) to the bottom of the script.
+
+### Setup SSH for internal remote access
+
+Presuming your network interface has a statically defined internal IP (on Ubuntu)
+
+```
+$ sudo apt install openssh-server -y
+$ sudo ufw allow ssh
+$ sudo update-rc.d ssh defaults
+$ sudo systemctl enable ssh
+$ sudo systemctl enable ssh.socket
+$ sudo systemctl enable ssh.service
+```
+
+### Improve performance on AMD GPUs
+
+*Note: As of July 2020, Navi10/14 firmware has been disabled on macOS >10.15.5 due to broken SMU firmware*
+
+Consider using CMMChris's [RadeonBoost.kext](https://forums.macrumors.com/threads/tired-of-low-geekbench-scores-use-radeonboost.2231366/) for the RX480, RX580, RX590 and Radeon VII GPUs.
+
