@@ -233,7 +233,7 @@ Add `-vga vmware` to QEMU parameters in the booot script (e.g. boot-macOS.sh), i
 
 *Warning: The OpenCore distribution that comes with OSX-KVM already has AppleALC, do not mix VoodooHDA with AppleALC. You may want to consider HDA passthrough if it is practical or use HDMI audio instead*
 
-No support is provided for this. You are on your own. The sound output is known to be choppy and distorted.
+No support is provided for this. You are on your own. The sound output is known to be choppy and distorted. *(Though this can be mitigated using [spheenik's version of qemu](https://github.com/spheenik/qemu/tree/3.1.0-patched) but it has not been thoroughly tested)*
 
 * Add `-device ich9-intel-hda -device hda-duplex` to the VM configuration. `boot-macOS.sh` already has this change.
 
@@ -359,7 +359,8 @@ sudo setfacl -m u:libvirt-qemu:rx <path>  # fix virt-manager perm problems
   7z l example.pkg
 7z x example.pkg
   gunzip -c <something>.pkg/Payload | cpio -i
-```
+  ```
+
 
 ### QEMU quits with `gtk initialization failed`
 
