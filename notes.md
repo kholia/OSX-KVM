@@ -355,11 +355,11 @@ sudo setfacl -m u:libvirt-qemu:rx <path>  # fix virt-manager perm problems
 
 * Use a modern version of `7-Zip` instead.
 
-  ```
-  7z l example.pkg
+```
+7z l example.pkg
 7z x example.pkg
-  gunzip -c <something>.pkg/Payload | cpio -i
-  ```
+gunzip -c <something>.pkg/Payload | cpio -i
+```
 
 
 ### QEMU quits with `gtk initialization failed`
