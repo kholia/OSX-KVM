@@ -81,3 +81,7 @@
 - offlinehacker - libvirt support
 
 - hellodeibu - Big Sur support
+
+- kittywhiskers - Large number of changes - thank you!
+
+- zimbatm - Thank you!

@@ -2,22 +2,25 @@
 
 Catalina installs the same way as [Mojave](../Mojave/README.md).
 
-Tested with macOS Catalina 10.15 with OpenCore-0.5.9-DEBUG.zip (from June, 2020).
+Tested with macOS Catalina 10.15.6 with OpenCore-0.6.0-DEBUG.zip (from August, 2020).
 
-Note: Use `create_iso_catalina.sh` for generating a macOS Catalina based ISO
-image.
+Note: Use `create_iso_catalina.sh` for generating a macOS Catalina based "ISO"
+(actually DMG) image.
 
-Attention: Use 64-bit Ubuntu 20.04 LTS as the host for "best" results.
+Attention: Use 64-bit Ubuntu 20.04 LTS as the host OS for "best" results.
 Guestfish output results may vary across platforms.
 
 ```
-git submodule update --init --recursive
-
 cp -a ../resources/OcBinaryData/Resources EFI/OC/Resources  # symlink hacks don't work
 
-rm -f OpenCore.qcow2; sudo ./opencore-image-ng.sh  --cfg config.plist --img OpenCore.qcow2
+# Normal OpenCore Image
+rm -f OpenCore.qcow2; sudo ./opencore-image-ng.sh --cfg config.plist --img OpenCore.qcow2
 
-rm -f OpenCore.qcow2; sudo ./opencore-image-ng.sh  --cfg config-nopicker.plist --img OpenCore-nopicker.qcow2  # ShowPicker disabled
+# OpenCore w/ ShowPicker Disabled
+rm -f OpenCore-nopicker.qcow2; sudo ./opencore-image-ng.sh --cfg config-nopicker.plist --img OpenCore-nopicker.qcow2
+
+# Passthrough Optimized OpenCore
+rm -f OpenCore-Passthrough.qcow2; sudo ./opencore-image-ng.sh --cfg config-pt.plist --img OpenCore-Passthrough.qcow2
 ```
 
 Note: https://github.com/thenickdude/KVM-Opencore is one of the best resources
