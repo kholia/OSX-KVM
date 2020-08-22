@@ -54,14 +54,12 @@
 
   7z l SharedSupport.dmg   # test ok
 
-  mkdir stuff
+  mkdir ~/stuff
   darling-dmg SharedSupport.dmg ~/stuff
 
-  $ 7z l ~/stuff/com_apple_MobileAsset_MacSoftwareUpdate/0dc2cd535db0da2a9f559215671686ea4c055394.zip
+  $ 7z l ~/stuff/com_apple_MobileAsset_MacSoftwareUpdate/bab26be6be4f44f58c511a1482a0e87db9a89253.zip
   ...
-  2020-06-18 01:39:16 D....            0            0  AssetData/Restore
-  2020-06-18 01:38:34 .....         2848         2729  AssetData/Restore/BaseSystem.chunklist
-  2020-06-18 01:39:18 .....    740415556    735058236  AssetData/Restore/BaseSystem.dmg
+  2020-08-14 21:22:18 .....    745712482    740281200  AssetData/Restore/BaseSystem.dmg
   ```
 
   There is the required `BaseSystem.dmg` file.
