@@ -80,7 +80,7 @@ function fish_init() {
 	esac
 
 	msg "creating and adding disk image"
-	fish disk-create $img $format 256M
+	fish disk-create $img $format 384M
 	fish add $img
 	fish run
 }
@@ -127,8 +127,8 @@ fish_init
 
 msg "partition disk image"
 fish part-init /dev/sda gpt
-fish part-add /dev/sda p 2048 200000
-fish part-add /dev/sda p 202048 -2048
+fish part-add /dev/sda p 2048 300000
+fish part-add /dev/sda p 302048 -2048
 fish part-set-gpt-type /dev/sda 1 C12A7328-F81F-11D2-BA4B-00A0C93EC93B
 fish part-set-bootable /dev/sda 1 true
 fish mkfs vfat /dev/sda1 label:EFI

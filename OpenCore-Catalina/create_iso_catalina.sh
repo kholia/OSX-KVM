@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# Create a "ISO" (DMG) image for powering offline macOS installations
+
 # Bail at first ISO creation error
 set -e
 
@@ -15,26 +17,22 @@ fi
 if [ "$#" -eq 2 ]
 then
     in_path=$1
-    iso_path=$2
+    dmg_path=$2
 elif [ "$#" -eq 0 ]
 then
     in_path=/Applications/Install\ macOS\ Catalina.app
-    iso_path=~/Desktop/Catalina.iso
+    dmg_path=~/Desktop/Catalina.iso
     echo "Using default paths:"
     echo "Install app: $in_path"
-    echo "Output disk: $iso_path"
+    echo "Output disk: $dmg_path"
 else
     display_help
 fi
 
 # Borrrowed from multiple internet sources
-hdiutil create -o "$iso_path.cdr" -size 9g -layout SPUD -fs HFS+J
-hdiutil attach "$iso_path.cdr.dmg" -noverify -mountpoint /Volumes/install_build
+hdiutil create -o "$dmg_path" -size 9g -layout GPTSPUD -fs HFS+J
+hdiutil attach "$dmg_path" -noverify -mountpoint /Volumes/install_build
 sudo "$in_path/Contents/Resources/createinstallmedia" --volume /Volumes/install_build --nointeraction
-hdiutil detach "/Volumes/Install macOS Catalina"
 
-# hdiutil convert will actually put the output file at $iso_path.cdr
-hdiutil convert "$iso_path.cdr.dmg" -format UDTO -o "$iso_path"
-
-mv "$iso_path.cdr" "$iso_path"
-rm "$iso_path.cdr.dmg"
+# createinstallmedia may leave a bunch of subvolumes still mounted when it exits, so we need to use -force here.
+hdiutil detach --force "/Volumes/Install macOS Catalina"

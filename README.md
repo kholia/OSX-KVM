@@ -5,8 +5,8 @@ is available [here](README-OLD.md).
 
 This `new method` does *not* require an existing physical/virtual macOS
 installation. However, this `new method` requires internet access during the
-macOS installation process. This limitation may be addressed in a future
-commit.
+macOS installation process. Offline macOS installations are also possible with
+the `OSX-KVM` project.
 
 Note: All blobs and resources included in this repository are re-derivable (all
 instructions are included!).
@@ -87,7 +87,7 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
 * Install QEMU and other packages.
 
   ```
-  sudo apt-get install qemu uml-utilities virt-manager dmg2img git wget libguestfs-tools
+  sudo apt-get install qemu uml-utilities virt-manager dmg2img git wget libguestfs-tools -y
   ```
 
   This step may need to be adapted for your Linux distribution.
@@ -116,18 +116,20 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
 
   ```
   $ ./fetch-macOS.py
-  #    ProductID    Version    Build   Post Date  Title
-  1    061-26578    10.14.5  18F2059  2019-10-14  macOS Mojave
-  2    061-26589    10.14.6   18G103  2019-10-14  macOS Mojave
-  3    041-91758    10.13.6    17G66  2019-10-19  macOS High Sierra
-  4    041-88800    10.14.4  18E2034  2019-10-23  macOS Mojave
-  5    041-90855    10.13.5   17F66a  2019-10-23  Install macOS High Sierra Beta
-  6    061-44345    10.15.2   19C39d  2019-11-15  macOS Catalina Beta
-  7    061-77704    10.15.4  19E242d  2020-02-26  macOS Catalina Beta
-  8    061-86291    10.15.3  19D2064  2020-03-23  macOS Catalina
-  9    061-96006    10.15.4   19E287  2020-04-08  macOS Catalina
+   #    ProductID    Version    Build   Post Date  Title
+   1    061-26578    10.14.5  18F2059  2019-10-14  macOS Mojave
+   2    061-26589    10.14.6   18G103  2019-10-14  macOS Mojave
+   3    041-91758    10.13.6    17G66  2019-10-19  macOS High Sierra
+   4    041-88800    10.14.4  18E2034  2019-10-23  macOS Mojave
+   5    041-90855    10.13.5   17F66a  2019-10-23  Install macOS High Sierra Beta
+   6    061-86291    10.15.3  19D2064  2020-03-23  macOS Catalina
+   7    001-04366    10.15.4  19E2269  2020-05-04  macOS Catalina
+   8    001-15219    10.15.5  19F2200  2020-06-15  macOS Catalina
+   9    061-94403    10.15.6    19G73  2020-07-15  macOS Catalina
+  10    001-36735    10.15.6  19G2006  2020-08-06  macOS Catalina
+  11    001-36801    10.15.6  19G2021  2020-08-12  macOS Catalina
 
-  Choose a product to download (1-9): 9
+  Choose a product to download (1-11): 11
   ```
 
   Attention: Modern NVIDIA GPUs are supported on HighSierra but not on later
@@ -177,14 +179,12 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
 
 ### Installation
 
-- CLI method (primary). Just run the `boot-macOS-Catalina.sh` script to start the
+- CLI method (primary). Just run the `OpenCore-Boot.sh` script to start the
   installation proces.
 
   ```
-  ./boot-macOS-Catalina.sh
+  ./OpenCore-Boot.sh
   ```
-
-  Experimental: Use the `OpenCore-Boot.sh` script to maximize fun ;)
 
   If you are new to installing macOS, see the [older README](README-OLD.md) for
   help.
@@ -232,12 +232,15 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
 
   This has been enough for me so far.
 
+  Note: You may need to [enable the `rc.local` functionality manually on modern Ubuntu versions](https://linuxmedium.com/how-to-enable-etc-rc-local-with-systemd-on-ubuntu-20-04/).
+
 * To get sound on your virtual Mac, see the "Virtual Sound Device" in [notes](notes.md).
 
 * To passthrough GPUs and other devices, see [these notes](notes.md).
 
-* Need a different resolution? Check out the [notes](notes.md) included in this
-  repository.
+* Need a different resolution? Check out the [notes](notes.md) included in this repository.
+
+* To generate your own SMBIOS, use [GenSMBIOS](https://github.com/corpnewt/GenSMBIOS)
 
 
 ### Is This Legal?
@@ -249,7 +252,7 @@ Gabriel Somlo also has [some thoughts](http://www.contrib.andrew.cmu.edu/~somlo/
 
 ### Motivation
 
-My aim is to enable macOS based builds + testing, kernel debugging, reversing
+My aim is to enable macOS based builds + testing, kernel debugging, reversing,
 and security tasks in an easy, reproducible manner without needing to invest in
 Apple's closed ecosystem (too heavily).
 
