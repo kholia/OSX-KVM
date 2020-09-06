@@ -157,7 +157,7 @@ fish copy-in $WORK/EFI/OC/Tools                /ESP/EFI/OC/
 fish copy-in startup.nsh /
 
 BASE="$(dirname $0)"
-fish copy-in $BASE/config.plist                /ESP/EFI/OC
+fish copy-in "$WORK/config.plist"               /ESP/EFI/OC/
 
 fish find /ESP/
 fish_fini

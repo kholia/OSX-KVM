@@ -15,7 +15,8 @@
 
 MY_OPTIONS="+pcid,+ssse3,+sse4.2,+popcnt,+avx,+aes,+xsave,+xsaveopt,check"
 
-# This script works for Catalina as well as Mojave. Tested with macOS 10.14.6 and macOS 10.15.6.
+# This script works for Big Sur, Catalina, Mojave, and High Sierra. Tested with
+# macOS 10.15.6, macOS 10.14.6, and macOS 10.13.6
 
 ALLOCATED_RAM="3072" # MiB
 CPU_SOCKETS="1"
@@ -41,7 +42,7 @@ args=(
   -smbios type=2
   -device ich9-intel-hda -device hda-duplex
   -device ich9-ahci,id=sata
-  -drive id=OpenCoreBoot,if=none,snapshot=on,format=qcow2,file="$REPO_PATH/OpenCore-Catalina/OpenCore.qcow2"
+  -drive id=OpenCoreBoot,if=none,snapshot=on,format=qcow2,file="$REPO_PATH/OpenCore-Catalina/OpenCore-nopicker.qcow2"
   -device ide-hd,bus=sata.2,drive=OpenCoreBoot
   -device ide-hd,bus=sata.3,drive=InstallMedia
   -drive id=InstallMedia,if=none,file="$REPO_PATH/os.dmg",format=raw

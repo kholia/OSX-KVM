@@ -67,5 +67,5 @@
 - Boot `Big Sur` using the following command:
 
   ```
-  ./OpenCore-BS.sh
+  ./OpenCore-Boot.sh
   ```

@@ -1,12 +1,7 @@
 ### Note
 
-This `README` documents the `new method` to install macOS. The older `README`
-is available [here](README-OLD.md).
-
-This `new method` does *not* require an existing physical/virtual macOS
-installation. However, this `new method` requires internet access during the
-macOS installation process. Offline macOS installations are also possible with
-the `OSX-KVM` project.
+This `README.md` documents the process of creating a `Virtual Hackintosh`
+system.
 
 Note: All blobs and resources included in this repository are re-derivable (all
 instructions are included!).
@@ -56,9 +51,9 @@ help (pull-requests!) with the following work items:
 
 ### Requirements
 
-* A modern Linux distribution. E.g. Ubuntu 18.04 LTS 64-bit or later.
+* A modern Linux distribution. E.g. Ubuntu 20.04 LTS 64-bit or later.
 
-* QEMU > 2.11.1
+* QEMU >= 4.2.0
 
 * A CPU with Intel VT-x / AMD SVM support is required
 
@@ -87,7 +82,7 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
 * Install QEMU and other packages.
 
   ```
-  sudo apt-get install qemu uml-utilities virt-manager dmg2img git wget libguestfs-tools -y
+  sudo apt-get install qemu uml-utilities virt-manager git wget libguestfs-tools -y
   ```
 
   This step may need to be adapted for your Linux distribution.
@@ -98,7 +93,7 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
   ```
   cd ~
 
-  git clone https://github.com/kholia/OSX-KVM.git
+  git clone --depth 1 https://github.com/kholia/OSX-KVM.git
 
   cd OSX-KVM
   ```
@@ -136,13 +131,6 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
   versions (yet).
 
   Next, convert this file into a usable format.
-
-  ```
-  dmg2img BaseSystem.dmg BaseSystem.img
-  ```
-
-  Note: You can also use the following command to do this conversion, if your
-  QEMU version is >= 4.0.0.
 
   ```
   qemu-img convert BaseSystem.dmg -O raw BaseSystem.img
@@ -185,6 +173,8 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
   ```
   ./OpenCore-Boot.sh
   ```
+
+  Note: This same script works for Big Sur, Catalina, Mojave, and High Sierra.
 
   If you are new to installing macOS, see the [older README](README-OLD.md) for
   help.
@@ -240,7 +230,7 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
 
 * Need a different resolution? Check out the [notes](notes.md) included in this repository.
 
-* To generate your own SMBIOS, use [GenSMBIOS](https://github.com/corpnewt/GenSMBIOS)
+* To generate your own SMBIOS, use [GenSMBIOS](https://github.com/corpnewt/GenSMBIOS).
 
 
 ### Is This Legal?
@@ -256,6 +246,4 @@ My aim is to enable macOS based builds + testing, kernel debugging, reversing,
 and security tasks in an easy, reproducible manner without needing to invest in
 Apple's closed ecosystem (too heavily).
 
-Backstory: I was a (poor) student in Canada once and Apple made [my work on
-cracking Apple Keychains](https://github.com/magnumripper/JohnTheRipper/) a lot
-harder than it needed to be.
+Backstory: I was a (poor) student in Canada once and Apple made [my work on cracking Apple Keychains](https://github.com/openwall/john/blob/bleeding-jumbo/src/keychain_fmt_plug.c) a lot harder than it needed to be.

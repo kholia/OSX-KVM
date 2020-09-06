@@ -1,1 +1,0 @@
-fs0:\EFI\CLOVER\CLOVERX64.efi
