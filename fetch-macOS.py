@@ -401,8 +401,8 @@ def main():
     # (Temporary) Hack to fetch Big Sur
     if args.big_sur:
         products = catalog['Products']
-        # Beta 5 ID: https://mrmacintosh.com/whats-new-in-macos-big-sur-11-beta-5-20a5354i/
-        product = products["001-36806"]
+        # Beta 6 ID: https://mrmacintosh.com/whats-new-in-macos-big-sur-11-beta-6-20a5364e
+        product = products["001-43966"]
         workdir = "."
         ignore_cache = False
         for package in product.get('Packages', []):
