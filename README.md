@@ -136,13 +136,15 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
   qemu-img convert BaseSystem.dmg -O raw BaseSystem.img
   ```
 
-* Create a virtual HDD image where macOS will be installed.  If you change the
+* Create a virtual HDD image where macOS will be installed. If you change the
   name of the disk image from `mac_hdd.img` to something else, the boot scripts
-  will need updating to point to the new image name.
+  will need to be updated to point to the new image name.
 
   ```
   qemu-img create -f qcow2 mac_hdd_ng.img 128G
   ```
+
+  NOTE: Create this HDD image file on a fast SSD/NVMe disk for best results.
 
 * Setup quick networking by running the following commands.
 
@@ -203,6 +205,22 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
 
     Note: You may need to run `sudo ip link delete tap0` command before
     `virt-manager` is able to start the `macOS` VM.
+
+
+### Setting Expectations Right
+
+Nice job on setting up a `Virtual Hackintosh` system! Such a system can be used
+for a variety of purposes (e.g. software builds, testing, reversing work), and
+it may be all you need, along with some tweaks documented in this repository.
+
+However, such a system lacks graphical acceleration, a reliable sound sub-system,
+USB (3) functionality and other similar things. To enable these things, take a
+look at our [notes](notes.md). We would like to resume our testing and
+documentation work around this area. Please [reach out to us](mailto:dhiru.kholia@gmail.com?subject=[GitHub]%20OSX-KVM%20Funding%20Support)
+if you are able to fund this area of work.
+
+It is possible to have 'beyond-native-apple-hw' performance but it does require
+work, patience, and a bit of luck (perhaps?).
 
 
 ### Post-Installation

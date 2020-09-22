@@ -35,4 +35,4 @@ hdiutil attach "$dmg_path" -noverify -mountpoint /Volumes/install_build
 sudo "$in_path/Contents/Resources/createinstallmedia" --volume /Volumes/install_build --nointeraction
 
 # createinstallmedia may leave a bunch of subvolumes still mounted when it exits, so we need to use -force here.
-hdiutil detach --force "/Volumes/Install macOS Mojave"
+hdiutil detach -force "/Volumes/Install macOS Mojave"

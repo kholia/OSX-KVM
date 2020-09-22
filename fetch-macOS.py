@@ -140,6 +140,11 @@ def parse_server_metadata(filename):
     metadata = {}
     metadata['title'] = title
     metadata['version'] = vers
+
+    """
+    {'title': 'macOS Mojave', 'version': '10.14.5'}
+    {'title': 'macOS Mojave', 'version': '10.14.6'}
+    """
     return metadata
 
 
