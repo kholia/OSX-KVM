@@ -333,14 +333,13 @@ def determine_version(version, product_info):
         exit(1)
 
     # display a menu of choices (some seed catalogs have multiple installers)
-    print('%2s %12s %10s %8s %11s  %s' % ('#', 'ProductID', 'Version',
-                                          'Build', 'Post Date', 'Title'))
+    print('%2s %12s %10s %11s  %s' % ('#', 'ProductID', 'Version',
+                                           'Post Date', 'Title'))
     for index, product_id in enumerate(product_info):
-        print('%2s %12s %10s %8s %11s  %s' % (
+        print('%2s %12s %10s %11s  %s' % (
             index + 1,
             product_id,
             product_info[product_id]['version'],
-            product_info[product_id]['BUILD'],
             product_info[product_id]['PostDate'].strftime('%Y-%m-%d'),
             product_info[product_id]['title']
         ))
