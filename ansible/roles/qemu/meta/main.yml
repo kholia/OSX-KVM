@@ -1,0 +1,5 @@
+---
+allow_duplicates: false
+dependencies:
+- common
+...

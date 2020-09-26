@@ -1,0 +1,7 @@
+---
+macos_version: 10.15.6
+macos_volume_size: 64G
+macos_disk_image: /opt/OSX-KVM/mac_hdd_ng.img
+macos_vm_name: macOS
+macos_patched_bootloader_sha256: 876581aeb6f20a0519be95369bd033c7428df10babf437d76809783e9624a8b6
+...

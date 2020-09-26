@@ -1,0 +1,336 @@
+---
+- name: include environment variables
+  include_vars:
+    dir: vars
+  tags: osx-kvm
+
+- name: include environment variables (qemu)
+  include_vars:
+    dir: ../../qemu/vars
+  tags: osx-kvm
+
+- name: check completion flag
+  stat:
+    path: /home/{{ ansible_ssh_user }}/.osx-kvm.done
+  register: setup_done
+  when: ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu'
+  tags: osx-kvm
+
+- name: destroy domain(s)
+  virt:
+    command: '{{ item.command }}'
+    name: '{{ item.name }}'
+  with_items:
+  - { command: destroy, name: '{{ macos_vm_name }}' }
+  when: >
+    (ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu')
+    and setup_done.stat.exists == false
+  ignore_errors: true
+  tags: osx-kvm
+
+- name: undefine domain(s)
+  shell: |
+    virsh {{ item.command }} {{ item.name }} {{ item.params | default(omit) }} || true
+  with_items:
+  - { command: undefine, name: '{{ macos_vm_name }}', params: '--nvram' }
+  when: >
+    (ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu')
+    and setup_done.stat.exists == false
+  ignore_errors: true
+  tags: osx-kvm
+
+- name: clone OSX-KVM project
+  git:
+    repo: 'https://github.com/kholia/OSX-KVM.git'
+    dest: /opt/OSX-KVM
+    # OpenCore.qcow2 boot timeout patch diff is based on this commit, see below
+    version: 4adc0e7385638442daf4eb0cb01a54dc92a132d4
+    force: true
+  when: >
+    (ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu')
+    and setup_done.stat.exists == false
+  tags: osx-kvm
+
+- name: remove image(s)
+  file:
+    path: '/opt/OSX-KVM/{{ item.name }}'
+    state: absent
+  with_items:
+  - { name: OpenCore-Catalina/OpenOpenCore.qcow2 }
+  when: >
+    (ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu')
+    and setup_done.stat.exists == false
+  tags: osx-kvm
+
+# patch OpenCore.qcow2 with boot timeout option (otherwise it never boots)
+#
+# $ sudo guestfish --rw -a OpenCore.qcow2
+# ...
+# ><fs> run
+# ><fs> list-filesystems
+# ><fs> mount /dev/sda1 /
+# (manual) set picker timeout > 0 (//Misc/Boot/Timeout)
+# ><fs> edit /EFI/OC/config.plist
+# ...
+# ><fs> sync
+# ><fs> exit
+#
+# $ git diff --binary | sudo tee patch.git-diff
+- name: set bootloader timeout
+  block:
+  - name: copy diff
+    copy:
+      src: patch.git-diff
+      dest: /tmp/patch.git-diff
+      mode: 0644
+
+  - name: apply diff
+    shell: |
+      git apply /tmp/patch.git-diff
+    args:
+      chdir: /opt/OSX-KVM
+
+  - name: get bootloader checksum
+    stat:
+      path: /opt/OSX-KVM/OpenCore-Catalina/OpenCore.qcow2
+      checksum_algorithm: sha256
+    register: result
+
+  - name: verify checksum
+    fail:
+      msg: 'patch failed checksum: {{ result.stat.checksum }} != {{ macos_patched_bootloader_sha256 }}'
+    when: result.stat.checksum != macos_patched_bootloader_sha256
+
+  when: >
+    (ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu')
+    and setup_done.stat.exists == false
+  tags: osx-kvm
+
+- name: check for existing installer image
+  stat:
+    path: /opt/OSX-KVM/BaseSystem.img
+  register: installer_img
+  when: ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu'
+  tags: osx-kvm
+
+- name: fetch and convert installer image
+  shell: |
+    {{ item.cmd }}
+  args:
+    chdir: /opt/OSX-KVM
+  with_items:
+  - { cmd: 'python3 ./fetch-macOS.py --version {{ macos_version }}' }
+  - { cmd: 'qemu-img convert BaseSystem.dmg -O raw BaseSystem.img' }
+  when: >
+    (ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu')
+    and setup_done.stat.exists == false
+    and installer_img.stat.exists == false
+  tags: osx-kvm
+
+- name: check for existing installation
+  stat:
+    path: '{{ macos_disk_image }}'
+  register: macos_img
+  when: ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu'
+  tags: osx-kvm
+
+- name: create volume
+  shell: qemu-img create -f qcow2 {{ macos_disk_image }} {{ macos_volume_size }}
+  args:
+    chdir: /opt/OSX-KVM
+  when: >
+    (ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu')
+    and macos_img.stat.exists == false
+    and setup_done.stat.exists == false
+  tags: osx-kvm
+
+- name: define domain (setup)
+  virt:
+    command: define
+    xml: '{{ lookup("template", "macOS-libvirt-Catalina.xml.template") }}'
+  when: >
+    (ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu')
+    and setup_done.stat.exists == false
+  tags: osx-kvm
+
+- name: (auto)start VM
+  virt:
+    name: '{{ macos_vm_name }}'
+    autostart: true
+  when: >
+    ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu'
+  tags: osx-kvm
+
+- name: (re)start VM
+  virt:
+    name: '{{ macos_vm_name }}'
+    state: running
+  when: >
+    ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu'
+  tags: osx-kvm
+
+- name: wait for L2 networking
+  shell: |
+    vnet=$(virsh domiflist {{ macos_vm_name }} | grep {{ ethernet_bridge_device }} | awk '{print $1}')
+    virsh domif-getlink --domain {{ macos_vm_name }} --interface ${vnet}
+  register: result
+  retries: 20
+  delay: 3
+  until: "' up' in result.stdout"
+  when: >
+    (ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu')
+    and setup_done.stat.exists == false
+  tags: osx-kvm
+
+- name: get L3 address
+  shell: |
+    mac=$(virsh domiflist {{ macos_vm_name }} | grep {{ ethernet_bridge_device }} | awk '{print $5}')
+    arp | grep ${mac} | awk '{print $1}'
+  register: result
+  retries: 60
+  delay: 3
+  until: result.stdout != ''
+  when: >
+    (ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu')
+    and setup_done.stat.exists == false
+  tags: osx-kvm
+
+- name: set fact
+  set_fact:
+    ipaddr: '{{ result.stdout }}'
+  when: >
+    (ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu')
+    and setup_done.stat.exists == false
+  tags: osx-kvm
+
+- name: wait for L3 networking
+  shell: |
+    ping -4 -I {{ ethernet_bridge_device }} -w 1 -c 1 {{ ipaddr }}
+  register: result
+  retries: 60
+  delay: 3
+  until: result.rc == 0
+  when: >
+    (ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu')
+    and setup_done.stat.exists == false
+  tags: osx-kvm
+
+- name: perform manual steps...
+  vars:
+    msg: >
+      (1) enable X11 forwarding
+
+      (2) connect to VM console to inspect
+
+          $ ssh -Y {{ ansible_ssh_user }}@{{ ansible_default_ipv4.address }} \
+              sudo -E virt-manager
+
+
+      (3) (re)install MacOS using Recovery System
+      
+      (4) enable Remote Login (OpenSSH) and Screen Sharing (VNC)
+
+  debug:
+    msg: "{{ msg.split('\n') }}"
+  when: >
+    (ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu')
+    and setup_done.stat.exists == false
+  tags: osx-kvm
+
+- name: wait for OpenSSH
+  wait_for:
+    host: '{{ ipaddr }}'
+    port: 22
+    timeout: 15
+  register: result
+  # wait for one hour for Remote Login (SSH) on port 22
+  retries: 240
+  delay: 1
+  until: result is succeeded
+  when: >
+    (ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu')
+    and setup_done.stat.exists == false
+  tags: osx-kvm
+
+- name: set completion flag
+  file:
+    path: /etc/{{ ansible_ssh_user }}/.osx-kvm.done
+    state: touch
+  register: setup_complete
+  when: >
+    (ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu')
+    and setup_done.stat.exists == false
+    and result is succeeded
+  notify: (re)start VM
+  tags: osx-kvm
+
+- name: (re)define and (re)start runtime domain
+  block:
+  - name: stop VM
+    virt:
+      name: '{{ macos_vm_name }}'
+      state: shutdown
+    notify: (re)start VM
+    ignore_errors: true
+
+  - name: destroy domain(s)
+    virt:
+      command: '{{ item.command }}'
+      name: '{{ item.name }}'
+    with_items:
+    - { command: destroy, name: '{{ macos_vm_name }}' }
+    ignore_errors: true
+    notify: (re)start VM
+
+  - name: undefine domain(s) and restore NVRAM
+    shell: |
+      virsh {{ item.command }} {{ item.name }} {{ item.params | default(omit) }} || true
+
+      git checkout -- OVMF_VARS-1024x768.fd || true
+    args:
+      chdir: /opt/OSX-KVM
+    with_items:
+    - { command: undefine, name: '{{ macos_vm_name }}', params: '--nvram' }
+    ignore_errors: true
+    notify: (re)start VM
+
+  - name: remove install disk
+    xml:
+      xmlstring: '{{ lookup("template", "macOS-libvirt-Catalina.xml.template") }}'
+      xpath: "/domain/devices/disk[source/@file='/opt/OSX-KVM/BaseSystem.img']"
+      state: absent
+    register: result
+    notify: (re)start VM
+
+  - name: define domain (run)
+    virt:
+      command: define
+      xml: '{{ result.xmlstring }}'
+    notify: (re)start VM
+
+  - name: (auto)start VM
+    virt:
+      name: '{{ macos_vm_name }}'
+      autostart: true
+
+  - name: start VM
+    virt:
+      name: '{{ macos_vm_name }}'
+      state: running
+    ignore_errors: true
+
+  when: >
+    (ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu')
+    and (setup_complete.changed | default(false)
+    or setup_done.stat.exists == false | default(false))
+    and macos_img.stat.exists == false | default(false)
+  tags: osx-kvm
+
+- name: next steps...
+  debug:
+    msg: '$ open vnc://{{ ipaddr }}:5590'
+  when: >
+    (ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu')
+    and setup_complete.changed | default(false)
+  tags: osx-kvm
+...

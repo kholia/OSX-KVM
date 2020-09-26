@@ -1,0 +1,5 @@
+<network>
+  <name>default</name>
+  <forward mode="bridge"/>
+  <bridge name="{{ ethernet_bridge_device }}"/>
+</network>

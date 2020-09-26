@@ -1,0 +1,22 @@
+---
+# minimum required for Ansible to connect to host
+- name: install Python 3
+  become: true
+  raw: |
+    test -e /usr/bin/python3 || (apt -y update && apt install -y python3-minimal)
+    test -e /usr/bin/pip3 || (apt -y update && apt install -y python3-pip)
+  changed_when: false
+  when: ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu'
+  tags: bootstrap
+
+- name: install Python module(s)
+  become: true
+  pip:
+    name: '{{ item.name }}'
+    state: '{{ item.state }}'
+  changed_when: false
+  with_items:
+  - { name: pip, state: latest }
+  when: ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu'
+  tags: bootstrap
+...

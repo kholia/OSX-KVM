@@ -1,0 +1,22 @@
+---
+- name: (re)start VMs
+  virt:
+    name: '{{ item }}'
+    command: start
+    state: running
+  with_items: '{{ running_vms.list_vms }}'
+  when: ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu'
+  tags: qemu
+
+- name: save ip4tables
+  shell: iptables-save > /etc/iptables/rules.v4
+  listen: persist iptables
+  when: ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu'
+  tags: qemu
+
+- name: save ip6tables
+  shell: ip6tables-save > /etc/iptables/rules.v6
+  listen: persist iptables
+  when: ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu'
+  tags: qemu
+...

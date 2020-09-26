@@ -1,0 +1,123 @@
+---
+- name: install packages (apt)
+  apt:
+    name: '{{ item.name }}'
+    state: '{{ item.state }}'
+    update_cache: true
+    force_apt_get: true
+    dpkg_options: force-confnew
+  with_items:
+  - { name: qemu, state: latest }
+  - { name: qemu-kvm, state: latest }
+  - { name: qemu-utils, state: latest }
+  - { name: uml-utilities, state: latest }
+  - { name: virt-manager, state: latest }
+  - { name: dmg2img, state: latest }
+  - { name: libguestfs-tools, state: latest }
+  - { name: bridge-utils, state: latest }
+  - { name: python3-lxml, state: latest }
+  - { name: libosinfo-bin, state: latest }
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  when: ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu'
+  tags: qemu
+
+- name: forward bridge traffic
+  iptables:
+    chain: FORWARD
+    action: insert
+    in_interface: br0
+    out_interface: br0
+    jump: ACCEPT
+    comment: forward bridge traffic
+  when: ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu'
+  notify: persist iptables
+  tags: qemu
+
+- name: create directory
+  file:
+    path: /etc/modprobe.d
+    state: directory
+  when: ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu'
+  tags: qemu
+
+- name: copy KVM module config
+  copy:
+    src: kvm.conf
+    dest: /etc/modprobe.d/kvm.conf
+    mode: 0644
+  register: kvm_modules
+  when: ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu'
+  tags: qemu
+
+- name: list running VMs
+  virt:
+    command: list_vms
+    state: running
+  register: running_vms
+  when: ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu' and kvm_modules.changed
+  tags: qemu
+
+- name: show running VMs
+  debug:
+    msg: '{{ running_vms }}'
+  when: ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu' and kvm_modules.changed
+  tags: qemu
+
+- name: attempt graceful shutdown
+  virt:
+    name: '{{ item }}'
+    command: shutdown
+    state: shutdown
+  with_items: '{{ running_vms.list_vms }}'
+  when: ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu' and kvm_modules.changed
+  notify: (re)start VMs
+  tags: qemu
+
+- name: wait...
+  virt:
+    name: '{{ item }}'
+    command: status
+  with_items: '{{ running_vms.list_vms }}'
+  register: result
+  retries: 20
+  delay: 3
+  until: result.status == 'shutdown'
+  when: ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu' and kvm_modules.changed
+  ignore_errors: true
+  tags: qemu
+
+- name: stop running VMs
+  virt:
+    name: '{{ item }}'
+    # stop is not a valid command it seems :/
+    command: destroy
+    state: destroyed
+  with_items: '{{ running_vms.list_vms }}'
+  when: ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu' and kvm_modules.changed
+  notify: (re)start VMs
+  ignore_errors: true
+  tags: qemu
+
+- name: (re)load modules
+  shell: |
+    modprobe -r kvm_intel \
+      && modprobe -r kvm \
+      && modprobe kvm \
+      && modprobe kvm_intel
+  register: result
+  retries: 5
+  delay: 2
+  until: result is not failed
+  when: ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu' and kvm_modules.changed
+  tags: qemu
+
+- name: (re)create and (auto)start default bridge
+  virt_net:
+    command: define
+    name: default
+    xml: '{{ lookup("template", "default.xml.template") }}'
+    autostart: true
+  when: ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu'
+  tags: qemu
+...

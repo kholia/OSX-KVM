@@ -10,3 +10,4 @@ mac_hdd.img
 *.smd
 *.dmg
 OVMF_VARS-1024x768.fd
+.DS_Store

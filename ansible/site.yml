@@ -1,0 +1,29 @@
+---
+- name: bootstrap
+  hosts: all
+  gather_facts: true
+  roles:
+  - role: bootstrap
+  tags:
+  - bootstrap
+  - common
+  - qemu
+  - osx-kvm
+
+- name: run playbook
+  hosts: all
+  gather_facts: true
+  become: true
+  roles:
+  - role: common
+    when: ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu'
+    tags: common
+
+  - role: qemu
+    when: ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu'
+    tags: qemu
+
+  - role: osx-kvm
+    when: ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu'
+    tags: osx-kvm
+...

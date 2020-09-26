@@ -1,0 +1,12 @@
+---
+- name: (re)start VM
+  virt:
+    name: '{{ macos_vm_name }}'
+    command: '{{ item.command }}'
+  with_items:
+  - { command: shutdown }
+  - { command: start }
+  when: ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu'
+  ignore_errors: true
+  tags: osx-kvm
+...

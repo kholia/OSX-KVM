@@ -1,0 +1,89 @@
+---
+- name: autoremove unused packages
+  command: |
+    apt-get -qy autoremove \
+      -o Dpkg::Options::='--force-confdef' \
+      -o Dpkg::Options::='--force-confold'
+  args:
+    warn: false
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  register: result
+  changed_when: "'The following packages will be REMOVED' in result.stdout"
+  ignore_errors: true
+  when: ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu'
+  tags: common
+
+- name: upgrade software
+  apt:
+    upgrade: dist
+    autoremove: true
+    purge: true
+    update_cache: true
+    force_apt_get: true
+    dpkg_options: force-confnew
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  ignore_errors: true
+  when: ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu'
+  tags: common
+
+- name: install packages
+  apt:
+    name: '{{ item.name }}'
+    state: '{{ item.state }}'
+    update_cache: true
+    force_apt_get: true
+    dpkg_options: force-confnew
+  with_items:
+  - { name: apt-transport-https, state: latest }
+  - { name: ca-certificates, state: latest }
+  - { name: software-properties-common, state: latest }
+  - { name: curl, state: latest }
+  - { name: wget, state: latest }
+  - { name: jq, state: latest }
+  - { name: vim, state: latest }
+  - { name: git, state: latest }
+  - { name: dnsutils, state: latest }
+  - { name: htop, state: latest }
+  - { name: ntp, state: latest }
+  - { name: ntpdate, state: latest }
+  - { name: telnet, state: latest }
+  - { name: net-tools, state: latest }
+  - { name: iptables-persistent, state: latest }
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  when: ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu'
+  tags: common
+
+- name: set kernel parameters
+  sysctl:
+    name: '{{ item.name }}'
+    value: '{{ item.value }}'
+    sysctl_set: yes
+  with_items:
+  - { name: net.ipv4.ip_forward, value: '1' }
+  - { name: net.ipv4.conf.all.arp_accept, value: '1' }
+  when: ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu'
+  tags: common
+
+- name: stop NTP
+  service:
+    name: ntp
+    state: stopped
+  when: ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu'
+  tags: common
+
+- name: set datetime
+  command: ntpdate-debian
+  when: ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu'
+  tags: common
+
+- name: enable and start NTP
+  service:
+    name: ntp
+    state: started
+    enabled: true
+  when: ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu'
+  tags: common
+...
