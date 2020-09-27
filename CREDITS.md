@@ -85,3 +85,5 @@
 - kittywhiskers - Large number of changes - thank you!
 
 - zimbatm - Thank you!
+
+- Peter Asanov (ink-splatters) - Fixes for the OS-fetch script

@@ -11,6 +11,8 @@ over email](mailto:dhiru.kholia@gmail.com?subject=[GitHub]%20OSX-KVM%20Commercia
 
 Looking for `Big Sur` support? See these [notes](Big-Sur.md).
 
+Yes, we support offline macOS installations now 🎉
+
 
 ### Contributing Back
 
@@ -19,8 +21,6 @@ help (pull-requests!) with the following work items:
 
 * Create *full* installation (ISO) image without requiring an existing macOS
   physical/virtual installation.
-
-* An Ansible playbook to automate all-the-things!
 
 * Documentation around running macOS on popular cloud providers (GCP, AWS). See
   the `Is This Legal?` section and associated references.
@@ -111,18 +111,18 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
 
   ```
   $ ./fetch-macOS.py
-   #    ProductID    Version    Build   Post Date  Title
-   1    061-26578    10.14.5  18F2059  2019-10-14  macOS Mojave
-   2    061-26589    10.14.6   18G103  2019-10-14  macOS Mojave
-   3    041-91758    10.13.6    17G66  2019-10-19  macOS High Sierra
-   4    041-88800    10.14.4  18E2034  2019-10-23  macOS Mojave
-   5    041-90855    10.13.5   17F66a  2019-10-23  Install macOS High Sierra Beta
-   6    061-86291    10.15.3  19D2064  2020-03-23  macOS Catalina
-   7    001-04366    10.15.4  19E2269  2020-05-04  macOS Catalina
-   8    001-15219    10.15.5  19F2200  2020-06-15  macOS Catalina
-   9    061-94403    10.15.6    19G73  2020-07-15  macOS Catalina
-  10    001-36735    10.15.6  19G2006  2020-08-06  macOS Catalina
-  11    001-36801    10.15.6  19G2021  2020-08-12  macOS Catalina
+   #    ProductID    Version   Post Date  Title
+   1    061-26578    10.14.5  2019-10-14  macOS Mojave
+   2    061-26589    10.14.6  2019-10-14  macOS Mojave
+   3    041-91758    10.13.6  2019-10-19  macOS High Sierra
+   4    041-88800    10.14.4  2019-10-23  macOS Mojave
+   5    041-90855    10.13.5  2019-10-23  Install macOS High Sierra Beta
+   6    061-86291    10.15.3  2020-03-23  macOS Catalina
+   7    001-04366    10.15.4  2020-05-04  macOS Catalina
+   8    001-15219    10.15.5  2020-06-15  macOS Catalina
+   9    001-36735    10.15.6  2020-08-06  macOS Catalina
+  10    001-36801    10.15.6  2020-08-12  macOS Catalina
+  11    001-51042    10.15.7  2020-09-24  macOS Catalina
 
   Choose a product to download (1-11): 11
   ```
