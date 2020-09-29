@@ -20,6 +20,12 @@
   make
   ```
 
+- Install dependencies for `darling-dmg`. (The following is for Debian/Ubuntu, different distros name packages differently.)
+
+  ```
+  apt install libxml2-dev libbz2-dev libfuse-dev cmake build-essential
+  ```
+
 - Get `darling-dmg` software.
 
   ```

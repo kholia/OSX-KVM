@@ -87,3 +87,5 @@
 - zimbatm - Thank you!
 
 - Peter Asanov (ink-splatters) - Fixes for the OS-fetch script
+
+- Sangwhan "fish" Moon - Big Sur doc enhancements
