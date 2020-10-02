@@ -19,6 +19,8 @@ Yes, we support offline macOS installations now 🎉
 This project can always use your help, time and attention. I am looking for
 help (pull-requests!) with the following work items:
 
+* Enable `fetch-macOS.py` to work with Python 3.9.x.
+
 * Create *full* installation (ISO) image without requiring an existing macOS
   physical/virtual installation.
 
@@ -260,8 +262,11 @@ Gabriel Somlo also has [some thoughts](http://www.contrib.andrew.cmu.edu/~somlo/
 
 ### Motivation
 
-My aim is to enable macOS based builds + testing, kernel debugging, reversing,
-and security tasks in an easy, reproducible manner without needing to invest in
-Apple's closed ecosystem (too heavily).
+My aim is to enable macOS based educational tasks, builds + testing, kernel
+debugging, reversing, and macOS security research in an easy, reproducible
+manner without getting 'invested' in Apple's closed ecosystem (too heavily).
+
+These `Virtual Hackintosh` systems are not intended to replace the genuine
+physical macOS systems.
 
 Backstory: I was a (poor) student in Canada once and Apple made [my work on cracking Apple Keychains](https://github.com/openwall/john/blob/bleeding-jumbo/src/keychain_fmt_plug.c) a lot harder than it needed to be.
