@@ -11,6 +11,8 @@ over email](mailto:dhiru.kholia@gmail.com?subject=[GitHub]%20OSX-KVM%20Commercia
 
 Looking for `Big Sur` support? See these [notes](Big-Sur.md).
 
+Working with `Proxmox` and macOS? See [Nick's blog for sure](https://www.nicksherlock.com/).
+
 Yes, we support offline macOS installations now 🎉
 
 
@@ -22,8 +24,8 @@ help (pull-requests!) with the following work items:
 * Create *full* installation (ISO) image without requiring an existing macOS
   physical/virtual installation.
 
-* Documentation around running macOS on popular cloud providers (GCP, AWS). See
-  the `Is This Legal?` section and associated references.
+* Documentation around running macOS on popular cloud providers (Hetzner, GCP,
+  AWS). See the `Is This Legal?` section and associated references.
 
 * Test `accel=hvf` flag on QEMU + macOS Mojave on MacBook Pro.
 
@@ -42,11 +44,13 @@ help (pull-requests!) with the following work items:
 * Document usage of [munki](https://github.com/munki/munki) to deploy software
   to such a `build farm`.
 
-* Enable SSH support out of the box or more easily.
+* Enable VNC + SSH support out of the box or more easily.
 
 * Better support + docs for AMD Ryzen.
 
-* Patches to unify the various scripts we have. Robustness improvements.
+* Robustness improvements are always welcome!
+
+* (Not so) crazy idea - automate the macOS installation via OpenCV.
 
 
 ### Requirements
@@ -146,24 +150,6 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
 
   NOTE: Create this HDD image file on a fast SSD/NVMe disk for best results.
 
-* Setup quick networking by running the following commands.
-
-  ```
-  sudo ip tuntap add dev tap0 mode tap
-  sudo ip link set tap0 up promisc on
-  sudo ip link set dev virbr0 up
-  sudo ip link set dev tap0 master virbr0
-  ```
-
-  Note: If `virbr0` network interface is not present on your system, it may
-  have been deactivated. Try enabling it by using the following commands,
-
-  ```
-  virsh net-start default
-
-  virsh net-autostart default
-  ```
-
 * Now you are ready to install macOS 🚀
 
 
@@ -219,6 +205,8 @@ look at our [notes](notes.md). We would like to resume our testing and
 documentation work around this area. Please [reach out to us](mailto:dhiru.kholia@gmail.com?subject=[GitHub]%20OSX-KVM%20Funding%20Support)
 if you are able to fund this area of work.
 
+Specifically, we are looking for an AMD RX 560 GPU for testing purposes.
+
 It is possible to have 'beyond-native-apple-hw' performance but it does require
 work, patience, and a bit of luck (perhaps?).
 
@@ -260,8 +248,11 @@ Gabriel Somlo also has [some thoughts](http://www.contrib.andrew.cmu.edu/~somlo/
 
 ### Motivation
 
-My aim is to enable macOS based builds + testing, kernel debugging, reversing,
-and security tasks in an easy, reproducible manner without needing to invest in
-Apple's closed ecosystem (too heavily).
+My aim is to enable macOS based educational tasks, builds + testing, kernel
+debugging, reversing, and macOS security research in an easy, reproducible
+manner without getting 'invested' in Apple's closed ecosystem (too heavily).
+
+These `Virtual Hackintosh` systems are not intended to replace the genuine
+physical macOS systems.
 
 Backstory: I was a (poor) student in Canada once and Apple made [my work on cracking Apple Keychains](https://github.com/openwall/john/blob/bleeding-jumbo/src/keychain_fmt_plug.c) a lot harder than it needed to be.

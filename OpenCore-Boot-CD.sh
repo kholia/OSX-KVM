@@ -48,7 +48,8 @@ args=(
   -drive id=InstallMedia,if=none,file="$REPO_PATH/os.dmg",format=raw
   -drive id=MacHDD,if=none,file="$REPO_PATH/mac_hdd_ng.img",format=qcow2
   -device ide-hd,bus=sata.4,drive=MacHDD
-  -netdev tap,id=net0,ifname=tap0,script=no,downscript=no -device vmxnet3,netdev=net0,id=net0,mac=52:54:00:c9:18:27
+  # -netdev tap,id=net0,ifname=tap0,script=no,downscript=no -device vmxnet3,netdev=net0,id=net0,mac=52:54:00:c9:18:27
+  -netdev user,id=net0 -device vmxnet3,netdev=net0,id=net0,mac=52:54:00:c9:18:27
   -monitor stdio
   -vga vmware
 )
