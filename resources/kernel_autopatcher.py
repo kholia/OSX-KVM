@@ -24,6 +24,21 @@
 # LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 # EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+# $ ./kernel_autopatcher.py kernel
+# [+] Processing <kernel> file...
+# [+] Patching done!
+#
+# (Re)Tested against the default "kernel" from macOS Catalina 10.15.7 in
+# October, 2020.
+#
+# Kernel location (Catalina): /System/Library/Kernels/kernel
+#
+# $ md5sum kernel*
+# 3966d407c344708d599500c60c1194c0  kernel
+# 8530d3422795652ed320293ecc127770  kernel.patched
+#
+# Test command -> sudo /usr/bin/AssetCacheManagerUtil activate
 
 import r2pipe
 
