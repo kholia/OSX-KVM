@@ -2,7 +2,7 @@
 
 Catalina installs the same way as [Mojave](../Mojave/README.md).
 
-Tested with macOS Catalina 10.15.6 with OpenCore-0.6.1-DEBUG.zip release.
+Tested with macOS Catalina 10.15.7 with OpenCore-0.6.2-DEBUG.zip release.
 
 Note: Use `create_iso_catalina.sh` for generating a macOS Catalina based "ISO"
 (actually DMG) image.

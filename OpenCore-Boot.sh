@@ -23,7 +23,7 @@ CPU_SOCKETS="1"
 CPU_CORES="2"
 CPU_THREADS="4"
 
-REPO_PATH="./"
+REPO_PATH="."
 OVMF_DIR="."
 
 # This causes high cpu usage on the *host* side
