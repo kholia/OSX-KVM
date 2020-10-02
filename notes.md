@@ -240,8 +240,10 @@ to be choppy and distorted.
 * Add `-device ich9-intel-hda -device hda-duplex` to the VM configuration.
   `boot-macOS.sh` already has this change.
 
-* To get sound on your virtual Mac, install the VoodooHDA driver from
-  [here](https://sourceforge.net/projects/voodoohda/files/).
+* To get sound on your virtual Mac, enable the `VoodooHDA OC` driver in
+  OpenCore configuration. The emulated sound quality is not usable (it seems?).
+
+  Note: Use Sound Card / USB Sound Card passthrough instead.
 
 Note: It seems that playback of Flash videos requires an audio device to be
 present.
@@ -252,15 +254,16 @@ present.
 See http://wiki.qemu-project.org/Hosts/Linux for help.
 
 ```
-$ git clone https://github.com/kholia/qemu.git
+$ git clone https://github.com/qemu/qemu.git
 
 $ cd qemu
 
-$ git checkout macOS
+$ mkdir build; cd build
 
-$ ./configure --prefix=/home/$(whoami)/QEMU --target-list=x86_64-softmmu --audio-drv-list=pa
+$ ../configure --prefix=/home/$(whoami)/QEMU --enable-trace-backend=simple \
+    --enable-debug --target-list=x86_64-softmmu,aarch64-softmmu --audio-drv-list=pa
 
-$ make clean; make; make install
+$ make -j8; make install
 ```
 
 
@@ -460,3 +463,116 @@ $ sudo systemctl enable ssh.service
 due to broken SMU firmware*
 
 Consider using CMMChris's [RadeonBoost.kext](https://forums.macrumors.com/threads/tired-of-low-geekbench-scores-use-radeonboost.2231366/) for the RX480, RX580, RX590 and Radeon VII GPUs.
+
+
+### USB passthrough notes
+
+#### USB 3.0 flash drive
+
+The following USB configuration works for usb passthrough of a USB 3.0 flash
+drive to Fedora 25 guest.
+
+    -device nec-usb-xhci,id=xhci \
+    -device usb-host,bus=xhci.0,vendorid=0x0781,productid=0x5590 \
+    -usb -device usb-mouse,bus=usb-bus.0 -device usb-kbd,bus=usb-bus.0 \
+    ...
+
+#### Moto G3 phone
+
+The following USB configuration works for usb passthrough of a Moto G3 phone to
+Fedora 25 guest.
+
+    -device usb-host,bus=usb-bus.0,vendorid=0x22b8,productid=0x002e \
+    -usb -device usb-mouse,bus=usb-bus.0 -device usb-kbd,bus=usb-bus.0 \
+    ...
+
+#### CoolerMaster keyboard
+
+The following USB configuration works for usb passthrough of a CoolerMaster
+keyboard to macOS Sierra guest!
+
+    -device usb-host,bus=usb-bus.0,vendorid=0x2516,productid=0x0004 \
+    -usb -device usb-tablet,bus=usb-bus.0 -device usb-kbd,bus=usb-bus.0 \
+    ...
+
+
+#### Virtual USB disk
+
+The following USB configuration works for attaching a virtual USB disk to macOS
+Sierra guest. Use "qemu-img" to create "disk.raw" virtual disk.
+
+    -drive if=none,id=usbstick,file=disk.raw,format=raw \
+    -device usb-storage,bus=usb-bus.0,drive=usbstick \
+    ...
+
+However USB passthrough of EHCI, and XHCI (USB 3.0) devices does not work with
+macOS Sierra. See https://bugs.launchpad.net/qemu/+bug/1509336 for
+confirmation. According to this bug report, USB passthrough does not work with
+versions >= Mac OS X El Capitan guests.
+
+It seems that this problem can be fixed by using OVMF + Clover.
+
+Update: OVMF + Clover doesn't help. It seems that macOS is missing the required
+drivers for the EHCI, and XHCI controllers that are exposed by QEMU.
+
+
+### Generate macOS Mojave / Catalina installation ISO.
+
+  This step currently needs to be run on an existing macOS system.
+
+  ```
+  cd ~/OSX-KVM/scripts
+
+  ./create_dmg_catalina.sh
+  ```
+
+
+### Tweaks for macOS
+
+1. Disable `Energy Saver` in `System Preferences`.
+
+2. Disable `Screen Saver` in `System Preferences -> Desktop & Screen Saver`.
+
+3. Turn off indexing using the following command.
+
+   ```
+   sudo mdutil -a -i off
+   ```
+
+4. Enable `Remote Login` (aka SSH) via `System Preferences -> Sharing`.
+
+
+### Snapshot Debugging Tips
+
+- Get `savevm` to work:
+
+  ```
+  (qemu) savevm
+  Error while writing VM state: No space left on device
+  ```
+
+  Ensure that you have plenty of free space in `/var/tmp` and `/`.
+
+
+  To use a separate storage location for storing snapshots, use the following
+  trick (from `zimbatm`):
+
+  ```
+  export TMPDIR=$PWD/tmp
+  ```
+
+
+### 'Fix' weird boot problems
+
+```
+cp OVMF_VARS-1024x768.fd.bak OVMF_VARS-1024x768.fd
+```
+
+
+### 'Fix' time drift problems
+
+Run the following command periodically from root's crontab:
+
+```
+sntp -S pool.ntp.org
+```

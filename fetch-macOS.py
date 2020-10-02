@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # encoding: utf-8
 #
 # https://github.com/munki/macadmin-scripts/blob/master/installinstallmacos.py
@@ -51,6 +51,17 @@ if sys.version_info[0] < 3:
     import urlparse as urlstuff
 else:
     import urllib.parse as urlstuff
+# Quick fix for python 3.9 and above
+if sys.version_info[0] == 3 and sys.version_info[1] >= 9:
+    from types import MethodType
+
+    def readPlist(self,filepath):
+        with open(filepath, 'rb') as f:
+            p = plistlib._PlistParser(dict)
+            rootObject = p.parse(f)
+        return rootObject
+    # adding the method readPlist() to plistlib
+    plistlib.readPlist = MethodType(readPlist, plistlib)
 
 # https://github.com/foxlet/macOS-Simple-KVM/blob/master/tools/FetchMacOS/fetch-macos.py (unused)
 catalogs = {
@@ -366,7 +377,6 @@ def main():
         sys.exit('This command requires root (to install packages), so please '
                  'run again with sudo or as root.')
     """
-
     parser = argparse.ArgumentParser()
     parser.add_argument('--workdir', metavar='path_to_working_dir',
                         default='.',
@@ -404,9 +414,28 @@ def main():
 
     # (Temporary) Hack to fetch Big Sur
     if args.big_sur:
+        found = None
         products = catalog['Products']
-        # Beta 6 ID: https://mrmacintosh.com/whats-new-in-macos-big-sur-11-beta-6-20a5364e
-        product = products["001-43966"]
+        # locate desired product
+        for pid in products:
+            product = products[pid]
+            # print(product)
+            if "Packages" not in product:
+                continue
+            packages = product["Packages"]
+            for package in packages:
+                if "IntegrityDataURL" not in package:
+                    continue
+                if "UpdateBrain" in package["IntegrityDataURL"]:
+                    found = pid
+
+        if not found:
+            print('\nI could not find the Product ID for "Big Sur". Take a look at this code.\n')
+            exit(-1)
+        else:
+            print('\nNote: The current ProductID for "Big Sur" seems to be (%s)\n' % found)
+
+        product = products[found]
         workdir = "."
         ignore_cache = False
         for package in product.get('Packages', []):

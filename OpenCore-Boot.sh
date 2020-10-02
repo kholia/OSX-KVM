@@ -23,7 +23,7 @@ CPU_SOCKETS="1"
 CPU_CORES="2"
 CPU_THREADS="4"
 
-REPO_PATH="./"
+REPO_PATH="."
 OVMF_DIR="."
 
 # This causes high cpu usage on the *host* side
@@ -45,13 +45,15 @@ args=(
   -smbios type=2
   -device ich9-intel-hda -device hda-duplex
   -device ich9-ahci,id=sata
-  -drive id=OpenCoreBoot,if=none,snapshot=on,format=qcow2,file="$REPO_PATH/OpenCore-Catalina/OpenCore-nopicker.qcow2"
+  # -drive id=OpenCoreBoot,if=none,snapshot=on,format=qcow2,file="$REPO_PATH/OpenCore-Catalina/OpenCore-nopicker.qcow2"
+  -drive id=OpenCoreBoot,if=none,snapshot=on,format=qcow2,file="$REPO_PATH/OpenCore-Catalina/OpenCore.qcow2"
   -device ide-hd,bus=sata.2,drive=OpenCoreBoot
   -device ide-hd,bus=sata.3,drive=InstallMedia
   -drive id=InstallMedia,if=none,file="$REPO_PATH/BaseSystem.img",format=raw
   -drive id=MacHDD,if=none,file="$REPO_PATH/mac_hdd_ng.img",format=qcow2
   -device ide-hd,bus=sata.4,drive=MacHDD
-  -netdev tap,id=net0,ifname=tap0,script=no,downscript=no -device vmxnet3,netdev=net0,id=net0,mac=52:54:00:c9:18:27
+  # -netdev tap,id=net0,ifname=tap0,script=no,downscript=no -device vmxnet3,netdev=net0,id=net0,mac=52:54:00:c9:18:27
+  -netdev user,id=net0 -device vmxnet3,netdev=net0,id=net0,mac=52:54:00:c9:18:27
   -monitor stdio
   -vga vmware
 )

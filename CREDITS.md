@@ -89,3 +89,7 @@
 - Peter Asanov (ink-splatters) - Fixes for the OS-fetch script
 
 - Sangwhan "fish" Moon - Big Sur doc enhancements
+
+- ADawesomeguy - Big Sur doc enhancements
+
+- shmsh9 - Python 3.9.x support

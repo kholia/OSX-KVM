@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>BuildMachineOSBuild</key>
-	<string>19G2021</string>
+	<string>19H2</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleExecutable</key>
@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>KEXT</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.1.6</string>
+	<string>1.1.8</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleSupportedPlatforms</key>
@@ -25,21 +25,23 @@
 		<string>MacOSX</string>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1.1.6</string>
+	<string>1.1.8</string>
 	<key>DTCompiler</key>
 	<string>com.apple.compilers.llvm.clang.1_0</string>
 	<key>DTPlatformBuild</key>
-	<string>11E708</string>
+	<string>12A7209</string>
+	<key>DTPlatformName</key>
+	<string>macosx</string>
 	<key>DTPlatformVersion</key>
-	<string>GM</string>
+	<string>10.15.6</string>
 	<key>DTSDKBuild</key>
 	<string>19G68</string>
 	<key>DTSDKName</key>
 	<string>macosx10.15</string>
 	<key>DTXcode</key>
-	<string>1160</string>
+	<string>1200</string>
 	<key>DTXcodeBuild</key>
-	<string>11E708</string>
+	<string>12A7209</string>
 	<key>IOKitPersonalities</key>
 	<dict>
 		<key>as.vit9696.VirtualSMC</key>
@@ -382,7 +384,7 @@
 		</dict>
 	</dict>
 	<key>LSMinimumSystemVersion</key>
-	<string>10.8</string>
+	<string>10.6</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2017 vit9696. All rights reserved.</string>
 	<key>OSBundleCompatibleVersion</key>
@@ -394,17 +396,17 @@
 		<key>com.apple.iokit.IOACPIFamily</key>
 		<string>1.0.0d1</string>
 		<key>com.apple.kpi.bsd</key>
-		<string>12.0.0</string>
+		<string>10.0.0</string>
 		<key>com.apple.kpi.dsep</key>
-		<string>12.0.0</string>
+		<string>10.0.0</string>
 		<key>com.apple.kpi.iokit</key>
-		<string>12.0.0</string>
+		<string>10.0.0</string>
 		<key>com.apple.kpi.libkern</key>
-		<string>12.0.0</string>
+		<string>10.0.0</string>
 		<key>com.apple.kpi.mach</key>
-		<string>12.0.0</string>
+		<string>10.0.0</string>
 		<key>com.apple.kpi.unsupported</key>
-		<string>12.0.0</string>
+		<string>10.0.0</string>
 	</dict>
 	<key>OSBundleRequired</key>
 	<string>Root</string>
