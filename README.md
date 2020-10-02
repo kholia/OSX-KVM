@@ -11,6 +11,8 @@ over email](mailto:dhiru.kholia@gmail.com?subject=[GitHub]%20OSX-KVM%20Commercia
 
 Looking for `Big Sur` support? See these [notes](Big-Sur.md).
 
+Working with `Proxmox` and macOS? See [Nick's blog for sure](https://www.nicksherlock.com/).
+
 Yes, we support offline macOS installations now 🎉
 
 
@@ -18,6 +20,8 @@ Yes, we support offline macOS installations now 🎉
 
 This project can always use your help, time and attention. I am looking for
 help (pull-requests!) with the following work items:
+
+* Enable `fetch-macOS.py` to work with Python 3.9.x.
 
 * Create *full* installation (ISO) image without requiring an existing macOS
   physical/virtual installation.
@@ -146,24 +150,6 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
 
   NOTE: Create this HDD image file on a fast SSD/NVMe disk for best results.
 
-* Setup quick networking by running the following commands.
-
-  ```
-  sudo ip tuntap add dev tap0 mode tap
-  sudo ip link set tap0 up promisc on
-  sudo ip link set dev virbr0 up
-  sudo ip link set dev tap0 master virbr0
-  ```
-
-  Note: If `virbr0` network interface is not present on your system, it may
-  have been deactivated. Try enabling it by using the following commands,
-
-  ```
-  virsh net-start default
-
-  virsh net-autostart default
-  ```
-
 * Now you are ready to install macOS 🚀
 
 
@@ -260,8 +246,11 @@ Gabriel Somlo also has [some thoughts](http://www.contrib.andrew.cmu.edu/~somlo/
 
 ### Motivation
 
-My aim is to enable macOS based builds + testing, kernel debugging, reversing,
-and security tasks in an easy, reproducible manner without needing to invest in
-Apple's closed ecosystem (too heavily).
+My aim is to enable macOS based educational tasks, builds + testing, kernel
+debugging, reversing, and macOS security research in an easy, reproducible
+manner without getting 'invested' in Apple's closed ecosystem (too heavily).
+
+These `Virtual Hackintosh` systems are not intended to replace the genuine
+physical macOS systems.
 
 Backstory: I was a (poor) student in Canada once and Apple made [my work on cracking Apple Keychains](https://github.com/openwall/john/blob/bleeding-jumbo/src/keychain_fmt_plug.c) a lot harder than it needed to be.

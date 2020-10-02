@@ -240,8 +240,10 @@ to be choppy and distorted.
 * Add `-device ich9-intel-hda -device hda-duplex` to the VM configuration.
   `boot-macOS.sh` already has this change.
 
-* To get sound on your virtual Mac, install the VoodooHDA driver from
-  [here](https://sourceforge.net/projects/voodoohda/files/).
+* To get sound on your virtual Mac, enable the `VoodooHDA OC` driver in
+  OpenCore configuration. The emulated sound quality is not usable (it seems?).
+
+  Note: Use Sound Card / USB Sound Card passthrough instead.
 
 Note: It seems that playback of Flash videos requires an audio device to be
 present.
