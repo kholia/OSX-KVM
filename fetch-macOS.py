@@ -404,9 +404,28 @@ def main():
 
     # (Temporary) Hack to fetch Big Sur
     if args.big_sur:
+        found = None
         products = catalog['Products']
-        # Beta 6 ID: https://mrmacintosh.com/whats-new-in-macos-big-sur-11-beta-6-20a5364e
-        product = products["001-43966"]
+        # locate desired product
+        for pid in products:
+            product = products[pid]
+            # print(product)
+            if "Packages" not in product:
+                continue
+            packages = product["Packages"]
+            for package in packages:
+                if "IntegrityDataURL" not in package:
+                    continue
+                if "UpdateBrain" in package["IntegrityDataURL"]:
+                    found = pid
+
+        if not found:
+            print('\nI could not find the Product ID for "Big Sur". Take a look at this code.\n')
+            exit(-1)
+        else:
+            print('\nNote: The current ProductID for "Big Sur" seems to be (%s)\n' % found)
+
+        product = products[found]
         workdir = "."
         ignore_cache = False
         for package in product.get('Packages', []):
