@@ -51,6 +51,17 @@ if sys.version_info[0] < 3:
     import urlparse as urlstuff
 else:
     import urllib.parse as urlstuff
+# Quick fix for python 3.9 and above
+if sys.version_info[0] == 3 and sys.version_info[1] >= 9:
+    from types import MethodType
+
+    def readPlist(self,filepath):
+        with open(filepath, 'rb') as f:
+            p = plistlib._PlistParser(dict)
+            rootObject = p.parse(f)
+        return rootObject
+    #adding the method readPlist() to plistlib
+    plistlib.readPlist = MethodType(readPlist, plistlib)
 
 # https://github.com/foxlet/macOS-Simple-KVM/blob/master/tools/FetchMacOS/fetch-macos.py (unused)
 catalogs = {
@@ -366,7 +377,6 @@ def main():
         sys.exit('This command requires root (to install packages), so please '
                  'run again with sudo or as root.')
     """
-
     parser = argparse.ArgumentParser()
     parser.add_argument('--workdir', metavar='path_to_working_dir',
                         default='.',
