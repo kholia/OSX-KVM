@@ -2,10 +2,10 @@
 
 #### Note: Installation (for the most part) remains the same, except for the retrieval of the DMG file.
 
-- Fetch the `Big Sur` installer using the following command:
+- Fetch the `Big Sur` installer using the following command (as usual):
 
   ```
-  ./fetch-macOS.py --big-sur
+  ./fetch-macOS.py
   ```
 
 - Get `xar` software.
@@ -47,7 +47,7 @@
 - Extract `SharedSupport.dmg` from the downloaded `InstallAssistant.pkg` file (around 9 GB).
 
   ```
-  $ ~/xar/xar/src/xar -tf InstallAssistant.pkg
+  $ ~/xar/xar/src/xar -tf InstallAssistant.pkg  # list files
   Bom
   Payload
   Scripts
@@ -55,19 +55,21 @@
   SharedSupport.dmg
   ```
 
+  ```
+  $ ~/xar/xar/src/xar -xf InstallAssistant.pkg  # extract files
+  ```
+
 - Extract `BaseSystem.dmg` from `SharedSupport.dmg`:
 
   ```
-  ~/xar/xar/src/xar -xf InstallAssistant.pkg
-
   7z l SharedSupport.dmg  # This will list the files in the archive
 
   mkdir ~/stuff
-  darling-dmg SharedSupport.dmg ~/stuff  # Mounts SharedSupport.dmg to ~/stuff
+  ~/darling-dmg/darling-dmg SharedSupport.dmg ~/stuff  # Mounts SharedSupport.dmg to ~/stuff
 
-  $ 7z l ~/stuff/com_apple_MobileAsset_MacSoftwareUpdate/bab26be6be4f44f58c511a1482a0e87db9a89253.zip  # The string of letters and numbers will vary
+  $ 7z l ~/stuff/com_apple_MobileAsset_MacSoftwareUpdate/ee3ab6c04234b360dd8fca93c0ae49f957bf0843.zip  # The string of letters and numbers will vary
   ...
-  2020-08-14 21:22:18 .....    745712482    740281200  AssetData/Restore/BaseSystem.dmg
+  2020-11-06 18:57:48 .....    652236311    646767350  AssetData/Restore/BaseSystem.dmg
   ```
 
 - There is the required `BaseSystem.dmg` file. To unzip it, first make sure you are in the base directory for `OSX-KVM` and then retrieve the `BaseSystem.dmg` file and convert it to a `BaseSystem.img` file.
@@ -75,9 +77,9 @@
   ```
   cd ~/OSX-KVM/
 
-  7z x ~/stuff/com_apple_MobileAsset_MacSoftwareUpdate/bab26be6be4f44f58c511a1482a0e87db9a89253.zip
+  7z x ~/stuff/com_apple_MobileAsset_MacSoftwareUpdate/ee3ab6c04234b360dd8fca93c0ae49f957bf0843.zip AssetData/Restore/BaseSystem.dmg
 
-  cp AssetData/Restore/BaseSystem.dmg .
+  mv AssetData/Restore/BaseSystem.dmg .
 
   qemu-img convert BaseSystem.dmg -O raw BaseSystem.img
   ```
