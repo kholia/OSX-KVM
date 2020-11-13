@@ -64,18 +64,21 @@ if sys.version_info[0] == 3 and sys.version_info[1] >= 9:
     plistlib.readPlist = MethodType(readPlist, plistlib)
 
 # https://github.com/foxlet/macOS-Simple-KVM/blob/master/tools/FetchMacOS/fetch-macos.py (unused)
+# https://github.com/munki/macadmin-scripts
 catalogs = {
     "CustomerSeed": "https://swscan.apple.com/content/catalogs/others/index-10.16customerseed-10.16-10.15-10.14-10.13-10.12-10.11-10.10-10.9-mountainlion-lion-snowleopard-leopard.merged-1.sucatalog",
     "DeveloperSeed": "https://swscan.apple.com/content/catalogs/others/index-10.16seed-10.16-10.15-10.14-10.13-10.12-10.11-10.10-10.9-mountainlion-lion-snowleopard-leopard.merged-1.sucatalog",
     "PublicSeed": "https://swscan.apple.com/content/catalogs/others/index-10.16beta-10.16-10.15-10.14-10.13-10.12-10.11-10.10-10.9-mountainlion-lion-snowleopard-leopard.merged-1.sucatalog",
-    "PublicRelease": "https://swscan.apple.com/content/catalogs/others/index-10.16-10.15-10.14-10.13-10.12-10.11-10.10-10.9-mountainlion-lion-snowleopard-leopard.merged-1.sucatalog"
+    "PublicRelease": "https://swscan.apple.com/content/catalogs/others/index-10.16-10.15-10.14-10.13-10.12-10.11-10.10-10.9-mountainlion-lion-snowleopard-leopard.merged-1.sucatalog",
+    "20": "https://swscan.apple.com/content/catalogs/others/index-11-10.15-10.14-10.13-10.12-10.11-10.10-10.9-mountainlion-lion-snowleopard-leopard.merged-1.sucatalog"
 }
 
 
 def get_default_catalog():
     '''Returns the default softwareupdate catalog for the current OS'''
+    return catalogs["20"]
     # return catalogs["PublicRelease"]
-    return catalogs["DeveloperSeed"]
+    # return catalogs["DeveloperSeed"]
 
 
 class ReplicationError(Exception):
@@ -92,13 +95,15 @@ def replicate_url(full_url,
                   root_dir='/tmp',
                   show_progress=False,
                   ignore_cache=False,
-                  attempt_resume=False, installer=False, one_more_hack=False):
+                  attempt_resume=False, installer=False, product_title=""):
     '''Downloads a URL and stores it in the same relative path on our
     filesystem. Returns a path to the replicated file.'''
 
     # hack
     print("[+] Fetching %s" % full_url)
-    if installer and "BaseSystem.dmg" not in full_url and not one_more_hack:
+    if installer and "BaseSystem.dmg" not in full_url and "Big Sur" not in product_title:
+        return
+    if "Big Sur" in product_title and "InstallAssistant.pkg" not in full_url:
         return
     attempt_resume = True
     # path = urllib.parse.urlsplit(full_url)[2]
@@ -139,7 +144,7 @@ def parse_server_metadata(filename):
     try:
         md_plist = plistlib.readPlist(filename)
     except (OSError, IOError, ExpatError) as err:
-        print('Error reading %s: %s' % (filename, err))
+        print('Error reading %s: %s' % (filename, err), file=sys.stderr)
         return {}
     vers = md_plist.get('CFBundleShortVersionString', '')
     localization = md_plist.get('localization', {})
@@ -168,10 +173,10 @@ def get_server_metadata(catalog, product_key, workdir, ignore_cache=False):
                 url, root_dir=workdir, ignore_cache=ignore_cache)
             return smd_path
         except ReplicationError as err:
-            print('Could not replicate %s: %s' % (url, err))
+            print('Could not replicate %s: %s' % (url, err), file=sys.stderr)
             return None
     except KeyError:
-        print('Malformed catalog.')
+        # print('Malformed catalog.', file=sys.stderr)
         return None
 
 
@@ -182,11 +187,15 @@ def parse_dist(filename):
     try:
         dom = minidom.parse(filename)
     except ExpatError:
-        # print('Invalid XML in %s' % filename)  # look at this later
+        print('Invalid XML in %s' % filename, file=sys.stderr)
         return dist_info
     except IOError as err:
-        print('Error reading %s: %s' % (filename, err))
+        print('Error reading %s: %s' % (filename, err), file=sys.stderr)
         return dist_info
+
+    titles = dom.getElementsByTagName('title')
+    if titles:
+        dist_info['title_from_dist'] = titles[0].firstChild.wholeText
 
     auxinfos = dom.getElementsByTagName('auxinfo')
     if not auxinfos:
@@ -220,7 +229,7 @@ def download_and_parse_sucatalog(sucatalog, workdir, ignore_cache=False):
         localcatalogpath = replicate_url(
             sucatalog, root_dir=workdir, ignore_cache=ignore_cache)
     except ReplicationError as err:
-        print('Could not replicate %s: %s' % (sucatalog, err))
+        print('Could not replicate %s: %s' % (sucatalog, err), file=sys.stderr)
         exit(-1)
     if os.path.splitext(localcatalogpath)[1] == '.gz':
         with gzip.open(localcatalogpath) as the_file:
@@ -229,14 +238,14 @@ def download_and_parse_sucatalog(sucatalog, workdir, ignore_cache=False):
                 catalog = plistlib.readPlistFromString(content)
                 return catalog
             except ExpatError as err:
-                print('Error reading %s: %s' % (localcatalogpath, err))
+                print('Error reading %s: %s' % (localcatalogpath, err), file=sys.stderr)
                 exit(-1)
     else:
         try:
             catalog = plistlib.readPlist(localcatalogpath)
             return catalog
         except (OSError, IOError, ExpatError) as err:
-            print('Error reading %s: %s' % (localcatalogpath, err))
+            print('Error reading %s: %s' % (localcatalogpath, err), file=sys.stderr)
             exit(-1)
 
 
@@ -245,16 +254,15 @@ def find_mac_os_installers(catalog):
     installers'''
     mac_os_installer_products = []
     if 'Products' in catalog:
-        product_keys = list(catalog['Products'].keys())
-        for product_key in product_keys:
+        for product_key in catalog['Products'].keys():
             product = catalog['Products'][product_key]
             try:
                 if product['ExtendedMetaInfo'][
-                        'InstallAssistantPackageIdentifiers'][
-                            'OSInstall'] == 'com.apple.mpkg.OSInstall':
+                        'InstallAssistantPackageIdentifiers']:
                     mac_os_installer_products.append(product_key)
             except KeyError:
                 continue
+
     return mac_os_installer_products
 
 
@@ -265,7 +273,13 @@ def os_installer_product_info(catalog, workdir, ignore_cache=False):
     for product_key in installer_products:
         product_info[product_key] = {}
         filename = get_server_metadata(catalog, product_key, workdir)
-        product_info[product_key] = parse_server_metadata(filename)
+        if filename:
+            product_info[product_key] = parse_server_metadata(filename)
+        else:
+            # print('No server metadata for %s' % product_key)
+            product_info[product_key]['title'] = None
+            product_info[product_key]['version'] = None
+
         product = catalog['Products'][product_key]
         product_info[product_key]['PostDate'] = product['PostDate']
         distributions = product['Distributions']
@@ -274,15 +288,21 @@ def os_installer_product_info(catalog, workdir, ignore_cache=False):
             dist_path = replicate_url(
                 dist_url, root_dir=workdir, ignore_cache=ignore_cache)
         except ReplicationError as err:
-            print('Could not replicate %s: %s' % (dist_url, err))
-        dist_info = parse_dist(dist_path)
-        product_info[product_key]['DistributionPath'] = dist_path
-        product_info[product_key].update(dist_info)
+            print('Could not replicate %s: %s' % (dist_url, err),
+                  file=sys.stderr)
+        else:
+            dist_info = parse_dist(dist_path)
+            product_info[product_key]['DistributionPath'] = dist_path
+            product_info[product_key].update(dist_info)
+            if not product_info[product_key]['title']:
+                product_info[product_key]['title'] = dist_info.get('title_from_dist')
+            if not product_info[product_key]['version']:
+                product_info[product_key]['version'] = dist_info.get('VERSION')
 
     return product_info
 
 
-def replicate_product(catalog, product_id, workdir, ignore_cache=False):
+def replicate_product(catalog, product_id, workdir, ignore_cache=False, product_title=""):
     '''Downloads all the packages for a product'''
     product = catalog['Products'][product_id]
     for package in product.get('Packages', []):
@@ -294,16 +314,16 @@ def replicate_product(catalog, product_id, workdir, ignore_cache=False):
                 replicate_url(
                     package['URL'], root_dir=workdir,
                     show_progress=True, ignore_cache=ignore_cache,
-                    attempt_resume=(not ignore_cache), installer=True)
+                    attempt_resume=(not ignore_cache), installer=True, product_title=product_title)
             except ReplicationError as err:
-                print('Could not replicate %s: %s' % (package['URL'], err))
+                print('Could not replicate %s: %s' % (package['URL'], err), file=sys.stderr)
                 exit(-1)
         if 'MetadataURL' in package:
             try:
                 replicate_url(package['MetadataURL'], root_dir=workdir,
                               ignore_cache=ignore_cache, installer=True)
             except ReplicationError as err:
-                print('Could not replicate %s: %s' % (package['MetadataURL'], err))
+                print('Could not replicate %s: %s' % (package['MetadataURL'], err), file=sys.stderr)
                 exit(-1)
 
 
@@ -335,7 +355,7 @@ def determine_version(version, product_info):
         for index, product_id in enumerate(product_info):
             v = product_info[product_id]['version']
             if v == version:
-                return product_id
+                return product_id, product_info[product_id]['title']
 
         print("Could not find version {}. Versions available are:".format(version))
         for _, pid in enumerate(product_info):
@@ -362,7 +382,7 @@ def determine_version(version, product_info):
         if index < 0:
             raise ValueError
         product_id = list(product_info.keys())[index]
-        return product_id
+        return product_id, product_info[product_id]['title']
     except (ValueError, IndexError):
         pass
 
@@ -399,76 +419,28 @@ def main():
                              'less available disk space and is faster.')
     parser.add_argument('--ignore-cache', action='store_true',
                         help='Ignore any previously cached files.')
-    parser.add_argument('--big-sur', action='store_true',
-                        help='(Temporary) Hack to fetch Big Sur.')
     args = parser.parse_args()
 
     su_catalog_url = get_default_catalog()
     if not su_catalog_url:
-        print('Could not find a default catalog url for this OS version.')
+        print('Could not find a default catalog url for this OS version.', file=sys.stderr)
         exit(-1)
 
     # download sucatalog and look for products that are for macOS installers
     catalog = download_and_parse_sucatalog(
         su_catalog_url, args.workdir, ignore_cache=args.ignore_cache)
-
-    # (Temporary) Hack to fetch Big Sur
-    if args.big_sur:
-        found = None
-        products = catalog['Products']
-        # locate desired product
-        for pid in products:
-            product = products[pid]
-            # print(product)
-            if "Packages" not in product:
-                continue
-            packages = product["Packages"]
-            for package in packages:
-                if "IntegrityDataURL" not in package:
-                    continue
-                if "UpdateBrain" in package["IntegrityDataURL"]:
-                    found = pid
-
-        if not found:
-            print('\nI could not find the Product ID for "Big Sur". Take a look at this code.\n')
-            exit(-1)
-        else:
-            print('\nNote: The current ProductID for "Big Sur" seems to be (%s)\n' % found)
-
-        product = products[found]
-        workdir = "."
-        ignore_cache = False
-        for package in product.get('Packages', []):
-            if 'URL' in package:
-                try:
-                    replicate_url(
-                        package['URL'], root_dir=workdir,
-                        show_progress=True, ignore_cache=ignore_cache,
-                        attempt_resume=(not ignore_cache), installer=True, one_more_hack=True)
-                except ReplicationError as err:
-                    print('Could not replicate %s: %s' % (package['URL'], err))
-                    exit(-1)
-            if 'MetadataURL' in package:
-                try:
-                    replicate_url(package['MetadataURL'], root_dir=workdir,
-                                  ignore_cache=ignore_cache, installer=True)
-                except ReplicationError as err:
-                    print('Could not replicate %s: %s' % (package['MetadataURL'], err))
-                    exit(-1)
-        exit(-1)
-
     product_info = os_installer_product_info(
         catalog, args.workdir, ignore_cache=args.ignore_cache)
 
     if not product_info:
-        print('No macOS installer products found in the sucatalog.')
+        print('No macOS installer products found in the sucatalog.', file=sys.stderr)
         exit(-1)
 
-    product_id = determine_version(args.version, product_info)
+    product_id, product_title = determine_version(args.version, product_info)
+    print(product_id, product_title)
 
     # download all the packages for the selected product
-    replicate_product(
-        catalog, product_id, args.workdir, ignore_cache=args.ignore_cache)
+    replicate_product(catalog, product_id, args.workdir, ignore_cache=args.ignore_cache, product_title=product_title)
 
 
 if __name__ == '__main__':

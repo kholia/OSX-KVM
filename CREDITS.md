@@ -93,3 +93,9 @@
 - ADawesomeguy - Big Sur doc enhancements
 
 - shmsh9 - Python 3.9.x support
+
+- Gelma (Andrea Gelmini) - Typo fixes
+
+- ivy-rew (Reguel) - Greatly improved Big-Sur notes
+
+- Broly1 - Greatly improved Big-Sur notes

@@ -86,7 +86,7 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
 * Install QEMU and other packages.
 
   ```
-  sudo apt-get install qemu uml-utilities virt-manager git wget libguestfs-tools -y
+  sudo apt-get install qemu uml-utilities virt-manager git wget libguestfs-tools p7zip-full -y
   ```
 
   This step may need to be adapted for your Linux distribution.
@@ -127,8 +127,11 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
    9    001-36735    10.15.6  2020-08-06  macOS Catalina
   10    001-36801    10.15.6  2020-08-12  macOS Catalina
   11    001-51042    10.15.7  2020-09-24  macOS Catalina
+  12    001-57224    10.15.7  2020-10-27  macOS Catalina
+  13    001-68446    10.15.7  2020-11-11  macOS Catalina
+  14    001-79699     11.0.1  2020-11-12  macOS Big Sur
 
-  Choose a product to download (1-11): 11
+  Choose a product to download (1-14): 14
   ```
 
   Attention: Modern NVIDIA GPUs are supported on HighSierra but not on later
@@ -156,7 +159,7 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
 ### Installation
 
 - CLI method (primary). Just run the `OpenCore-Boot.sh` script to start the
-  installation proces.
+  installation process.
 
   ```
   ./OpenCore-Boot.sh
@@ -205,8 +208,6 @@ look at our [notes](notes.md). We would like to resume our testing and
 documentation work around this area. Please [reach out to us](mailto:dhiru.kholia@gmail.com?subject=[GitHub]%20OSX-KVM%20Funding%20Support)
 if you are able to fund this area of work.
 
-Specifically, we are looking for an AMD RX 560/570 GPU for testing purposes.
-
 It is possible to have 'beyond-native-apple-hw' performance but it does require
 work, patience, and a bit of luck (perhaps?).
 
@@ -243,6 +244,8 @@ work, patience, and a bit of luck (perhaps?).
 
 The "secret" Apple OSK string is widely available on the Internet. It is also included in a public court document [available here](http://www.rcfp.org/sites/default/files/docs/20120105_202426_apple_sealing.pdf). I am not a lawyer but it seems that Apple's attempt(s) to get the OSK string treated as a trade secret did not work out. Due to these reasons, the OSK string is freely included in this repository.
 
+Please review the ['Legality of Hackintoshing' documentation bits from Dortania's OpenCore Install Guide](https://dortania.github.io/OpenCore-Install-Guide/why-oc.html#legality-of-hackintoshing).
+
 Gabriel Somlo also has [some thoughts](http://www.contrib.andrew.cmu.edu/~somlo/OSXKVM/) on the legal aspects involved in running macOS under QEMU/KVM.
 
 
@@ -263,4 +266,4 @@ software). Also, a long time back, I had to completely wipe my (then) brand new
 `MacBook Pro (Retina, 15-inch, Late 2013)` and install Xubuntu on it - as the
 `OS X` kernel kept crashing on it!
 
-Backstory: I was a (poor) student in Canada once and Apple made [my work on cracking Apple Keychains](https://github.com/openwall/john/blob/bleeding-jumbo/src/keychain_fmt_plug.c) a lot harder than it needed to be.
+Backstory: I was a (poor) student in Canada once and Apple made [my work on cracking Apple Keychains](https://github.com/openwall/john/blob/bleeding-jumbo/src/keychain_fmt_plug.c) a lot harder than it needed to be. This is how I got interested in Hackintosh systems.
