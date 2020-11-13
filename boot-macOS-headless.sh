@@ -30,7 +30,7 @@
 # - Fix cpuid related warning on EPYC
 # - Fix 'savevm' support
 
-MY_OPTIONS="+ssse3,+sse4.2,+popcnt,+avx,+aes,+xsave,+xsaveopt"
+MY_OPTIONS="+pcid,+ssse3,+sse4.2,+popcnt,+avx,+aes,+xsave,+xsaveopt,check"
 
 # This script works for Catalina as well as Mojave. Tested with macOS 10.14.6 and macOS 10.15.6.
 
@@ -42,9 +42,12 @@ CPU_THREADS="4"
 REPO_PATH="."
 OVMF_DIR="."
 
+# for snapshots
+export TMPDIR=$PWD
+
 # shellcheck disable=SC2054
 args=(
-  -enable-kvm -m "$ALLOCATED_RAM" -cpu Penryn,kvm=on,vendor=GenuineIntel,vmware-cpuid-freq=on,"$MY_OPTIONS"
+  -enable-kvm -m "$ALLOCATED_RAM" -cpu Penryn,kvm=on,vendor=GenuineIntel,+invtsc,vmware-cpuid-freq=on,"$MY_OPTIONS"
   -machine q35
   -usb -device usb-kbd -device usb-tablet
   -smp "$CPU_THREADS",cores="$CPU_CORES",sockets="$CPU_SOCKETS"
@@ -58,7 +61,8 @@ args=(
   -device ide-hd,bus=sata.2,drive=OpenCoreBoot
   -device ide-hd,bus=sata.3,drive=InstallMedia
   -drive id=InstallMedia,if=none,file="$REPO_PATH/BaseSystem.img",format=raw
-  -drive id=MacHDD,if=none,snapshot=on,file="$REPO_PATH/mac_hdd_ng.img",format=qcow2
+  # -drive id=MacHDD,if=none,snapshot=on,file="$REPO_PATH/mac_hdd_ng.img",format=qcow2
+  -drive id=MacHDD,if=none,snapshot=off,file="$REPO_PATH/mac_hdd_ng.img",format=qcow2
   -device ide-hd,bus=sata.4,drive=MacHDD
   -netdev user,id=net0 -device vmxnet3,netdev=net0,id=net0,mac=52:54:00:c9:18:27
   -monitor stdio
