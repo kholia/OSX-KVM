@@ -127,8 +127,11 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
    9    001-36735    10.15.6  2020-08-06  macOS Catalina
   10    001-36801    10.15.6  2020-08-12  macOS Catalina
   11    001-51042    10.15.7  2020-09-24  macOS Catalina
+  12    001-57224    10.15.7  2020-10-27  macOS Catalina
+  13    001-68446    10.15.7  2020-11-11  macOS Catalina
+  14    001-79699     11.0.1  2020-11-12  macOS Big Sur
 
-  Choose a product to download (1-11): 11
+  Choose a product to download (1-14): 14
   ```
 
   Attention: Modern NVIDIA GPUs are supported on HighSierra but not on later
