@@ -15,7 +15,7 @@ in boot-macOS.sh) to the following:
 
 -netdev user,id=net0 -device network_adapter,netdev=net0,id=net0,mac=52:54:00:c9:18:27 \
 
-Once you set network_adapter to the perfered adapter, no further setup is required; your
+Once you set network_adapter to the preferred adapter, no further setup is required; your
 internet should Just Werk™ in your virtual machine!
 
 For further information on detailed configuration options, see QEMU's

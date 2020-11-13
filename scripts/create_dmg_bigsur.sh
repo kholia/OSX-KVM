@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Create a DMG from the Big Sur Beta 3 installer app
+# Create a DMG from the Big Sur installer app
 
 # Bail at first DMG creation error
 set -e
@@ -20,8 +20,8 @@ then
     dmg_path=$2
 elif [ "$#" -eq 0 ]
 then
-    in_path=/Applications/Install\ macOS\ Big\ Sur\ Beta.app
-    dmg_path=~/Desktop/BigSurBeta.dmg
+    in_path=/Applications/Install\ macOS\ Big\ Sur.app
+    dmg_path=~/Desktop/BigSur.dmg
     echo "Using default paths:"
     echo "Install app: $in_path"
     echo "Output disk: $dmg_path"
@@ -35,4 +35,4 @@ sudo "$in_path/Contents/Resources/createinstallmedia" --volume /Volumes/install_
 
 # createinstallmedia  leaves a bunch of subvolumes still mounted when it exits, so we need to use -force here.
 # This might be fixed in a later Beta release:
-hdiutil detach -force "/Volumes/Install macOS Big Sur Beta"
+hdiutil detach -force "/Volumes/Install macOS Big Sur"
