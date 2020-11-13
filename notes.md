@@ -340,17 +340,37 @@ machdep.cpu.leaf7_feature_bits: 424
 ```
 
 
-### Running Docker for Mac
+### Enabling Hypervisor.Framework (Nested Virtualization / Docker for Mac / Android Emulator / etc)
 
-Docker for Mac requires enabling nested virtualization on your host machine,
+Docker for Mac, the Android Emulator and other virtualization products require
+nested virtualization in the form of the `Hypervisor Framework` to work on
+macOS.
 
-```
-modprobe -r kvm_intel
-modprobe kvm_intel nested=1
-```
+Use the `sysctl kern.hv_support` (output `1` is good) command to check if
+`Hypervisor` is enabled within the macOS VM.
 
-Also you have to add `vmx,rdtscp` arguments to the `-cpu` option in
-`boot-macOS.sh` file.
+If `Hypervisor` is not enabled, check that you have the required CPU features.
+Run the `sysctl -a | grep machdep.cpu.features` command and look for the
+presence of `VMX` flag.
+
+If the `VMX` flag is missing, use the following steps to enable it:
+
+- Make sure that `kvm_intel` module is loaded properly. This is documented in our
+  [main documentation](./README.md).
+
+- Make sure the VM is booted with VMX support passed through using one of the
+  two below strategies:
+
+  - You may add `vmx,rdtscp` arguments to the `-cpu` option in `boot-macOS.sh`
+    file (easier option).
+
+  - You may add `+vmx,` to the front of `MY_OPTIONS` in the boot script while
+    changing `-cpu Penryn` to `-cpu Skylake-Client` or [any other suitable supported CPU](https://manpages.ubuntu.com/manpages/disco/man7/qemu-cpu-models.7.html).
+
+    Note: Host CPU passthrough is troublesome and not generally recommended.
+
+Note: You may need to `Reset NVRAM` on the next reboot, but after that you
+should see a `1` when you re-check `sysctl kern.hv_support`.
 
 
 ### Using virtio-blk-pci with macOS
@@ -575,4 +595,33 @@ Run the following command periodically from root's crontab:
 
 ```
 sntp -S pool.ntp.org
+```
+
+
+### Pass through all CPU cores / threads
+
+macOS requires a core count that is a power of 2, but some modern CPUs have odd
+counts - like 6 cores and 12 threads.
+
+So how can we harness the entire CPU in the VM?
+
+There are strategies that mix smp/sockets/cores/threads/maxcpu arguments and
+use odd socket counts to arrive at even core counts, and even let you specify
+that some of the cores are hyperthreaded.
+
+Specifically for the case of an Intel i7 processor with 6 cores and 12 total
+threads, altering the boot script to contain these variables and the following
+modified SMP line results in a full CPU core/thread pass through:
+
+```
+CPU_SOCKETS="3"
+CPU_CORES="2"
+CPU_THREADS="2"
+CPU_TOTAL="12"
+```
+
+The `-smp line` should read something like the following:
+
+```
+-smp "$CPU_TOTAL",cores="$CPU_CORES",sockets="$CPU_SOCKETS",threads="$CPU_THREADS",maxcpus="$CPU_TOTAL"
 ```
