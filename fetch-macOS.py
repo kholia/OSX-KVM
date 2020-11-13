@@ -355,7 +355,7 @@ def determine_version(version, product_info):
         for index, product_id in enumerate(product_info):
             v = product_info[product_id]['version']
             if v == version:
-                return product_id
+                return product_id, product_info[product_id]['title'] 
 
         print("Could not find version {}. Versions available are:".format(version))
         for _, pid in enumerate(product_info):
