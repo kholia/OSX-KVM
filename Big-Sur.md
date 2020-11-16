@@ -11,8 +11,8 @@
 - Unpack the InstallAssistant.pkg
 
   ```
-  $ sudo apt install libarchive-tools #install unzipper for *.pkg
-  $ bsdtar xvf InstallAssistant.pkg # extract files
+  sudo apt install libarchive-tools #install unzipper for *.pkg
+  bsdtar xvf InstallAssistant.pkg # extract files
   ```
 
 - Extract `BaseSystem.dmg` from `SharedSupport.dmg`:
