@@ -27,7 +27,7 @@ help (pull-requests!) with the following work items:
 * Documentation around running macOS on popular cloud providers (Hetzner, GCP,
   AWS). See the `Is This Legal?` section and associated references.
 
-* Test `accel=hvf` flag on QEMU + macOS Mojave on MacBook Pro.
+* Test `accel=hvf` flag on QEMU + macOS Mojave on MacBook Pro. -- Getting qemu-system-x86_64: Error: HV_ERROR
 
 * Document (share) how you use this project to build + test open-source
   projects / get your stuff done.
