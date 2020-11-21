@@ -11,9 +11,7 @@
 - Unpack the download InstallAssistant.pkg file:
 
   ```
-  sudo apt install libarchive-tools -y  # install unzipper for *.pkg files
-
-  bsdtar xvf InstallAssistant.pkg  # extract files
+  7z e -txar InstallAssistant.pkg *.dmg  # extract files
   ```
 
   At the end of this step, we get the `SharedSupport.dmg` file.
@@ -21,7 +19,7 @@
 - Extract `BaseSystem.dmg` from this `SharedSupport.dmg` file:
 
   ```
-  7z x SharedSupport.dmg  # extract support dmg
+  7z e -tdmg SharedSupport.dmg 5.hfs  # extract support dmg
 
   mkdir ~/stuff
   sudo mount -oloop *.hfs ~/stuff  # mount the hfs filesystem
@@ -38,7 +36,7 @@
   ```
   cd ~/OSX-KVM/
 
-  7z x ~/stuff/com_apple_MobileAsset_MacSoftwareUpdate/*.zip AssetData/Restore/BaseSystem.dmg
+  7z e ~/stuff/*MacSoftwareUpdate/ *.zip AssetData/Restore/Base*.dmg
 
   sudo umount ~/stuff
   ```
@@ -46,7 +44,7 @@
 * Convert this extracted `BaseSystem.dmg` file into the `BaseSystem.img` file.
 
   ```
-  qemu-img convert AssetData/Restore/BaseSystem.dmg -O raw BaseSystem.img
+  qemu-img convert BaseSystem.dmg -O raw BaseSystem.img
   ```
 
 - Follow the [main documentation](README.md#installation-preparation) as this point.
