@@ -164,9 +164,6 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
 
   Note: This same script works for Big Sur, Catalina, Mojave, and High Sierra.
 
-  If you are new to installing macOS, see the [older README](README-OLD.md) for
-  help.
-
 - You are all set! 🙌
 
 - (OPTIONAL) Use this macOS VM disk with libvirt (virt-manager / virsh stuff).

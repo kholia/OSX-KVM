@@ -1,6 +1,6 @@
 ### Notes
 
-Catalina installs the same way as [Mojave](../Mojave/README.md).
+Catalina installs the same way as Mojave.
 
 Tested with macOS Catalina 10.15.7 with OpenCore-0.6.4-DEBUG.zip snapshot
 (2020-11-03).
