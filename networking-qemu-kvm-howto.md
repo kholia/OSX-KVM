@@ -37,16 +37,16 @@ version of MacOS (10.11 or later).
 
 To use this adapter, replace `network_adapter` with `vmxnet3`
 
-# Tap Networking (Better Performance)
+## Tap Networking (Better Performance)
 
 Installing `virt-manager` automagically creates the `virbr0` local private bridge :-)
 
 ```sudo apt-get install uml-utilities virt-manager
 sudo ip tuntap add dev tap0 mode tap
 sudo ip link set tap0 up promisc on
-sudo brctl addif virbr0 tap0```
-
-Add ```-netdev tap,id=net0,ifname=tap0,script=no,downscript=no -device e1000-82545em,netdev=net0,id=net0,mac=52:54:00:c9:18:27 \```
+sudo brctl addif virbr0 tap0
+```
+Add `-netdev tap,id=net0,ifname=tap0,script=no,downscript=no -device e1000-82545em,netdev=net0,id=net0,mac=52:54:00:c9:18:27 \`
 to your qemu-system-x86_64 command.
 
 ## QEMU networking tip
