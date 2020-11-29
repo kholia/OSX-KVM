@@ -1,9 +1,9 @@
+# Networking How-To
+
 There are two main ways to set up networking on OS X / macOS, as it does not
 function with what QEMU defaults to for network settings:
 
------------------------------------
-User Mode Networking (Easier Setup)
------------------------------------
+## User Mode Networking (Easier Setup)
 
 By default, QEMU uses user mode networking (SLiRP). This networking mode is the
 slowest and is not visible via the outside network, but requires no host-side
@@ -13,7 +13,7 @@ or about connecting to the VM from an external source.
 In order to do this, change the line in your qemu-system-x86_64 command (found
 in boot-macOS.sh) to the following:
 
--netdev user,id=net0 -device network_adapter,netdev=net0,id=net0,mac=52:54:00:c9:18:27 \
+```-netdev user,id=net0 -device network_adapter,netdev=net0,id=net0,mac=52:54:00:c9:18:27 \```
 
 Once you set network_adapter to the perfered adapter, no further setup is required; your
 internet should Just Werk™ in your virtual machine!
@@ -28,39 +28,32 @@ about what emulated networking devices it is willing to accept. The
 e1000-82545em is a known adapter that can be used on pretty much any version of
 MacOS.
 
-To use this adapter, replace network_adapter with e1000-82545em
+To use this adapter, replace `network_adapter` with `e1000-82545em`
 
 vmxnet3 - An alternative solution to e1000 is to use vmxnet3 instead. Unlike
 the e1000, vmxnet3 is a paravirtualized NIC, which can allow for better
 performance (in theory). The only catch is that the you need to have a recent
 version of MacOS (10.11 or later).
 
-To use this adapter, replace network_adapter with vmxnet3
+To use this adapter, replace `network_adapter` with `vmxnet3`
 
+# Tap Networking (Better Performance)
 
------------------------------------
-Tap Networking (Better Performance)
------------------------------------
+Installing `virt-manager` automagically creates the `virbr0` local private bridge :-)
 
-Installing "virt-manager" automagically creates the "virbr0" local private bridge :-)
-
-sudo apt-get install uml-utilities virt-manager
+```sudo apt-get install uml-utilities virt-manager
 sudo ip tuntap add dev tap0 mode tap
 sudo ip link set tap0 up promisc on
-sudo brctl addif virbr0 tap0
+sudo brctl addif virbr0 tap0```
 
-Add "-netdev tap,id=net0,ifname=tap0,script=no,downscript=no -device e1000-82545em,netdev=net0,id=net0,mac=52:54:00:c9:18:27 \"
+Add ```-netdev tap,id=net0,ifname=tap0,script=no,downscript=no -device e1000-82545em,netdev=net0,id=net0,mac=52:54:00:c9:18:27 \```
 to your qemu-system-x86_64 command.
 
-QEMU networking tip
--------------------
+## QEMU networking tip
 
-# printf '52:54:00:AB:%02X:%02X\n' $((RANDOM%256)) $((RANDOM%256))  # generates QEMU compatible mac addresses!
+```# printf '52:54:00:AB:%02X:%02X\n' $((RANDOM%256)) $((RANDOM%256))  # generates QEMU compatible mac addresses!```
 
-
-------------------
-Bridged Networking
-------------------
+# Bridged Networking
 
 QEMU defaults to using NAT for its guests. It has a built-in DHCP server that
 provides addresses from the 192.168.12x.0 subnet. However, this configuration
