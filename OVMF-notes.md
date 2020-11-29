@@ -1,27 +1,29 @@
+# OVMF Notes
+
 Current OVMF blobs are borrowed from the following URL,
 
 http://download.proxmox.com/debian/dists/buster/pve-no-subscription/binary-amd64/pve-edk2-firmware_2.20200531-1_all.deb
 
 OVMF for non-OpenCore boot loaders: https://github.com/kholia/edk2/tree/macOS-NG-v3.
 
-Building OVMF
--------------
+## Building OVMF
 
-# Add tools and build dependencies:
+### Add tools and build dependencies:
+```
 apt-get update
 apt-get install build-essential git lintian debhelper iasl nasm \
   python uuid-dev -y
-
-
+```
+```
 git clone https://github.com/tianocore/edk2
 cd edk2
 git submodule update --init
 make -C BaseTools
 . edksetup.sh BaseTools
 build -a X64 -t GCC5 -p OvmfPkg/OvmfPkgX64.dsc -b RELEASE
+```
 
-References
-----------
+## References
 
 * https://www.contrib.andrew.cmu.edu/~somlo/OSXKVM/
 
