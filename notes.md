@@ -340,7 +340,7 @@ machdep.cpu.leaf7_feature_bits: 424
 ```
 
 
-### Enabling Hypervisor.Framework (Nested Virtu / Docker for Mac / Android Emulator / etc)
+### Enabling Hypervisor.Framework (Nested Virtualization / Docker for Mac / Android Emulator / etc)
 
 Docker for Mac, the Android Emulator and other virtualization products require nested virtualization in the form of the Hypervisor Framework to work in macOS.
 
