@@ -576,3 +576,23 @@ Run the following command periodically from root's crontab:
 ```
 sntp -S pool.ntp.org
 ```
+
+### Pass through all CPU cores / threads
+
+macOS requires a core count that is a power of 2, but some modern CPUs have odd counts (like 6 cores and 12 threads.
+How to harness the entire CPU in the VM?
+
+There are strategies that mix smp/sockets/cores/threads/maxcpu arguments and use odd socket counts to arrive at even core counts, and even let you specify that some of the cores are hyperthreads.
+
+Specifically for the case of an intel i7 processor with 6 cores and 12 total threads, altering the boot script to contain these variables and this SMP line results in a full CPU core/thread pass through:
+
+```
+CPU_SOCKETS="3"
+CPU_CORES="2"
+CPU_THREADS="2"
+CPU_TOTAL="12"
+
+  # ... lots of other arguments, then the '-smp' line should read this vs the stock config:
+    -smp "$CPU_TOTAL",cores="$CPU_CORES",sockets="$CPU_SOCKETS",threads="$CPU_THREADS",maxcpus="$CPU_TOTAL"
+  # ... all the rest of the arguments
+```
