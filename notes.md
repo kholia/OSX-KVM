@@ -340,17 +340,27 @@ machdep.cpu.leaf7_feature_bits: 424
 ```
 
 
-### Running Docker for Mac
+### Enabling Hypervisor.Framework (Nested Virtu / Docker for Mac / Android Emulator / etc)
 
-Docker for Mac requires enabling nested virtualization on your host machine,
+Docker for Mac, the Android Emulator and other virtualization products require nested virtualization in the form of the Hypervisor Framework to work in macOS.
+
+Is it working? Check with `sysctl kern.hv_support`. `1` means it is working.
+If it is not working, do you have the required CPU features? Check with `sysctl -a | grep machdep.cpu.features` and look for `VMX` at miminum.
+
+To enable it:
+
+1. Make sure the kvm_intel module was loaded with support. This is included in the main instructions, but specifically it means:
 
 ```
 modprobe -r kvm_intel
 modprobe kvm_intel nested=1
 ```
 
-Also you have to add `vmx,rdtscp` arguments to the `-cpu` option in
-`boot-macOS.sh` file.
+2. Make sure the VM is booted with CPU support passed through using one of the two below strategies:
+  1. You may add `+vmx,` to the front of `MY_OPTIONS` in the boot script while changing `-cpu Penryn` to `-cpu Skylake-Client` (or [any other CPU[](https://manpages.ubuntu.com/manpages/disco/man7/qemu-cpu-models.7.html) your host supports that is [Westmere or later](https://github.com/docker/for-mac/issues/2591#issuecomment-364889031))
+  1. Or you may add `vmx,rdtscp` arguments to the `-cpu` option in `boot-macOS.sh` file.
+  
+  You may need to "Reset NVRAM" on next reboot, but after that you should see a `1` when you check `sysctl kern.hv_support`
 
 
 ### Using virtio-blk-pci with macOS
