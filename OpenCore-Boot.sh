@@ -36,9 +36,9 @@ args=(
   -usb -device usb-kbd -device usb-tablet
   -smp "$CPU_THREADS",cores="$CPU_CORES",sockets="$CPU_SOCKETS"
   -device usb-ehci,id=ehci
-  -device usb-kbd,bus=ehci.0
-  -device usb-mouse,bus=ehci.0
-  -device nec-usb-xhci,id=xhci
+  # -device usb-kbd,bus=ehci.0
+  # -device usb-mouse,bus=ehci.0
+  # -device nec-usb-xhci,id=xhci
   -device isa-applesmc,osk="ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc"
   -drive if=pflash,format=raw,readonly,file="$REPO_PATH/$OVMF_DIR/OVMF_CODE.fd"
   -drive if=pflash,format=raw,file="$REPO_PATH/$OVMF_DIR/OVMF_VARS-1024x768.fd"
@@ -55,7 +55,7 @@ args=(
   # -netdev tap,id=net0,ifname=tap0,script=no,downscript=no -device vmxnet3,netdev=net0,id=net0,mac=52:54:00:c9:18:27
   -netdev user,id=net0 -device vmxnet3,netdev=net0,id=net0,mac=52:54:00:c9:18:27
   -monitor stdio
-  -vga vmware
+  -device VGA,vgamem_mb=128
 )
 
 qemu-system-x86_64 "${args[@]}"

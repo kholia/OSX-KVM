@@ -104,6 +104,10 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
 
   ATTENTION: Use `./fetch-macOS-v2.py` for downloading `macOS Big Sur`.
 
+  ATTENTION: Installing `Big Sur` is NOT recommended at this time, unless you
+  are a Hackintosh developer! Let the `Big Sur` setup sit at the `Country
+  Selection` screen and other similar places for a while ;)
+
   You can choose your desired macOS version here. After executing this step,
   you should have the `BaseSystem.dmg` file in the current folder.
 
@@ -172,15 +176,15 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
     trick usually.
 
     ```
-    sed -i "s/CHANGEME/$USER/g" macOS-libvirt-Catalina.xml
+    sed "s/CHANGEME/$USER/g" macOS-libvirt-Catalina.xml > macOS.xml
 
-    virt-xml-validate macOS-libvirt-Catalina.xml
+    virt-xml-validate macOS.xml
     ```
 
   - Create a VM by running the following command.
 
     ```bash
-    virsh --connect qemu:///system define macOS-libvirt-Catalina.xml
+    virsh --connect qemu:///system define macOS.xml
     ```
 
   - Launch `virt-manager` and start the `macOS` virtual machine.

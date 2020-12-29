@@ -83,15 +83,19 @@ def mlb_from_eeee(eeee):
 
     return '00000000000' + eeee + '00'
 
-
-def get_session():
+def get_session(args):
     headers = {
         'Host': 'osrecovery.apple.com',
         'Connection': 'close',
         'User-Agent': 'InternetRecovery/1.0',
     }
 
-    headers, _ = run_query('http://osrecovery.apple.com/', headers)
+    headers, output = run_query('http://osrecovery.apple.com/', headers)
+
+    if args.verbose:
+        print('Session headers:')
+        for header in headers:
+            print('{}: {}'.format(header, headers[header]))
 
     for header in headers:
         if header.lower() == 'set-cookie':
@@ -110,7 +114,6 @@ def get_image_info(session, bid, mlb=MLB_ZERO, diag=False, os_type='default', ci
         'User-Agent': 'InternetRecovery/1.0',
         'Cookie': session,
         'Content-Type': 'text/plain',
-        'Expect': ''
     }
 
     post = {
@@ -213,9 +216,7 @@ def action_download(args):
     fg=B2E6AA07DB9088BE5BDB38DB2EA824FDDFB6C3AC5272203B32D89F9D8E3528DC
     """
 
-
-    # print(args)
-    session = get_session()
+    session = get_session(args)
     info = get_image_info(session, bid=args.board_id, mlb=args.mlb,
                           diag=args.diagnostics, os_type=args.os_type)
     if args.verbose:
@@ -245,7 +246,7 @@ def action_selfcheck(args):
     return default_recovery(ppp = ppp)              # Returns oldest.
     """
 
-    session = get_session()
+    session = get_session(args)
     valid_default = get_image_info(session, bid=RECENT_MAC, mlb=MLB_VALID,
                                    diag=False, os_type='default')
     valid_latest = get_image_info(session, bid=RECENT_MAC, mlb=MLB_VALID,
@@ -357,7 +358,7 @@ def action_guess(args):
 
     supported = {}
 
-    session = get_session()
+    session = get_session(args)
 
     generic_latest = get_image_info(session, bid=RECENT_MAC, mlb=MLB_ZERO,
                                     diag=False, os_type='latest')
@@ -461,7 +462,8 @@ def main():
             {"name": "High Sierra (10.13)", "b": "Mac-7BA5B2D9E42DDD94", "m": "00000000000J80300"},
             {"name": "Mojave (10.14)", "b": "Mac-7BA5B2DFE22DDD8C", "m": "00000000000KXPG00"},
             {"name": "Catalina (10.15) - RECOMMENDED", "b": "Mac-00BE6ED71E35EB86", "m": "00000000000000000"},
-            {"name": "Latest (Big Sur - 11)", "b": "Mac-E43C1C25D4880AD6", "m": "00000000000000000"}
+            # {"name": "Latest (Big Sur - 11)", "b": "Mac-E43C1C25D4880AD6", "m": "00000000000000000", "os_type": "latest"}
+            {"name": "Latest (Big Sur - 11)", "b": "Mac-E43C1C25D4880AD6", "m": "00000000000000000", "os_type": "default"}
             ]
 
     for index, product in enumerate(products):
@@ -478,8 +480,12 @@ def main():
 
     # action
     product = products[index]
+    try:
+        os_type = product["os_type"]
+    except:
+        os_type = "default"
     args = gdata(mlb = product["m"], board_id = product["b"], diagnostics =
-            False, os_type = "default", verbose=False, basename="", outdir=".")
+            False, os_type = os_type, verbose=False, basename="", outdir=".")
     action_download(args)
 
 

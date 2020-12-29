@@ -74,6 +74,13 @@
       <boot order='1'/>
       <address type='drive' controller='0' bus='0' target='0' unit='1'/>
     </disk>
+    <disk type="file" device="disk">
+      <driver name="qemu" type="raw" cache="writeback"/>
+      <source file="/home/CHANGEME/OSX-KVM/BaseSystem.img"/>
+      <target dev="sdc" bus="sata"/>
+      <boot order="3"/>
+      <address type="drive" controller="0" bus="0" target="0" unit="2"/>
+    </disk>
     <controller type='sata' index='0'>
       <address type='pci' domain='0x0000' bus='0x00' slot='0x1f' function='0x2'/>
     </controller>
@@ -150,28 +157,11 @@
       <target type='virtio' name='org.qemu.guest_agent.0'/>
       <address type='virtio-serial' controller='0' bus='0' port='1'/>
     </channel>
-    <input type='tablet' bus='usb'>
-      <alias name='input0'/>
-      <address type='usb' bus='0' port='1'/>
-    </input>
-    <!-- Mouse sets to usb will make unexpected behaviors when using VNC, so we use ps2 here.-->
-    <input type='mouse' bus='ps2'>
-      <alias name='input1'/>
-    </input>
-    <!-- This is required to make Keyboard work during installation when using VNC -->
-    <input type='keyboard' bus='usb'>
-      <alias name='input2'/>
-      <address type='usb' bus='0' port='3'/>
-    </input>
     <graphics type='spice' autoport='yes'>
       <listen type='address'/>
     </graphics>
-    <input type='keyboard' bus='ps2'>
-      <alias name='input3'/>
-    </input>
-    <!-- We use video model none here, so we can later set video device to vmware-svga for better graphics -->
     <video>
-      <model type='none'/>
+      <model type="vga" vram="65536" heads="1" primary="yes"/>
     </video>
     <!-- If you wanna passthrough GPU, make sure the gfx and audio are in the same bus (like 0x01) but different function (0x00 and 0x01)-->
     <!-- <hostdev mode='subsystem' type='pci' managed='yes'>
@@ -207,7 +197,9 @@
     <qemu:arg value='-smbios'/>
     <qemu:arg value='type=2'/>
     <qemu:arg value='-device'/>
-    <qemu:arg value='vmware-svga'/>
+    <qemu:arg value='usb-tablet'/>
+    <qemu:arg value='-device'/>
+    <qemu:arg value='usb-kbd'/>
     <qemu:arg value='-cpu'/>
     <qemu:arg value='Penryn,kvm=on,vendor=GenuineIntel,+invtsc,vmware-cpuid-freq=on,+pcid,+ssse3,+sse4.2,+popcnt,+avx,+aes,+xsave,+xsaveopt,check'/>
     <!-- <qemu:arg value='Penryn,vendor=GenuineIntel,+hypervisor,+invtsc,kvm=on,+fma,+avx,+avx2,+aes,+ssse3,+sse4_2,+popcnt,+sse4a,+bmi1,+bmi2'/> -->
