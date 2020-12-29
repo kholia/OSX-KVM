@@ -104,6 +104,9 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
 
   ATTENTION: Use `./fetch-macOS-v2.py` for downloading `macOS Big Sur`.
 
+  ATTENTION: Installing `Big Sur` is NOT recommended at this time, unless you
+  are a Hackintosh developer!
+
   You can choose your desired macOS version here. After executing this step,
   you should have the `BaseSystem.dmg` file in the current folder.
 
