@@ -78,7 +78,7 @@
       <driver name="qemu" type="raw" cache="writeback"/>
       <source file="/home/CHANGEME/OSX-KVM/BaseSystem.img"/>
       <target dev="sdc" bus="sata"/>
-      <boot order="2"/>
+      <boot order="3"/>
       <address type="drive" controller="0" bus="0" target="0" unit="2"/>
     </disk>
     <controller type='sata' index='0'>
