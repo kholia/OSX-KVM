@@ -732,13 +732,13 @@
 			<key>GlobalConnect</key>
 			<false/>
 			<key>HideVerbose</key>
-			<true/>
-			<key>JumpstartHotPlug</key>
 			<false/>
+			<key>JumpstartHotPlug</key>
+			<true/>
 			<key>MinDate</key>
-			<integer>-1</integer>
+			<integer>0</integer>
 			<key>MinVersion</key>
-			<integer>-1</integer>
+			<integer>0</integer>
 		</dict>
 		<key>Audio</key>
 		<dict>
@@ -863,8 +863,6 @@
 		</dict>
 		<key>Quirks</key>
 		<dict>
-			<key>DeduplicateBootOrder</key>
-			<true/>
 			<key>ExitBootServicesDelay</key>
 			<integer>0</integer>
 			<key>IgnoreInvalidFlexRatio</key>
@@ -876,7 +874,9 @@
 			<key>TscSyncTimeout</key>
 			<integer>0</integer>
 			<key>UnblockFsConnect</key>
-			<false/>
+			<true/>
+			<key>ConnectDrivers</key>
+			<true/>
 		</dict>
 	</dict>
 </dict>

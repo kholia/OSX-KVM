@@ -37,7 +37,7 @@ index 4754e8c..489570f 100644
 Ensure that the OVMF resolution is set equal to resolution set in your OpenCore
 qcow2 file (default is 1024x768). This can be done via the OVMF menu, which you
 can reach with a press of the ESC button during the OVMF boot logo (before
-Clover boot screen appears). In the OVMF menu settings, set Device Manager ->
+OpenCore boot screen appears). In the OVMF menu settings, set Device Manager ->
 OVMF Platform Configuration -> Change Preferred Resolution for Next Boot to the
 desired value (default is 1024x768). Commit changes and exit the OVMF menu.
 
@@ -122,11 +122,6 @@ drivers on macOS.
   For example, macOS 10.12.5 requires version `378.05.05.15f01` whereas macOS
   10.12.6 requires version `378.05.05.25f01`.
 
-* Boot the macOS VM using the `boot-passthrough.sh` script. At this point, the
-  display connected to your passthrough PCIe device should turn on, and you
-  should see the Clover boot screen. Using the keyboard, navigate to Options ->
-  Graphics Injectord, and enable `Use NVIDIA Web Driver`, then boot macOS.
-
 * Updating SMBIOS for the macOS to `iMac14,2` might be required. I did not do
   so myself.
 
@@ -135,9 +130,6 @@ drivers on macOS.
 
 Note: Many AMD GPU devices (e.g. AMD RX 480 & RX 580) should be natively
 supported in macOS High Sierra.
-
-Note: AMD GPU devices may require configuring Clover with `Graphics > RadeonDeInit`
-key enabled.
 
 
 ### USB passthrough notes
@@ -456,12 +448,12 @@ $ sudo systemctl enable ssh.service
 ```
 
 
-### Improve performance on AMD GPUs
+### AMD GPU Notes
 
-*Note: As of July 2020, Navi10/14 firmware has been disabled on macOS > 10.15.5
-due to broken SMU firmware*
+- https://www.nicksherlock.com/2020/11/working-around-the-amd-gpu-reset-bug-on-proxmox/
 
-Consider using CMMChris's [RadeonBoost.kext](https://forums.macrumors.com/threads/tired-of-low-geekbench-scores-use-radeonboost.2231366/) for the RX480, RX580, RX590 and Radeon VII GPUs.
+- Consider using CMMChris's [RadeonBoost.kext](https://forums.macrumors.com/threads/tired-of-low-geekbench-scores-use-radeonboost.2231366/)
+  for the RX480, RX580, RX590 and Radeon VII GPUs.
 
 
 ### USB passthrough notes

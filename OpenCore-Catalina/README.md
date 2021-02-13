@@ -2,8 +2,8 @@
 
 Catalina installs the same way as Mojave.
 
-Tested with macOS Catalina 10.15.7 with OpenCore-0.6.4-DEBUG.zip snapshot
-(2020-11-03).
+Tested with macOS Catalina 10.15.7 with OpenCore-0.6.6-RELEASE.zip release
+(Feb, 2021).
 
 Note: Our `config.plist` is buggy and we need to fix it!
 
