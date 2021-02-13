@@ -336,15 +336,16 @@ def find_installer_app(mountpoint):
     return None
 
 
-def determine_version(version, product_info):
+def determine_version(version, title, product_info):
     if version:
         if version == 'latest':
             from distutils.version import StrictVersion
             latest_version = StrictVersion('0.0.0')
             for index, product_id in enumerate(product_info):
-                d = product_info[product_id]['version']
-                if d > latest_version:
-                    latest_version = d
+                if not title or product_info[product_id]['title'] == title:
+                    d = product_info[product_id]['version']
+                    if d > latest_version:
+                        latest_version = d
 
             if latest_version == StrictVersion("0.0.0"):
                 print("Could not find latest version {}")
@@ -408,6 +409,11 @@ def main():
                         help='The version to download in the format of '
                              '"$major.$minor.$patch", e.g. "10.15.4". Can '
                              'be "latest" to download the latest version.')
+    parser.add_argument('--title', metavar='title',
+                        default=None,
+                        help='When using "--version latest", you can use '
+                             'this to filter the search to only products with '
+                             'this title')
     parser.add_argument('--compress', action='store_true',
                         help='Output a read-only compressed disk image with '
                              'the Install macOS app at the root. This is now the '
@@ -436,7 +442,7 @@ def main():
         print('No macOS installer products found in the sucatalog.', file=sys.stderr)
         exit(-1)
 
-    product_id, product_title = determine_version(args.version, product_info)
+    product_id, product_title = determine_version(args.version, args.title, product_info)
     print(product_id, product_title)
 
     # download all the packages for the selected product
