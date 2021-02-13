@@ -1,0 +1,33 @@
+1. How do I symbolicate kernel panic traces?
+
+Just add keepsyms=1 to either the Kernel Flags setting in /Library/Preferences/SystemConfiguration/com.apple.Boot.plist,
+or to the boot-args NVRAM variable. Reboot, and any subsequent panics will be automatically symbolicated. You can run
+mangled C++ symbols through the c++filt command line utility to get the proper C++ function signatures.
+
+$ sudo nvram boot-args="-v keepsyms=1"
+
+Thanks for Phil Dennis-Jordan for this great tip.
+
+2. Debugging a AVX related crash which occurs at bootup.
+
+$ nm /System/Library/Extensions/corecrypto.kext/Contents/MacOS/corecrypto | grep avx
+0000000000001840 T _ccsha256_vng_intel_avx1_compress
+0000000000036708 T _ccsha256_vng_intel_avx2_compress
+0000000000026973 T _ccsha512_vng_intel_avx1_compress
+00000000000327cb T _ccsha512_vng_intel_avx2_compress
+000000000001d960 T _gcmDecrypt_avx1
+000000000001c980 T _gcmEncrypt_avx1
+
+$ gdb /System/Library/Extensions/corecrypto.kext/Contents/MacOS/corecrypto
+(gdb) x/16i 0x0000000000001840
+   0x1840:	push   %rbp
+   0x1841:	mov    %rsp,%rbp
+   0x1844:	push   %rbx
+   0x1845:	push   %r12
+   0x1847:	push   %r13
+   0x1849:	push   %r14
+   0x184b:	push   %r15
+   0x184d:	sub    $0x168,%rsp
+   0x1854:	lea    0x60(%rsp),%rax
+   0x1859:	and    $0xffffffffffffffe0,%rax
+   0x185d:	vmovdqa %ymm0,(%rax)  <--- the crash occurs here due to lack of "xsave" support
