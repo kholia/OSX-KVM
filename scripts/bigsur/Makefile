@@ -4,32 +4,19 @@
 # The recovery can be built on either macOS or Linux.
 
 # For Ubuntu (or similar Linux distribution) you'll need to run this first to get the required packages:
-# sudo apt install g++ git qemu-utils libxml2-dev libssl-dev zlib1g-dev cmake libbz2-dev libfuse-dev fuse autoconf unzip
+# sudo apt install qemu-utils make
 
 # For macOS you'll probably need to run xcode-select --install to get the commandline tools
 
 BIG_SUR_APP=/Applications/Install\ macOS\ Big\ Sur.app
 
-LINUX_TOOLS = qemu-img git cmake autoconf
+LINUX_TOOLS = qemu-img
 
 OS := 
 UNAME_S := $(shell uname -s)
 
 ifeq ($(UNAME_S),Darwin)
 	OS = MACOS
-endif
-
-# Use systemwide xar/darling-img if available:
-XAR := $(shell which xar)
-DARLING := $(shell which darling-dmg)
-
-# Otherwise we'll build them from source:
-ifeq ($(XAR),)
-XAR = xar/xar/src/xar
-endif
-
-ifeq ($(DARLING),)
-DARLING = darling-dmg/darling-dmg
 endif
 
 # If this is Linux make sure we have all our build tools available:
@@ -40,8 +27,8 @@ endif
 
 all: BigSur-recovery.img
 
-BigSur-full.img : BigSur-full.dmg
-	mv $< $@ 
+%.img : %.dmg
+	ln $< $@
 
 ifeq ($(OS),MACOS)
 BigSur-full.dmg : $(BIG_SUR_APP)
@@ -53,56 +40,26 @@ BigSur-full.dmg : $(BIG_SUR_APP)
 	hdiutil detach -force "/Volumes/Install macOS Big Sur"
 else
 BigSur-full.dmg :
-	$(error "Building a full installer requires this script to be run on macOS, build BigSur-recovery.img instead")
+	$(error "Building a full installer requires this script to be run on macOS, run 'make BigSur-recovery.img' instead")
 endif
 
 $(BIG_SUR_APP) : InstallAssistant.pkg
 	sudo installer -pkg $< -target /
 
-BigSur-recovery.img : BaseSystem.dmg
+BigSur-recovery.dmg : BaseSystem.dmg
+	rm -f $@
 ifeq ($(OS),MACOS)
 	hdiutil convert $< -format UDRW -o $@
 else
 	qemu-img convert $< -O raw $@
 endif
 
-ifeq ($(OS),MACOS)
-BaseSystem.dmg : SharedSupport.dmg
-	hdiutil detach -force .bigsur-package-tmp || true
-	rm -rf .bigsur-package-tmp
-	mkdir .bigsur-package-tmp
-	hdiutil attach -quiet -nobrowse -mountpoint .bigsur-package-tmp $<
-	tar -O -xf .bigsur-package-tmp/com_apple_MobileAsset_MacSoftwareUpdate/*.zip AssetData/Restore/BaseSystem.dmg > BaseSystem.dmg
-	hdiutil detach -force .bigsur-package-tmp
-	rm -rf .bigsur-package-tmp
-else
-BaseSystem.dmg : SharedSupport.dmg $(DARLING)
-	umount .bigsur-package-tmp || true
-	rm -rf .bigsur-package-tmp
-	mkdir .bigsur-package-tmp
-	$(DARLING) $< .bigsur-package-tmp
-	unzip -p ".bigsur-package-tmp/com_apple_MobileAsset_MacSoftwareUpdate/*.zip" AssetData/Restore/BaseSystem.dmg > BaseSystem.dmg
-	umount .bigsur-package-tmp
-	rm -rf .bigsur-package-tmp
-endif
-
-SharedSupport.dmg : InstallAssistant.pkg $(XAR)
-	$(XAR) -xf $< $@
-	touch $@
+BaseSystem.dmg :
+	../../fetch-macOS-v2.py --action download --board-id Mac-E43C1C25D4880AD6
 
 InstallAssistant.pkg :
-	../../fetch-macOS.py --version 11.2.1
+	../../fetch-macOS.py --version latest --title "macOS Big Sur"
 
-xar/xar/src/xar : xar/
-	cd xar/xar && ./autogen.sh
-	cd xar/xar && make
-
-xar/ :
-	git clone https://github.com/VantaInc/xar.git
-
-darling-dmg/darling-dmg : darling-dmg/
-	cd darling-dmg && cmake .
-	cd darling-dmg && make
-
-darling-dmg/ :
-	git clone https://github.com/darlinghq/darling-dmg.git
+clean :
+	rm -f BaseSystem.chunklist BaseSystem.dmg SharedSupport.dmg InstallAssistant.pkg BigSur-recovery.img BigSur-full.img
+	rm -rf content
