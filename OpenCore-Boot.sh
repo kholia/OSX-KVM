@@ -29,22 +29,39 @@ OVMF_DIR="."
 # This causes high cpu usage on the *host* side
 # qemu-system-x86_64 -enable-kvm -m 3072 -cpu Penryn,vendor=GenuineIntel,+invtsc,vmware-cpuid-freq=on,hypervisor=off,vmx=on,kvm=off,$MY_OPTIONS\
 
-# Create bootdisks
+
+# This will create each qcow at runtime!
+# Takes about 20 seconds and only runs on the first run.
+# If you want to recreate a disk, just delete the one you'd like to recreate from ./OpenCore-Catalina./OpenCore*.qcow2
+git submodule update --init --recursive
+
 if ! [ -e "$REPO_PATH/OpenCore-Catalina/OpenCore.qcow2" ]; then
-  ./osx-serial-generator/generate-specific-bootdisk.sh \
+  ./osx-serial-generator/generate-unique-machine-values.sh \
     --input-plist ./OpenCore-Catalina/config.plist \
+    --create-plists \
+    --create-bootdisks \
+    --csv ./serials.csv \
+    --tsv ./serials.tsv \
     --output-bootdisk "$REPO_PATH/OpenCore-Catalina/OpenCore.qcow2"
 fi
 
 if ! [ -e "$REPO_PATH/OpenCore-Catalina/OpenCore.qcow2" ]; then
-  ./osx-serial-generator/generate-specific-bootdisk.sh \
+  ./osx-serial-generator/generate-unique-machine-values.sh \
     --input-plist ./OpenCore-Catalina/config-nopicker.plist \
+    --create-plists \
+    --create-bootdisks \
+    --csv ./serials.csv \
+    --tsv ./serials.tsv \
     --output-bootdisk "$REPO_PATH/OpenCore-Catalina/OpenCore-nopicker.qcow2"
 fi
 
 if ! [ -e "$REPO_PATH/OpenCore-Catalina/OpenCore.qcow2" ]; then
-  ./osx-serial-generator/generate-specific-bootdisk.sh \
+  ./osx-serial-generator/generate-unique-machine-values.sh \
     --input-plist ./OpenCore-Catalina/config-pt.plist \
+    --create-plists \
+    --create-bootdisks \
+    --csv ./serials.csv \
+    --tsv ./serials.tsv \
     --output-bootdisk "$REPO_PATH/OpenCore-Catalina/OpenCore-Passthrough.qcow2"
 fi
 
