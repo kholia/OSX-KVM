@@ -1,11 +1,10 @@
 *.iso
-pbzx-src/liblzma
-pbzx-src/xz-5.2.2
-pbzx-src/pbzx
 mac_hdd.img
+mac_hdd_ng.img
 *.sha256sum
 *.sucatalog
 *.img
+*.dmg
 *.dist
 *.smd
 *.dmg

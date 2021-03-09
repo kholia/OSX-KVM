@@ -105,3 +105,11 @@
 - CyberShadow (Vladimir Panteleev) - Documentation fixes
 
 - mikehardy (Mike Hardy) - Docker on macOS notes, CPU support notes
+
+- Dogr95 - macOS-libvirt-Catalina.xml fixes
+
+- headkaze - AppleVirtualGraphics.kext tip
+
+- aydenbottos - macOS-libvirt-Catalina.xml fixes
+
+- mikkeyboi - Unraid OS stuff

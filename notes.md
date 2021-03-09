@@ -11,7 +11,7 @@ in System Preferences and delete all the devices, and apply the changes. Next,
 go to the console and type in `sudo rm /Library/Preferences/SystemConfiguration/NetworkInterfaces.plist`.
 Finally reboot, and then use the App Store without problems.
 
-This fix was found by Glnk2012 of https://www.tonymacx86.com/ site.
+This fix was found by `Glnk2012` of https://www.tonymacx86.com/ site.
 
 Also tweaking the `smbios.plist` file can help (?).
 
@@ -33,6 +33,17 @@ index 4754e8c..489570f 100644
                         <false/>
                         <key>IgnoreTextInGraphics</key>
 ```
+
+Ensure that the OVMF resolution is set equal to resolution set in your OpenCore
+qcow2 file (default is 1024x768). This can be done via the OVMF menu, which you
+can reach with a press of the ESC button during the OVMF boot logo (before
+OpenCore boot screen appears). In the OVMF menu settings, set Device Manager ->
+OVMF Platform Configuration -> Change Preferred Resolution for Next Boot to the
+desired value (default is 1024x768). Commit changes and exit the OVMF menu.
+
+Note: The macOS VM's resolution can be changed via `Settings -> Displays`
+option easily.
+
 
 ### GPU passthrough notes
 
@@ -111,11 +122,6 @@ drivers on macOS.
   For example, macOS 10.12.5 requires version `378.05.05.15f01` whereas macOS
   10.12.6 requires version `378.05.05.25f01`.
 
-* Boot the macOS VM using the `boot-passthrough.sh` script. At this point, the
-  display connected to your passthrough PCIe device should turn on, and you
-  should see the Clover boot screen. Using the keyboard, navigate to Options ->
-  Graphics Injectord, and enable `Use NVIDIA Web Driver`, then boot macOS.
-
 * Updating SMBIOS for the macOS to `iMac14,2` might be required. I did not do
   so myself.
 
@@ -124,9 +130,6 @@ drivers on macOS.
 
 Note: Many AMD GPU devices (e.g. AMD RX 480 & RX 580) should be natively
 supported in macOS High Sierra.
-
-Note: AMD GPU devices may require configuring Clover with `Graphics > RadeonDeInit`
-key enabled.
 
 
 ### USB passthrough notes
@@ -192,58 +195,26 @@ These steps will need to be adapted for your particular setup.
 * The included `.synergy.conf` will need to be adapted according to your setup.
 
 
-### Higher Resolution (for "UEFI + Clover")
-
-Follow the steps below to get a higher resolution:
-
-1. Set the desired Clover screen resolution in the relevant
-   `config.plist.stripped.qemu` file and regenerate the corresponding
-   `Clover*.qcow2` file (process documented in `Mojave/README.md`).
-
-2. Ensure that the OVMF resolution is set equal to resolution set in your
-   Clover.qcow2 file (default is 1024x768). This can be done via the OVMF menu,
-   which you can reach with a press of the ESC button during the OVMF boot logo
-   (before Clover boot screen appears). In the OVMF menu settings, set Device
-   Manager -> OVMF Platform Configuration -> Change Preferred Resolution for Next
-   Boot to the desired value (default is 1024x768). Commit changes and exit the
-   OVMF menu.
-
-3. Relaunch the boot script.
-
-
 ### Accelerated Graphics
 
-Install VMsvga2 from [this location](https://sourceforge.net/projects/vmsvga2/). No support
-is provided for this unmaintained project!
+See `UEFI/README.md` for GPU passthrough notes.
 
-* Add `-vga vmware` to QEMU parameters in the booot script (e.g.
-  boot-macOS.sh), if required.
+Note: There is no working QXL driver for macOS so far.
 
-* For Clover bootloader, add `wmv_option_fb=0x06` to the `<string>` tag of the
-  `Arguments` key of the `config.plist` you use when generating the
-  `CloverNG.qcow2`.
+Links:
 
-* See `UEFI/README.md` for GPU passthrough notes.
-
-* Note: There is no working QXL driver for macOS so far.
+- https://www.kraxel.org/blog/2019/09/display-devices-in-qemu/
+- https://www.kraxel.org/blog/2019/06/macos-qemu-guest/
 
 
 ### Virtual Sound Device
 
 *Warning: The OpenCore distribution that comes with OSX-KVM already has
-AppleALC, do not mix VoodooHDA with AppleALC. You may want to consider HDA
-passthrough if it is practical or use HDMI audio instead*
+`VoodooHDA OC`. Do NOT mix VoodooHDA with AppleALC. You may want to consider
+HDA passthrough if it is practical or use HDMI audio instead*
 
-No support is provided for this. You are on your own. The sound output is known
-to be choppy and distorted.
-
-* Add `-device ich9-intel-hda -device hda-duplex` to the VM configuration.
-  `boot-macOS.sh` already has this change.
-
-* To get sound on your virtual Mac, enable the `VoodooHDA OC` driver in
-  OpenCore configuration. The emulated sound quality is not usable (it seems?).
-
-  Note: Use Sound Card / USB Sound Card passthrough instead.
+Note: The emulated sound output can be choppy, and distorted. Use Sound Card /
+USB Sound Card passthrough instead.
 
 Note: It seems that playback of Flash videos requires an audio device to be
 present.
@@ -477,12 +448,12 @@ $ sudo systemctl enable ssh.service
 ```
 
 
-### Improve performance on AMD GPUs
+### AMD GPU Notes
 
-*Note: As of July 2020, Navi10/14 firmware has been disabled on macOS > 10.15.5
-due to broken SMU firmware*
+- https://www.nicksherlock.com/2020/11/working-around-the-amd-gpu-reset-bug-on-proxmox/
 
-Consider using CMMChris's [RadeonBoost.kext](https://forums.macrumors.com/threads/tired-of-low-geekbench-scores-use-radeonboost.2231366/) for the RX480, RX580, RX590 and Radeon VII GPUs.
+- Consider using CMMChris's [RadeonBoost.kext](https://forums.macrumors.com/threads/tired-of-low-geekbench-scores-use-radeonboost.2231366/)
+  for the RX480, RX580, RX590 and Radeon VII GPUs.
 
 
 ### USB passthrough notes

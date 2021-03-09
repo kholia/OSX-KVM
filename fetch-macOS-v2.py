@@ -415,49 +415,47 @@ class gdata:
 
 
 def main():
-    debug = False
-    if debug:
-        parser = argparse.ArgumentParser(description='Gather recovery information for Macs')
-        parser.add_argument('action', choices=['download', 'selfcheck', 'verify', 'guess'],
-                            help='Action to perform: "download" - performs recovery downloading,'
-                                 ' "selfcheck" checks whether MLB serial validation is possible, "verify" performs'
-                                 ' MLB serial verification, "guess" tries to find suitable mac model for MLB.')
-        parser.add_argument('-o', '--outdir', type=str, default=os.getcwd(),
-                            help='customise output directory for downloading, defaults to current directory')
-        parser.add_argument('-n', '--basename', type=str, default='',
-                            help='customise base name for downloading, defaults to remote name')
-        parser.add_argument('-b', '--board-id', type=str, default=RECENT_MAC,
-                            help='use specified board identifier for downloading, defaults to ' + RECENT_MAC)
-        parser.add_argument('-m', '--mlb', type=str, default=MLB_ZERO,
-                            help='use specified logic board serial for downloading, defaults to ' + MLB_ZERO)
-        parser.add_argument('-e', '--code', type=str, default='',
-                            help='generate product logic board serial with specified product EEEE code')
-        parser.add_argument('-os', '--os-type', type=str, default='default', choices=['default', 'latest'],
-                            help='use specified os type, defaults to default ' + MLB_ZERO)
-        parser.add_argument('-diag', '--diagnostics', action='store_true', help='download diagnostics image')
-        parser.add_argument('-v', '--verbose', action='store_true', help='print debug information')
-        parser.add_argument('-db', '--board-db', type=str, default=os.path.join(SELF_DIR, 'boards.json'),
-                            help='use custom board list for checking, defaults to boards.json')
+    parser = argparse.ArgumentParser(description='Gather recovery information for Macs')
+    parser.add_argument('--action', choices=['download', 'selfcheck', 'verify', 'guess'], default='',
+                        help='Action to perform: "download" - performs recovery downloading,'
+                             ' "selfcheck" checks whether MLB serial validation is possible, "verify" performs'
+                             ' MLB serial verification, "guess" tries to find suitable mac model for MLB.')
+    parser.add_argument('-o', '--outdir', type=str, default=os.getcwd(),
+                        help='customise output directory for downloading, defaults to current directory')
+    parser.add_argument('-n', '--basename', type=str, default='',
+                        help='customise base name for downloading, defaults to remote name')
+    parser.add_argument('-b', '--board-id', type=str, default=RECENT_MAC,
+                        help='use specified board identifier for downloading, defaults to ' + RECENT_MAC)
+    parser.add_argument('-m', '--mlb', type=str, default=MLB_ZERO,
+                        help='use specified logic board serial for downloading, defaults to ' + MLB_ZERO)
+    parser.add_argument('-e', '--code', type=str, default='',
+                        help='generate product logic board serial with specified product EEEE code')
+    parser.add_argument('-os', '--os-type', type=str, default='default', choices=['default', 'latest'],
+                        help='use specified os type, defaults to default ' + MLB_ZERO)
+    parser.add_argument('-diag', '--diagnostics', action='store_true', help='download diagnostics image')
+    parser.add_argument('-v', '--verbose', action='store_true', help='print debug information')
+    parser.add_argument('-db', '--board-db', type=str, default=os.path.join(SELF_DIR, 'boards.json'),
+                        help='use custom board list for checking, defaults to boards.json')
 
-        args = parser.parse_args()
+    args = parser.parse_args()
 
-        if args.code != '':
-            args.mlb = mlb_from_eeee(args.code)
+    if args.code != '':
+        args.mlb = mlb_from_eeee(args.code)
 
-        if len(args.mlb) != 17:
-            print('ERROR: Cannot use MLBs in non 17 character format!')
-            sys.exit(1)
+    if len(args.mlb) != 17:
+        print('ERROR: Cannot use MLBs in non 17 character format!')
+        sys.exit(1)
 
-        if args.action == 'download':
-            return action_download(args)
-        if args.action == 'selfcheck':
-            return action_selfcheck(args)
-        if args.action == 'verify':
-            return action_verify(args)
-        if args.action == 'guess':
-            return action_guess(args)
-        assert False
+    if args.action == 'download':
+        return action_download(args)
+    if args.action == 'selfcheck':
+        return action_selfcheck(args)
+    if args.action == 'verify':
+        return action_verify(args)
+    if args.action == 'guess':
+        return action_guess(args)
 
+    # No action specified, so present a download menu instead
     products = [
             {"name": "High Sierra (10.13)", "b": "Mac-7BA5B2D9E42DDD94", "m": "00000000000J80300"},
             {"name": "Mojave (10.14)", "b": "Mac-7BA5B2DFE22DDD8C", "m": "00000000000KXPG00"},
