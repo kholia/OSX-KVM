@@ -30,9 +30,10 @@ OVMF_DIR="."
 # qemu-system-x86_64 -enable-kvm -m 3072 -cpu Penryn,vendor=GenuineIntel,+invtsc,vmware-cpuid-freq=on,hypervisor=off,vmx=on,kvm=off,$MY_OPTIONS\
 
 
-# This will create each qcow at runtime!
-# Takes about 20 seconds and only runs on the first run.
-# If you want to recreate a disk, just delete the one you'd like to recreate from ./OpenCore-Catalina./OpenCore*.qcow2
+# This will create each OpenCore qcow at runtime (if they are not already present).
+# Takes about 10 seconds each and only runs on the first run.
+# If you want to recreate a disk, just delete the one you'd like to recreate from inside ./OpenCore-Catalina/
+
 git submodule update --init --recursive
 
 if ! [ -e "$REPO_PATH/OpenCore-Catalina/OpenCore.qcow2" ]; then
@@ -45,7 +46,7 @@ if ! [ -e "$REPO_PATH/OpenCore-Catalina/OpenCore.qcow2" ]; then
     --output-bootdisk "$REPO_PATH/OpenCore-Catalina/OpenCore.qcow2"
 fi
 
-if ! [ -e "$REPO_PATH/OpenCore-Catalina/OpenCore.qcow2" ]; then
+if ! [ -e "$REPO_PATH/OpenCore-Catalina/OpenCore-nopicker.qcow2" ]; then
   ./osx-serial-generator/generate-unique-machine-values.sh \
     --input-plist ./OpenCore-Catalina/config-nopicker.plist \
     --create-plists \
@@ -55,7 +56,7 @@ if ! [ -e "$REPO_PATH/OpenCore-Catalina/OpenCore.qcow2" ]; then
     --output-bootdisk "$REPO_PATH/OpenCore-Catalina/OpenCore-nopicker.qcow2"
 fi
 
-if ! [ -e "$REPO_PATH/OpenCore-Catalina/OpenCore.qcow2" ]; then
+if ! [ -e "$REPO_PATH/OpenCore-Catalina/OpenCore-Passthrough.qcow2" ]; then
   ./osx-serial-generator/generate-unique-machine-values.sh \
     --input-plist ./OpenCore-Catalina/config-pt.plist \
     --create-plists \

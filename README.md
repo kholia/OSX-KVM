@@ -78,9 +78,18 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
 
 * Install QEMU and other packages.
 
-  ```
-  sudo apt-get install qemu uml-utilities virt-manager git \
-      wget libguestfs-tools p7zip-full -y
+  ```bash
+  # Ubuntu, Debian, Pop
+  sudo apt update -y
+  sudo apt install libguestfs-tools build-essential wget git linux-generic sudo qemu p7zip-full virt-manager uml-utilities -y
+
+  # Fedora, RHEL, CentOS
+  sudo yum groupinstall 'Development Tools' -y
+  sudo yum install libguestfs libguestfs-tools wget git kernel-devel sudo python3 libvirt qemu-kvm virt-manager -y
+
+  # Arch, Manjaro
+  sudo pacman -Sy libguestfs wget git base-devel linux sudo python virt-manager
+
   ```
 
   This step may need to be adapted for your Linux distribution.
@@ -91,9 +100,11 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
   ```
   cd ~
 
-  git clone --depth 1 https://github.com/kholia/OSX-KVM.git
+  git clone --recurse-submodules --depth 1 https://github.com/kholia/OSX-KVM.git
 
   cd OSX-KVM
+
+  # git submodule update --init --recursive
   ```
 
 * Fetch macOS installer.
@@ -152,6 +163,40 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
   ```
 
   NOTE: Create this HDD image file on a fast SSD/NVMe disk for best results.
+
+* Create OpenCore bootable disks.
+
+  ```bash
+  ./osx-serial-generator/generate-unique-machine-values.sh \
+    --input-plist ./OpenCore-Catalina/config.plist \
+    --create-plists \
+    --create-bootdisks \
+    --csv ./serials.csv \
+    --tsv ./serials.tsv \
+    --output-bootdisk "./OpenCore-Catalina/OpenCore.qcow2"
+  ```
+
+
+  ```bash
+  ./osx-serial-generator/generate-unique-machine-values.sh \
+    --input-plist ./OpenCore-Catalina/config-nopicker.plist \
+    --create-plists \
+    --create-bootdisks \
+    --csv ./serials.csv \
+    --tsv ./serials.tsv \
+    --output-bootdisk "./OpenCore-Catalina/OpenCore-nopicker.qcow2"
+  ```
+
+
+  ```bash
+  ./osx-serial-generator/generate-unique-machine-values.sh \
+    --input-plist ./OpenCore-Catalina/config-pt.plist \
+    --create-plists \
+    --create-bootdisks \
+    --csv ./serials.csv \
+    --tsv ./serials.tsv \
+    --output-bootdisk "./OpenCore-Catalina/OpenCore-Passthrough.qcow2"
+  ```
 
 * Now you are ready to install macOS 🚀
 
