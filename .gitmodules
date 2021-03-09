@@ -1,3 +1,6 @@
 [submodule "resources/OcBinaryData"]
 	path = resources/OcBinaryData
 	url = https://github.com/acidanthera/OcBinaryData.git
+[submodule "osx-serial-generator"]
+	path = osx-serial-generator
+	url = https://github.com/sickcodes/osx-serial-generator
