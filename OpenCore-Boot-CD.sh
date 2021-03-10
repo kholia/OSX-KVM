@@ -17,14 +17,45 @@ MY_OPTIONS="+pcid,+ssse3,+sse4.2,+popcnt,+avx,+aes,+xsave,+xsaveopt,check"
 
 # This script works for Big Sur, Catalina, Mojave, and High Sierra. Tested with
 # macOS 10.15.6, macOS 10.14.6, and macOS 10.13.6
+display_help() {
+    echo "USAGE: $(basename "$0") [OPTIONAL ARGS]"
+    echo -e "\nThe arguments, in order, are:\n1) The amount of RAM (in MiB)\n2) The number of CPU sockets\n3) The number of CPU cores\n4) The number of CPU threads"
+    echo -e "\nThe default values are:\n1) 3072\n2) 1\n3) 2\n4) 4"
+}
 
-ALLOCATED_RAM="3072" # MiB
-CPU_SOCKETS="1"
-CPU_CORES="2"
-CPU_THREADS="4"
+if [ $# -eq 0 ]; then
+    ALLOCATED_RAM="3072" # MiB
+    CPU_SOCKETS="1"
+    CPU_CORES="2"
+    CPU_THREADS="4"
+    echo "Please take into account that the default values for the memory and CPU will be used (3 GB RAM, 1 CPU socket, 2 cores, 4 threads)"
 
-REPO_PATH="./"
+    echo -e "\nALLOCATED RAM: $ALLOCATED_RAM MB"
+    echo "CPU SOCKETS: $CPU_SOCKETS"
+    echo "CPU CORES: $CPU_CORES"
+    echo "CPU THREADS: $CPU_THREADS"
+elif [ $# -eq 1 ] && [ $1 == "-h" ]; then
+    display_help
+elif [ $# -eq 4 ]; then
+    ALLOCATED_RAM="$1 MB"
+    CPU_SOCKETS="$2"
+    CPU_CORES="$3"
+    CPU_THREADS="$4"
+
+    echo -e "\nALLOCATED RAM: $ALLOCATED_RAM"
+    echo "CPU SOCKETS: $CPU_SOCKETS"
+    echo "CPU CORES: $CPU_CORES"
+    echo "CPU THREADS: $CPU_THREADS"
+else
+    echo "Please suppy a valid number of arguments! (0 for default values or 4 to specify them yourself. View \"-h\" for more info.)"
+
+fi
+
+REPO_PATH="."
 OVMF_DIR="."
+
+# This causes high cpu usage on the *host* side
+# qemu-system-x86_64 -enable-kvm -m 3072 -cpu Penryn,vendor=GenuineIntel,+invtsc,vmware-cpuid-freq=on,hypervisor=off,vmx=on,kvm=off,$MY_OPTIONS\
 
 # shellcheck disable=SC2054
 args=(
