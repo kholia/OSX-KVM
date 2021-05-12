@@ -83,6 +83,12 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
 
   This step may need to be adapted for your Linux distribution.
 
+* Add user to the `kvm` group (might be needed).
+
+  ```
+  sudo usermod -aG kvm $(whoami)
+  ```
+
 * Clone this repository on your QEMU system. Files from this repository are
   used in the following steps.
 
@@ -211,13 +217,15 @@ work, patience, and a bit of luck (perhaps?).
 
   This has been enough for me so far.
 
-  Note: You may need to [enable the `rc.local` functionality manually on modern Ubuntu versions](https://linuxmedium.com/how-to-enable-etc-rc-local-with-systemd-on-ubuntu-20-04/).
+  Note: You may need to enable the `rc.local` functionality manually on modern
+  Ubuntu versions. Check out the [notes](notes.md) included in this repository
+  for details.
 
 * To passthrough GPUs and other devices, see [these notes](notes.md).
 
 * Need a different resolution? Check out the [notes](notes.md) included in this repository.
 
-* To generate your own SMBIOS, use [GenSMBIOS](https://github.com/corpnewt/GenSMBIOS).
+* Trouble with iMessage? Check out the [notes](notes.md) included in this repository.
 
 
 ### Is This Legal?

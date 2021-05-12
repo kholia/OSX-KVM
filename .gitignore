@@ -9,3 +9,5 @@ mac_hdd_ng.img
 *.smd
 *.dmg
 OVMF_VARS-1024x768.fd
+OVMF_VARS*.fd
+OpenCore-Catalina/EFI/OC/Resources/

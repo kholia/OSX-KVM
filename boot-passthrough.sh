@@ -23,7 +23,7 @@ CPU_SOCKETS="1"
 CPU_CORES="2"
 CPU_THREADS="4"
 
-REPO_PATH="./"
+REPO_PATH="."
 OVMF_DIR="."
 
 # Note: This script assumes that you are doing CPU + GPU passthrough. This
@@ -35,23 +35,29 @@ OVMF_DIR="."
 
 # shellcheck disable=SC2054
 args=(
-  -enable-kvm -m "$ALLOCATED_RAM" -cpu host,vendor=GenuineIntel,kvm=on,vmware-cpuid-freq=on,+invtsc,+hypervisor
-  -machine pc-q35-2.9
-  -smp "$CPU_THREADS",cores="$CPU_CORES",sockets="$CPU_SOCKETS"
-  -vga none
-  -device pcie-root-port,bus=pcie.0,multifunction=on,port=1,chassis=1,id=port.1
-  -device vfio-pci,host=01:00.0,bus=port.1,multifunction=on
-  -device vfio-pci,host=01:00.1,bus=port.1
+  -enable-kvm -m "$ALLOCATED_RAM" -cpu Penryn,kvm=on,vendor=GenuineIntel,+invtsc,vmware-cpuid-freq=on,"$MY_OPTIONS"
+  -machine q35
   -usb -device usb-kbd -device usb-tablet
+  -smp "$CPU_THREADS",cores="$CPU_CORES",sockets="$CPU_SOCKETS"
+  -device usb-ehci,id=ehci
+  -vga none
+  -device vfio-pci,host=01:00.0,multifunction=on
+  -device vfio-pci,host=01:00.1
   -device isa-applesmc,osk="ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc"
   -drive if=pflash,format=raw,readonly,file="$REPO_PATH/$OVMF_DIR/OVMF_CODE.fd"
   -drive if=pflash,format=raw,file="$REPO_PATH/$OVMF_DIR/OVMF_VARS-1024x768.fd"
   -smbios type=2
-  -drive id=MacHDD,if=none,file=./mac_hdd_ng.img
-  -device ide-drive,bus=sata.2,drive=MacHDD
-  -drive id=OpenCoreBoot,if=none,snapshot=on,format=qcow2,file="$REPO_PATH/OpenCore-Catalina/OpenCore-Passthrough.qcow2"
-  -device ide-hd,bus=sata.3,drive=OpenCoreBoot
-  -netdev tap,id=net0,ifname=tap0,script=no,downscript=no -device vmxnet3,netdev=net0,id=net0,mac=52:54:00:c9:18:27
+  -device ich9-intel-hda -device hda-duplex
+  -device ich9-ahci,id=sata
+  -drive id=OpenCoreBoot,if=none,snapshot=on,format=qcow2,file="$REPO_PATH/OpenCore-Catalina/OpenCore-nopicker.qcow2"
+  # -drive id=OpenCoreBoot,if=none,snapshot=on,format=qcow2,file="$REPO_PATH/OpenCore-Catalina/OpenCore.qcow2"
+  -device ide-hd,bus=sata.2,drive=OpenCoreBoot
+  -device ide-hd,bus=sata.3,drive=InstallMedia
+  -drive id=InstallMedia,if=none,file="$REPO_PATH/BaseSystem.img",format=raw
+  -drive id=MacHDD,if=none,file="$REPO_PATH/mac_hdd_ng.img",format=qcow2
+  -device ide-hd,bus=sata.4,drive=MacHDD
+  # -netdev tap,id=net0,ifname=tap0,script=no,downscript=no -device vmxnet3,netdev=net0,id=net0,mac=52:54:00:c9:18:27
+  -netdev user,id=net0 -device vmxnet3,netdev=net0,id=net0,mac=52:54:00:c9:18:27
   -monitor stdio
   -display none
 )

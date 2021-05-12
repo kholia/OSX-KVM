@@ -48,88 +48,125 @@ option easily.
 ### GPU passthrough notes
 
 These steps will need to be adapted for your particular setup. A host machine
-with IOMMU support is required. Consult the Arch Wiki article linked to at the
-bottom of this file for exact requirements and other details.
+with IOMMU support is required. Consult [this Arch Wiki article](https://wiki.archlinux.org/title/PCI_passthrough_via_OVMF)
+for general-purpose guidance and details.
 
-I am running Ubuntu 17.04 on Intel i5-6500 + ASUS Z170-AR motherboard + NVIDIA
-1050 Ti.
+I am running Ubuntu 20.04.2 LTS on Intel i5-6500 + ASUS Z170-AR motherboard +
+AMD RX 570 GPU (May 2021).
 
-Tip: Use https://github.com/Benjamin-Dobell/nvidia-update to install nVidia
-drivers on macOS.
-
-* Enable IOMMU support on the host machine.
-
-  Append the given line to `GRUB_CMDLINE_LINUX_DEFAULT` in `/etc/default/grub`.
-
-  ##### Intel Systems
-
-  `iommu=pt intel_iommu=on rd.driver.pre=vfio-pci video=vesafb:off,efifb:off`
-
-  ##### AMD Systems
-
-  `iommu=pt amd_iommu=on rd.driver.pre=vfio-pci video=vesafb:off,efifb:off`
-
-* Uninstall NVIDIA drivers from the host machine and blacklist the required modules.
+* Blacklist the required kernel modules.
 
   ```
   $ cat /etc/modprobe.d/blacklist.conf
   ... <existing stuff>
 
+  blacklist amdgpu
   blacklist radeon
-  blacklist nouveau
-  blacklist nvidia
   ```
 
-* Enable the required kernel modules.
+* Find details of the PCIe devices to passthrough.
 
   ```
-  # echo "vfio" >> /etc/modules
-  # echo "vfio_iommu_type1" >> /etc/modules
-  # echo "vfio_pci" >> /etc/modules
-  # echo "vfio_virqfd" >> /etc/modules
+  $ lspci -nnk | grep AMD
+  01:00.0 VGA compatible controller [0300]: Advanced Micro Devices, Inc. [AMD/ATI] Ellesmere [Radeon RX 470/480/570/570X/580/580X/590] [1002:67df] (rev ef)
+  01:00.1 Audio device [0403]: Advanced Micro Devices, Inc. [AMD/ATI] Ellesmere HDMI Audio [Radeon RX 470/480 / 570/580/590] [1002:aaf0]
   ```
 
-* Isolate the passthrough PCIe devices with vfio-pci, with the help of `lspci
-  -nnk` command. Adapt these commands to suit your hardware setup.
+* Enable IOMMU support and configure VFIO.
+
+  Append the given line to `GRUB_CMDLINE_LINUX_DEFAULT` in `/etc/default/grub`.
+
+  ##### Intel CPU Systems
+
+  `iommu=pt intel_iommu=on vfio-pci.ids=1002:67df,1002:aaf0 kvm.ignore_msrs=1 video=vesafb:off,efifb:off`
+
+  ##### AMD CPU Systems
+
+  `iommu=pt amd_iommu=on <remaining-line-from-above...>`
+
+* Tweak module configuration a bit according to the following output (thanks to Mathias Hueber).
 
   ```
-  $ lspci -nn
-  ...
-  01:00.0 ... NVIDIA Corporation [GeForce GTX 1050 Ti] [10de:1c82]
-  01:00.1 Audio device: NVIDIA Corporation Device [10de:0fb9]
-  03:00.0 USB controller: ASMedia ASM1142 USB 3.1 Host Controller [1b21:1242]
+  $ cat /etc/modprobe.d/vfio.conf
+  options vfio-pci ids=1002:67df,1002:aaf0 disable_vga=1
+  softdep radeon pre: vfio-pci
+  softdep amdgpu pre: vfio-pci
+  softdep nouveau pre: vfio-pci
+  softdep drm pre: vfio-pci
   ```
 
-  ```
-  # echo "options vfio-pci ids=10de:1c82,10de:0fb9 disable_vga=1" > /etc/modprobe.d/vfio.conf
-  ```
-
-* Update initramfs, GRUB and then reboot.
+* Update GRUB, initramfs, and then reboot.
 
   ```
   $ sudo update-grub2
   $ sudo update-initramfs -k all -u
   ```
 
-* Verify that the IOMMU is enabled, and vfio_pci is working as expected.
-  Consult Arch Wiki again for help on this. (Often running `lspci -vvv` and
-  verifying that the expected devices are using `vfio-pci` as their `Kernel driver in use` is sufficient)
+* In the BIOS setup, set the `Primary Display` to `IGFX` (onboard graphics).
 
-* On the macOS VM, install a NVIDIA Web Driver version which is appropriate for
-  the macOS version. Consult http://www.macvidcards.com/drivers.html for more
-  information.
+* Verify that the IOMMU is enabled, and `vfio-pci` is working as expected.
+  Verify that the expected devices are using `vfio-pci` as their kernel driver
 
-  For example, macOS 10.12.5 requires version `378.05.05.15f01` whereas macOS
-  10.12.6 requires version `378.05.05.25f01`.
+  ```
+  $ dmesg | grep -i iommu
+  [    0.076879] DMAR: IOMMU enabled
+  [    0.183732] DMAR-IR: IOAPIC id 2 under DRHD base  0xfed91000 IOMMU 1
+  [    0.330654] iommu: Default domain type: Passthrough (set via kernel command line)
+  [    0.489615] pci 0000:00:00.0: Adding to iommu group 0
+  [    0.489627] pci 0000:00:01.0: Adding to iommu group 1
+  [    0.489634] pci 0000:00:02.0: Adding to iommu group 2
+  [    0.489643] pci 0000:00:14.0: Adding to iommu group 3
+  ```
 
-* Updating SMBIOS for the macOS to `iMac14,2` might be required. I did not do
-  so myself.
+  ```
+  $ dmesg | grep vfio
+  [    0.526198] vfio-pci 0000:01:00.0: vgaarb: changed VGA decodes: olddecodes=io+mem,decodes=io+mem:owns=io+mem
+  [    0.543768] vfio_pci: add [1002:67df[ffffffff:ffffffff]] class 0x000000/00000000
+  [    0.563765] vfio_pci: add [1002:aaf0[ffffffff:ffffffff]] class 0x000000/00000000
+  [    3.384597] vfio-pci 0000:01:00.0: vgaarb: changed VGA decodes: olddecodes=io+mem,decodes=io+mem:owns=io+mem
+  ```
+
+  ```
+  $ lspci -nkk -d 1002:67df
+  01:00.0 0300: 1002:67df (rev ef)
+          Subsystem: 1da2:e366
+          Kernel driver in use: vfio-pci
+          Kernel modules: amdgpu
+  ```
+
+  ```
+  $ ./scripts/list_iommu_groups.sh
+  IOMMU Group 0:
+          00:00.0 Host bridge [0600]: Intel Corporation Xeon E3-1200 v5/E3-1500 v5/6th Gen Core Processor Host Bridge/DRAM Registers [8086:191f] (rev 07)
+  IOMMU Group 1:
+          00:01.0 PCI bridge [0604]: Intel Corporation Xeon E3-1200 v5/E3-1500 v5/6th Gen Core Processor PCIe Controller (x16) [8086:1901] (rev 07)
+          01:00.0 VGA compatible controller [0300]: Advanced Micro Devices, Inc. [AMD/ATI] Ellesmere [Radeon RX 470/480/570/570X/580/580X/590] [1002:67df] (rev ff)
+          01:00.1 Audio device [0403]: Advanced Micro Devices, Inc. [AMD/ATI] Ellesmere HDMI Audio [Radeon RX 470/480 / 570/580/590] [1002:aaf0] (rev ff)
+   ```
+
+* Fix permisions for the `/dev/vfio/1` device (modify as needed):
+
+  ```
+  sudo cp vfio-kvm.rules /etc/udev/rules.d/vfio-kvm.rules
+
+  sudo udevadm control --reload
+  sudo udevadm trigger
+  ```
+
+* Open `/etc/security/limits.conf` file and add the following lines:
+
+  ```
+  @kvm            soft    memlock         unlimited
+  @kvm            hard    memlock         unlimited
+  ```
+
+  Thanks to `Heiko Sieger` for this solution.
+
+* Confirm the contents of `boot-passthrough.sh` and run it to boot macOS with
+  GPU passthrough.
 
 * To reuse the keyboard and mouse devices from the host, setup "Automatic
   login" in System Preferences in macOS and configure Synergy software.
-
-Note: Many AMD GPU devices (e.g. AMD RX 480 & RX 580) should be natively
-supported in macOS High Sierra.
 
 
 ### USB passthrough notes
@@ -140,14 +177,13 @@ These steps will need to be adapted for your particular setup.
   -nnk` command.
 
   ```
-  $ lspci -nn
+  $ lspci -nnk
   ...
-  01:00.0 ... NVIDIA Corporation [GeForce GTX 1050 Ti] [10de:1c82]
-  01:00.1 Audio device: NVIDIA Corporation Device [10de:0fb9]
   03:00.0 USB controller: ASMedia ASM1142 USB 3.1 Host Controller [1b21:1242]
   ```
 
-  Add `1b21:1242` to `/etc/modprobe.d/vfio.conf` file in the required format.
+  Add `1b21:1242` to `GRUB_CMDLINE_LINUX_DEFAULT` in `/etc/default/grub` file
+  in the required format. See `GPU passthrough notes` (above) for details.
 
 * Update initramfs, and then reboot.
 
@@ -193,18 +229,6 @@ These steps will need to be adapted for your particular setup.
   or newer, configure `~/.synergy.conf` and run `synergys` command.
 
 * The included `.synergy.conf` will need to be adapted according to your setup.
-
-
-### Accelerated Graphics
-
-See `UEFI/README.md` for GPU passthrough notes.
-
-Note: There is no working QXL driver for macOS so far.
-
-Links:
-
-- https://www.kraxel.org/blog/2019/09/display-devices-in-qemu/
-- https://www.kraxel.org/blog/2019/06/macos-qemu-guest/
 
 
 ### Virtual Sound Device
@@ -596,3 +620,54 @@ The `-smp line` should read something like the following:
 ```
 -smp "$CPU_TOTAL",cores="$CPU_CORES",sockets="$CPU_SOCKETS",threads="$CPU_THREADS",maxcpus="$CPU_TOTAL"
 ```
+
+
+### Trouble with iMessage?
+
+Check out [this Dortania article on this topic](https://dortania.github.io/OpenCore-Post-Install/universal/iservices.html#using-gensmbios).
+
+
+### Enable rc.local functionality on moden Ubuntu versions
+
+Create `/etc/rc.local` file with the following content, if it doesn't exist:
+
+```
+#!/bin/bash
+
+echo "Hello! :)"
+
+exit 0
+```
+
+Make this file executable, if required:
+
+```
+sudo chmod +x /etc/rc.local
+```
+
+Create `/etc/systemd/system/rc-local.service` with the following content,  if
+it doesn't exist:
+
+```
+[Unit]
+Description=enable /etc/rc.local
+ConditionPathExists=/etc/rc.local
+
+[Service]
+ExecStart=/etc/rc.local start
+TimeoutSec=0
+StandardOutput=tty
+RemainAfterExit=yes
+SysVStartPriority=99
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Enable `rc.local` systemd service:
+
+```
+sudo systemctl enable rc-local
+```
+
+These notes are borrowed from various multiple internet resources.
