@@ -20,7 +20,7 @@
 
 	Replace spice with vnc if you prefer it.
 
-	Current network configuration is a local bridge (192.157.12x.x).
+	Current network configuration is a local bridge (192.168.12x.x).
 	Change it to if you prefer a public bridge instead:
 		Change interface to <interface type='user'>
 		and remove the <source bridge='virbr0'/>
@@ -201,7 +201,7 @@
     <qemu:arg value='-device'/>
     <qemu:arg value='usb-kbd'/>
     <qemu:arg value='-cpu'/>
-    <qemu:arg value='Penryn,kvm=on,vendor=GenuineIntel,+invtsc,vmware-cpuid-freq=on,+pcid,+ssse3,+sse4.2,+popcnt,+avx,+aes,+xsave,+xsaveopt,check'/>
+    <qemu:arg value='Penryn,kvm=on,vendor=GenuineIntel,+invtsc,vmware-cpuid-freq=on,+ssse3,+sse4.2,+popcnt,+avx,+aes,+xsave,+xsaveopt,check'/>
     <!-- <qemu:arg value='Penryn,vendor=GenuineIntel,+hypervisor,+invtsc,kvm=on,+fma,+avx,+avx2,+aes,+ssse3,+sse4_2,+popcnt,+sse4a,+bmi1,+bmi2'/> -->
     <!-- If you wanna use cpu host-passthrough mode, uncomments below-->
     <!-- <qemu:arg value='host,vendor=GenuineIntel,+hypervisor,+invtsc,kvm=on,+fma,+avx,+avx2,+aes,+ssse3,+sse4_2,+popcnt,+sse4a,+bmi1,+bmi2'/> -->

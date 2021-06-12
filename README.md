@@ -27,17 +27,12 @@ help (pull-requests!) with the following work items:
 
 * Document how to use this project for XNU kernel debugging and development.
 
-* Document the process to create and reuse VM snapshots. Instantaneous macOS
-  boots would be nice this way.
-
 * Document the process to launch a bunch of headless macOS VMs (build farm).
 
 * Document usage of [munki](https://github.com/munki/munki) to deploy software
   to such a `build farm`.
 
 * Enable VNC + SSH support out of the box or more easily.
-
-* Better support + docs for AMD Ryzen.
 
 * Robustness improvements are always welcome!
 
@@ -71,7 +66,7 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
   To make this change permanent, you may use the following command.
 
   ```
-  sudo cp kvm.conf /etc/modprobe.d/kvm.conf  # for intel boxes
+  sudo cp kvm.conf /etc/modprobe.d/kvm.conf  # for intel boxes only
   ```
 
 * Install QEMU and other packages.
@@ -95,7 +90,7 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
   ```
   cd ~
 
-  git clone --depth 1 https://github.com/kholia/OSX-KVM.git
+  git clone --depth 1 --recursive https://github.com/kholia/OSX-KVM.git
 
   cd OSX-KVM
   ```

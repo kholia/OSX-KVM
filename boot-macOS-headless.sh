@@ -18,8 +18,6 @@
 #
 # Note: Using RealVNC client, connect to `<localhost:5901>`.
 # E.g. `vncviewer localhost:5901`
-#
-# Note: After installation, start using the `OpenCore-nopicker.qcow2` image.
 
 ############################################################################
 # NOTE: Tweak the "MY_OPTIONS" line in case you are having booting problems!
@@ -30,7 +28,7 @@
 # - Fix cpuid related warning on EPYC
 # - Fix 'savevm' support
 
-MY_OPTIONS="+pcid,+ssse3,+sse4.2,+popcnt,+avx,+aes,+xsave,+xsaveopt,check"
+MY_OPTIONS="+ssse3,+sse4.2,+popcnt,+avx,+aes,+xsave,+xsaveopt,check"
 
 # This script works for Catalina as well as Mojave. Tested with macOS 10.14.6 and macOS 10.15.6.
 
@@ -57,7 +55,6 @@ args=(
   -smbios type=2
   -device ich9-ahci,id=sata
   # -drive id=OpenCoreBoot,if=none,snapshot=on,format=qcow2,file="$REPO_PATH/OpenCore-Catalina/OpenCore.qcow2"
-  -drive id=OpenCoreBoot,if=none,snapshot=on,format=qcow2,file="$REPO_PATH/OpenCore-Catalina/OpenCore-nopicker.qcow2"
   -device ide-hd,bus=sata.2,drive=OpenCoreBoot
   -device ide-hd,bus=sata.3,drive=InstallMedia
   -drive id=InstallMedia,if=none,file="$REPO_PATH/BaseSystem.img",format=raw

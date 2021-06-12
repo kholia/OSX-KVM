@@ -28,7 +28,7 @@ endif
 all: BigSur-recovery.img
 
 %.img : %.dmg
-	ln $< $@
+	ln $< $@ || cp $< $@
 
 ifeq ($(OS),MACOS)
 BigSur-full.dmg : $(BIG_SUR_APP)
@@ -58,7 +58,7 @@ BaseSystem.dmg :
 	../../fetch-macOS-v2.py --action download --board-id Mac-E43C1C25D4880AD6
 
 InstallAssistant.pkg :
-	../../fetch-macOS.py --version latest --title "macOS Big Sur"
+	../../backups/fetch-macOS.py --version latest --title "macOS Big Sur"
 
 clean :
 	rm -f BaseSystem.chunklist BaseSystem.dmg SharedSupport.dmg InstallAssistant.pkg BigSur-recovery.img BigSur-full.img
