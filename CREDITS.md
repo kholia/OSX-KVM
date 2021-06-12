@@ -116,4 +116,6 @@
 
 - mikkeyboi - Unraid OS stuff
 
+- deftdawg - Various correctness and robustness fixes - thanks!
+
 Note: Individual files have more specific 'credits' in them.
