@@ -2,8 +2,8 @@
 
 Catalina installs the same way as Mojave.
 
-Tested with macOS Catalina 10.15.7 with OpenCore-0.6.7-RELEASE.zip release
-(March, 2021).
+Tested with macOS Catalina 10.15.7 with OpenCore-0.7.0-RELEASE.zip release
+(June, 2021).
 
 Note: Our `config.plist` is buggy and we need to fix it!
 
@@ -23,9 +23,6 @@ rm -f OpenCore.qcow2; sudo ./opencore-image-ng.sh --cfg config.plist --img OpenC
 
 # OpenCore w/ ShowPicker Disabled
 rm -f OpenCore-nopicker.qcow2; sudo ./opencore-image-ng.sh --cfg config-nopicker.plist --img OpenCore-nopicker.qcow2
-
-# Passthrough Optimized OpenCore
-rm -f OpenCore-Passthrough.qcow2; sudo ./opencore-image-ng.sh --cfg config-pt.plist --img OpenCore-Passthrough.qcow2
 ```
 
 Note: https://github.com/thenickdude/KVM-Opencore is one of the best resources

@@ -132,7 +132,7 @@ fish part-add /dev/sda p 302048 -2048
 fish part-set-gpt-type /dev/sda 1 C12A7328-F81F-11D2-BA4B-00A0C93EC93B
 fish part-set-bootable /dev/sda 1 true
 fish mkfs vfat /dev/sda1 label:EFI
-fish mkfs vfat /dev/sda2 label:OpenCoreBoot
+fish mkfs vfat /dev/sda2 label:OpenCore
 fish mount /dev/sda2 /
 fish mkdir /ESP
 fish mount /dev/sda1 /ESP
