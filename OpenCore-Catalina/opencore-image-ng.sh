@@ -150,7 +150,7 @@ fish copy-in $WORK/EFI/OC/OpenCore.efi         /ESP/EFI/OC
 fish copy-in $WORK/EFI/OC/Drivers              /ESP/EFI/OC/
 fish copy-in $WORK/EFI/OC/Kexts                /ESP/EFI/OC/
 fish copy-in $WORK/EFI/OC/ACPI                 /ESP/EFI/OC/
-fish copy-in $WORK/EFI/OC/Resources            /ESP/EFI/OC/
+fish copy-in $BASE/../resources/OcBinaryData/Resources          /ESP/EFI/OC/
 fish copy-in $WORK/EFI/OC/Tools                /ESP/EFI/OC/
 
 # Note
