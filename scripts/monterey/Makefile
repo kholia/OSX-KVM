@@ -7,7 +7,7 @@ MONTEREY_APP=/Applications/Install\ macOS\ 12\ Beta.app
 all: Monterey-full.img
 
 %.img : %.dmg
-	ln $< $@
+	ln $< $@ || cp $< $@ 
 
 Monterey-full.dmg : $(MONTEREY_APP)
 	hdiutil create -o "$@" -size 14g -layout GPTSPUD -fs HFS+J
