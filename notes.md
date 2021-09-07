@@ -264,9 +264,17 @@ $ make -j8; make install
 
 ### Connect iPhone / iPad to macOS guest
 
-Please passthrough a PCIe USB card to the virtual machine to be able to connect
-iDevices (iPhone / iPad) to it.
+iDevices can be passed through in two ways: USB or USB OTA.
 
+USB OTA:
+
+https://github.com/corellium/usbfluxd
+
+https://github.com/EthanArbuckle/usbfluxd-usage
+
+VFIO USB Passthrough:
+
+https://github.com/Silfalion/Iphone_docker_osx_passthrough
 
 ### Exposing AES-NI instructions to macOS
 
