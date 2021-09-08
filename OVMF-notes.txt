@@ -1,10 +1,6 @@
-Current OVMF blobs are borrowed from the following URLs,
+Current OVMF blobs are borrowed from the following URL(s),
 
-http://download.proxmox.com/debian/dists/buster/pve-no-subscription/binary-amd64/pve-edk2-firmware_2.20200531-1_all.deb
-
-http://ftp.debian.org/debian/pool/main/e/edk2/
-
-OVMF for non-OpenCore boot loaders: https://github.com/kholia/edk2/tree/macOS-NG-v3.
+- http://ftp.debian.org/debian/pool/main/e/edk2/ (ovmf_2021.08-1_all.deb)
 
 Building OVMF
 -------------

@@ -45,7 +45,7 @@ help (pull-requests!) with the following work items:
 
 * QEMU >= 4.2.0
 
-* A CPU with Intel VT-x / AMD SVM support is required (`egrep '(vmx|svm)' /proc/cpuinfo`)
+* A CPU with Intel VT-x / AMD SVM support is required (`grep -e vmx -e svm /proc/cpuinfo`)
 
 * A CPU with SSE4.1 support is required for >= macOS Sierra
 
@@ -101,12 +101,12 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
   ./fetch-macOS-v2.py
   ```
 
-  ATTENTION: Installing `Big Sur` is NOT recommended at this time, unless you
-  are a Hackintosh developer! Let the `Big Sur` setup sit at the `Country
-  Selection` screen and other similar places for a while ;)
-
   You can choose your desired macOS version here. After executing this step,
   you should have the `BaseSystem.dmg` file in the current folder.
+
+  ATTENTION: Let the `Big Sur` setup sit at the `Country Selection` screen, and
+  other similar places for a while if things are being slow. The initial macOS
+  setup wizard will eventually succeed.
 
   Sample run:
 
@@ -216,11 +216,13 @@ work, patience, and a bit of luck (perhaps?).
   Ubuntu versions. Check out the [notes](notes.md) included in this repository
   for details.
 
-* To passthrough GPUs and other devices, see [these notes](notes.md).
+* To passthrough GPUs and other devices, see [these notes](notes.md#gpu-passthrough-notes).
 
-* Need a different resolution? Check out the [notes](notes.md) included in this repository.
+* Need a different resolution? Check out the [notes](notes.md#change-resolution-in-opencore) included in this repository.
 
-* Trouble with iMessage? Check out the [notes](notes.md) included in this repository.
+* Trouble with iMessage? Check out the [notes](notes.md#trouble-with-imessage) included in this repository.
+
+* Highly recommended macOS tweaks - https://github.com/sickcodes/osx-optimizer
 
 
 ### Is This Legal?
