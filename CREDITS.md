@@ -118,4 +118,6 @@
 
 - deftdawg - Various correctness and robustness fixes - thanks!
 
+- sickcodes - Keep being awesome ;)
+
 Note: Individual files have more specific 'credits' in them.
