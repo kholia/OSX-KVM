@@ -102,8 +102,9 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
   ```
 
   ATTENTION: Installing `Big Sur` is NOT recommended at this time, unless you
-  are a Hackintosh developer! Let the `Big Sur` setup sit at the `Country
-  Selection` screen and other similar places for a while ;)
+  are a Hackintosh developer, because ??? is difficult/doesn't work/something
+  else. Let the `Big Sur` setup sit at the `Country Selection` screen and
+  other similar places including ??? for ??? minutes in order to ???
 
   You can choose your desired macOS version here. After executing this step,
   you should have the `BaseSystem.dmg` file in the current folder.
