@@ -144,7 +144,7 @@ AMD RX 570 GPU (May 2021).
           01:00.1 Audio device [0403]: Advanced Micro Devices, Inc. [AMD/ATI] Ellesmere HDMI Audio [Radeon RX 470/480 / 570/580/590] [1002:aaf0] (rev ff)
    ```
 
-* Fix permisions for the `/dev/vfio/1` device (modify as needed):
+* Fix permissions for the `/dev/vfio/1` device (modify as needed):
 
   ```
   sudo cp vfio-kvm.rules /etc/udev/rules.d/vfio-kvm.rules
