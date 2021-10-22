@@ -20,7 +20,7 @@ Ensure you have VM support and passthrough parameters prepared (VFIO devices, PC
 
 ## Preparing the VM
 Below are sample instructions for setting up the VM. We will keep the necessary files in the same directory for simplicity.
-* Place these 3 files `BaseSystem.img`, `mac_hdd_ng.img` and `OSX-KVM/OpenCore-Catalina/OpenCore.qcow2` into the directory of your VM
+* Place these 3 files `BaseSystem.img`, `mac_hdd_ng.img` and `OSX-KVM/OpenCore/OpenCore.qcow2` into the directory of your VM
   * ie: Into `/mnt/user/domains/BigSur`, where domains is the folder for your VMs
 * Create a new VM and edit the XML. Use the OSX-KVM repository's `macOS-libvirt-Catalina.xml` as a guide
   * ie: You also have the option to use the GUI to adjust the CPUs, RAM, setting the OS installation media and disk images, as well as the devices you wish to pass into the VM. However, each time the template is edited via the GUI, you must go in the XML editor and paste the qemu args at the bottom of the XML file.

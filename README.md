@@ -73,7 +73,7 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
 
   ```
   sudo apt-get install qemu uml-utilities virt-manager git \
-      wget libguestfs-tools p7zip-full -y
+      wget libguestfs-tools p7zip-full make -y
   ```
 
   This step may need to be adapted for your Linux distribution.
@@ -83,6 +83,8 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
   ```
   sudo usermod -aG kvm $(whoami)
   ```
+
+  Note: Re-login after executing this command.
 
 * Clone this repository on your QEMU system. Files from this repository are
   used in the following steps.
@@ -121,7 +123,7 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
   ```
 
   Note: Modern NVIDIA GPUs are supported on HighSierra but not on later
-  versions.
+  versions of macOS.
 
 * Convert the downloaded `BaseSystem.dmg` file into the `BaseSystem.img` file.
 
@@ -171,6 +173,13 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
 
     ```bash
     virsh --connect qemu:///system define macOS.xml
+    ```
+
+  - If needed, grant necessary permissions to libvirt-qemu user,
+
+    ```
+    sudo setfacl -m u:libvirt-qemu:rx /home/$USER
+    sudo setfacl -R -m u:libvirt-qemu:rx /home/$USER/OSX-KVM
     ```
 
   - Launch `virt-manager` and start the `macOS` virtual machine.

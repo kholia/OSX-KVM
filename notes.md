@@ -19,10 +19,10 @@ Also tweaking the `smbios.plist` file can help (?).
 ### Change resolution in OpenCore
 
 ```diff
-diff --git a/OpenCore-Catalina/config.plist b/OpenCore-Catalina/config.plist
+diff --git a/OpenCore/config.plist b/OpenCore/config.plist
 index 4754e8c..489570f 100644
---- a/OpenCore-Catalina/config.plist
-+++ b/OpenCore-Catalina/config.plist
+--- a/OpenCore/config.plist
++++ b/OpenCore/config.plist
 @@ -692,7 +692,7 @@
                         <key>ConsoleMode</key>
                         <string></string>
@@ -144,7 +144,7 @@ AMD RX 570 GPU (May 2021).
           01:00.1 Audio device [0403]: Advanced Micro Devices, Inc. [AMD/ATI] Ellesmere HDMI Audio [Radeon RX 470/480 / 570/580/590] [1002:aaf0] (rev ff)
    ```
 
-* Fix permisions for the `/dev/vfio/1` device (modify as needed):
+* Fix permissions for the `/dev/vfio/1` device (modify as needed):
 
   ```
   sudo cp vfio-kvm.rules /etc/udev/rules.d/vfio-kvm.rules
@@ -393,7 +393,12 @@ get some performance gain.
 ### Permission problems with libvirt / qemu?
 
 ```
-sudo setfacl -m u:libvirt-qemu:rx <path>  # fix virt-manager perm problems
+sudo setfacl -m u:libvirt-qemu:rx /home/$USER
+sudo setfacl -R -m u:libvirt-qemu:rx /home/$USER/OSX-KVM
+
+In general,
+
+sudo setfacl -R -m u:libvirt-qemu:rx <path>  # fix virt-manager perm problems
 ```
 
 

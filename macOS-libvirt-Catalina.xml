@@ -62,7 +62,7 @@
     <emulator>/usr/bin/qemu-system-x86_64</emulator>
     <disk type='file' device='disk'>
       <driver name='qemu' type='qcow2' cache='writeback' io='threads'/>
-      <source file='/home/CHANGEME/OSX-KVM/OpenCore-Catalina/OpenCore.qcow2'/>
+      <source file='/home/CHANGEME/OSX-KVM/OpenCore/OpenCore.qcow2'/>
       <target dev='sda' bus='sata'/>
       <boot order='2'/>
       <address type='drive' controller='0' bus='0' target='0' unit='0'/>
@@ -139,11 +139,11 @@
       <address type='pci' domain='0x0000' bus='0x00' slot='0x07' function='0x2'/>
     </controller>
     <!-- Make sure you put your nic in bus 0x0 and slot 0x0y(y is numeric), this will make nic built-in and apple-store work-->
-    <interface type='bridge'>
-      <mac address='52:54:00:8e:e2:66'/>
-      <source bridge='virbr0'/>
-      <target dev='tap0'/>
-      <model type='vmxnet3'/>
+    <interface type="bridge">
+      <mac address="52:54:00:e6:85:40"/>
+      <source bridge="virbr0"/>
+      <model type="vmxnet3"/>
+      <address type="pci" domain="0x0000" bus="0x00" slot="0x00" function="0x0"/>
     </interface>
     <serial type='pty'>
       <target type='isa-serial' port='0'>
