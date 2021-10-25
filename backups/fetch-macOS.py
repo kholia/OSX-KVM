@@ -70,13 +70,14 @@ catalogs = {
     "DeveloperSeed": "https://swscan.apple.com/content/catalogs/others/index-10.16seed-10.16-10.15-10.14-10.13-10.12-10.11-10.10-10.9-mountainlion-lion-snowleopard-leopard.merged-1.sucatalog",
     "PublicSeed": "https://swscan.apple.com/content/catalogs/others/index-10.16beta-10.16-10.15-10.14-10.13-10.12-10.11-10.10-10.9-mountainlion-lion-snowleopard-leopard.merged-1.sucatalog",
     "PublicRelease": "https://swscan.apple.com/content/catalogs/others/index-10.16-10.15-10.14-10.13-10.12-10.11-10.10-10.9-mountainlion-lion-snowleopard-leopard.merged-1.sucatalog",
-    "20": "https://swscan.apple.com/content/catalogs/others/index-11-10.15-10.14-10.13-10.12-10.11-10.10-10.9-mountainlion-lion-snowleopard-leopard.merged-1.sucatalog"
+    "20": "https://swscan.apple.com/content/catalogs/others/index-11-10.15-10.14-10.13-10.12-10.11-10.10-10.9-mountainlion-lion-snowleopard-leopard.merged-1.sucatalog",
+    '21': "https://swscan.apple.com/content/catalogs/others/index-12-10.16-10.15-10.14-10.13-10.12-10.11-10.10-10.9-mountainlion-lion-snowleopard-leopard.merged-1.sucatalog",
 }
 
 
 def get_default_catalog():
     '''Returns the default softwareupdate catalog for the current OS'''
-    return catalogs["20"]
+    return catalogs["21"]
     # return catalogs["PublicRelease"]
     # return catalogs["DeveloperSeed"]
 
@@ -101,9 +102,9 @@ def replicate_url(full_url,
 
     # hack
     print("[+] Fetching %s" % full_url)
-    if installer and "BaseSystem.dmg" not in full_url and "Big Sur" not in product_title:
+    if installer and "BaseSystem.dmg" not in full_url and "Big Sur" not in product_title and "Monterey" not in product_title:
         return
-    if "Big Sur" in product_title and "InstallAssistant.pkg" not in full_url:
+    if ("Big Sur" in product_title or "Monterey" in product_title) and "InstallAssistant.pkg" not in full_url:
         return
     attempt_resume = True
     # path = urllib.parse.urlsplit(full_url)[2]
