@@ -456,13 +456,14 @@ def main():
         return action_guess(args)
 
     # No action specified, so present a download menu instead
+    # https://github.com/acidanthera/OpenCorePkg/blob/master/Utilities/macrecovery/boards.json
     products = [
             {"name": "High Sierra (10.13)", "b": "Mac-7BA5B2D9E42DDD94", "m": "00000000000J80300"},
             {"name": "Mojave (10.14)", "b": "Mac-7BA5B2DFE22DDD8C", "m": "00000000000KXPG00"},
-            {"name": "Catalina (10.15) - RECOMMENDED", "b": "Mac-00BE6ED71E35EB86", "m": "00000000000000000"},
-            # {"name": "Latest (Big Sur - 11)", "b": "Mac-E43C1C25D4880AD6", "m": "00000000000000000", "os_type": "latest"}
-            {"name": "Latest (Big Sur - 11)", "b": "Mac-E43C1C25D4880AD6", "m": "00000000000000000", "os_type": "default"}
-            ]
+            {"name": "Catalina (10.15)", "b": "Mac-00BE6ED71E35EB86", "m": "00000000000000000"},
+            {"name": "Big Sur (11.6) - RECOMMENDED", "b": "Mac-2BD1B31983FE1663", "m": "00000000000000000"},
+            {"name": "Monterey (latest)", "b": "Mac-7BA5B2D9E42DDD94", "m": "00000000000000000", "os_type": "latest"}
+    ]
 
     for index, product in enumerate(products):
         name = product["name"]

@@ -158,6 +158,8 @@ AMD RX 570 GPU (May 2021).
   ```
   @kvm            soft    memlock         unlimited
   @kvm            hard    memlock         unlimited
+  @libvirt        soft    memlock         unlimited
+  @libvirt        hard    memlock         unlimited
   ```
 
   Thanks to `Heiko Sieger` for this solution.
@@ -167,6 +169,10 @@ AMD RX 570 GPU (May 2021).
 
 * To reuse the keyboard and mouse devices from the host, setup "Automatic
   login" in System Preferences in macOS and configure Synergy software.
+
+UPDATE: Project sponsors get access to the `Private OSX-KVM repository`, and
+direct support. This private repository has a playbook to automate 95% of this
+work in a rugged, consistent manner.
 
 
 ### USB passthrough notes
@@ -209,7 +215,7 @@ These steps will need to be adapted for your particular setup.
   $ scripts/vfio-group.sh 13
   ```
 
-* Add `-device vfio-pci,host=03:00.0,bus=pcie.0 \` line to `boot-passthrough.sh`.
+* Add `-device vfio-pci,host=03:00.0,bus=pcie.0` line to `boot-passthrough.sh`.
 
 * Boot the VM, and devices attached to the ASMedia USB controller should just work under macOS.
 
