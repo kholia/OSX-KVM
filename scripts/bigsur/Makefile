@@ -55,7 +55,7 @@ else
 endif
 
 BaseSystem.dmg :
-	../../fetch-macOS-v2.py --action download --board-id Mac-E43C1C25D4880AD6
+	../../fetch-macOS-v2.py --action download --board-id Mac-2BD1B31983FE1663
 
 InstallAssistant.pkg :
 	../../backups/fetch-macOS.py --version latest --title "macOS Big Sur"
