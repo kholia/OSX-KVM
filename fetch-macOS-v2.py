@@ -433,6 +433,8 @@ def main():
     parser.add_argument('-os', '--os-type', type=str, default='default', choices=['default', 'latest'],
                         help='use specified os type, defaults to default ' + MLB_ZERO)
     parser.add_argument('-diag', '--diagnostics', action='store_true', help='download diagnostics image')
+    parser.add_argument('-s', '--shortname', type=str, default='',
+                        help='available options: high-sierra, mojave, catalina, big-sur, monterey')
     parser.add_argument('-v', '--verbose', action='store_true', help='print debug information')
     parser.add_argument('-db', '--board-db', type=str, default=os.path.join(SELF_DIR, 'boards.json'),
                         help='use custom board list for checking, defaults to boards.json')
@@ -458,27 +460,39 @@ def main():
     # No action specified, so present a download menu instead
     # https://github.com/acidanthera/OpenCorePkg/blob/master/Utilities/macrecovery/boards.json
     products = [
-            {"name": "High Sierra (10.13)", "b": "Mac-7BA5B2D9E42DDD94", "m": "00000000000J80300"},
-            {"name": "Mojave (10.14)", "b": "Mac-7BA5B2DFE22DDD8C", "m": "00000000000KXPG00"},
-            {"name": "Catalina (10.15)", "b": "Mac-00BE6ED71E35EB86", "m": "00000000000000000"},
-            {"name": "Big Sur (11.6) - RECOMMENDED", "b": "Mac-2BD1B31983FE1663", "m": "00000000000000000"},
-            {"name": "Monterey (latest)", "b": "Mac-7BA5B2D9E42DDD94", "m": "00000000000000000", "os_type": "latest"}
+            {"name": "High Sierra (10.13)", "b": "Mac-7BA5B2D9E42DDD94", "m": "00000000000J80300", "short": "high-sierra"},
+            {"name": "Mojave (10.14)", "b": "Mac-7BA5B2DFE22DDD8C", "m": "00000000000KXPG00", "short": "mojave"},
+            {"name": "Catalina (10.15)", "b": "Mac-00BE6ED71E35EB86", "m": "00000000000000000", "short": "catalina"},
+            {"name": "Big Sur (11.6) - RECOMMENDED", "b": "Mac-2BD1B31983FE1663", "m": "00000000000000000", "short": "big-sur"},
+            {"name": "Monterey (latest)", "b": "Mac-7BA5B2D9E42DDD94", "m": "00000000000000000", "os_type": "latest", "short": "monterey"}
     ]
 
     for index, product in enumerate(products):
         name = product["name"]
         print('%s. %12s' % (index + 1, name))
 
-    answer = input('\nChoose a product to download (1-%s): ' % len(products))
-    try:
-        index = int(answer) - 1
-        if index < 0:
-            raise ValueError
-    except (ValueError, IndexError):
-        pass
+    # test locally using args.shortname = 'mojave'
+    if not args.shortname or args.shortname == '':
+        answer = input('\nChoose a product to download (1-%s): ' % len(products))
+        try:
+            index = int(answer) - 1
+            if index < 0:
+                raise ValueError
+        except (ValueError, IndexError):
+            pass
+    else:
+        index = 0
+        for product in products:
+            if args.shortname == product['short']:
+                break
+            else:
+                index = index+1
+
+
 
     # action
     product = products[index]
+    print(product['name'])
     try:
         os_type = product["os_type"]
     except:
