@@ -170,6 +170,17 @@ AMD RX 570 GPU (May 2021).
 * To reuse the keyboard and mouse devices from the host, setup "Automatic
   login" in System Preferences in macOS and configure Synergy software.
 
+Note: On `Pop!_OS`, use the `kernelstub` command to change the kernel boot
+arguments.
+
+Note 2: Use [AMD VBFlash](https://www.techpowerup.com/download/ati-atiflash/)
+to dump the AMD GPU bios, and pass on to QEMU. This is especially required if
+your AMD GPU is not starting up properly (resulting in "no signal" on the
+monitor).
+
+Tested GPUs: ZOTAC GeForce GT 710 DDR3 (<= Big Sur), Sapphire Radeon RX 570.
+
+
 UPDATE: Project sponsors get access to the `Private OSX-KVM repository`, and
 direct support. This private repository has a playbook to automate 95% of this
 work in a rugged, consistent manner.
