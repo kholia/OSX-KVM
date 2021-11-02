@@ -13,3 +13,7 @@
 * https://github.com/ofawx/VmAssetCacheEnable
 
 * https://dortania.github.io/OpenCore-Install-Guide/troubleshooting/extended/post-issues.html
+
+- https://wiki.archlinux.org/title/QEMU#UNIX_socket
+
+- https://wiki.archlinux.org/title/PCI_passthrough_via_OVMF#USB_controller
