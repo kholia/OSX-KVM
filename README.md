@@ -66,7 +66,7 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
   To make this change permanent, you may use the following command.
 
   ```
-  sudo cp kvm.conf /etc/modprobe.d/kvm.conf  # for intel boxes only
+  sudo cp kvm.conf /etc/modprobe.d/kvm.conf  # for intel boxes only, after cloning the repo below
   ```
 
 * Install QEMU and other packages.
@@ -142,7 +142,7 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
   ```
 
 * Create a virtual HDD image where macOS will be installed. If you change the
-  name of the disk image from `mac_hdd.img` to something else, the boot scripts
+  name of the disk image from `mac_hdd_ng.img` to something else, the boot scripts
   will need to be updated to point to the new image name.
 
   ```

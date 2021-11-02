@@ -46,6 +46,7 @@ args=(
   # 01:00.1 Audio device [0403]: Advanced Micro Devices, Inc. [AMD/ATI] Ellesmere HDMI Audio [Radeon RX 470/480 / 570/580/590] [1002:aaf0]
   #         Subsystem: Sapphire Technology Limited Ellesmere HDMI Audio [Radeon RX 470/480 / 570/580/590] [1da2:aaf0]
   -device vfio-pci,host=01:00.0,multifunction=on
+  # -device vfio-pci,host=01:00.0,multifunction=on,romfile=gpu_original_bios.bin
   -device vfio-pci,host=01:00.1
   # ASMedia ASM1142 USB 3.1 Host Controller (comment out as needed)
   # 03:00.0 USB controller [0c03]: ASMedia Technology Inc. ASM1142 USB 3.1 Host Controller [1b21:1242]

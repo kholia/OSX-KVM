@@ -128,4 +128,6 @@
 
 - https://github.com/thiagokokada - Makefile to improve usability
 
+- https://github.com/jturnism - doc fixes
+
 Note: Individual files have more specific 'credits' in them.

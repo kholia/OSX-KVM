@@ -153,9 +153,6 @@ fish copy-in $WORK/EFI/OC/ACPI /ESP/EFI/OC/
 fish copy-in $BASE/../resources/OcBinaryData/Resources /ESP/EFI/OC/
 fish copy-in $WORK/EFI/OC/Tools /ESP/EFI/OC/
 
-# Note
-fish copy-in startup.nsh /
-
 BASE="$(dirname $0)"
 fish copy-in "$WORK/config.plist"               /ESP/EFI/OC/
 
