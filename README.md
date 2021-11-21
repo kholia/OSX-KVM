@@ -72,8 +72,10 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
 * Install QEMU and other packages.
 
   ```
-  sudo apt-get install qemu uml-utilities virt-manager git \
+  Debian: sudo apt-get install qemu uml-utilities virt-manager git \
       wget libguestfs-tools p7zip-full make -y
+  Fedora/RHEL8/CentOS8/Rocky8: sudo dnf install qemu uml_utilities virt-manager git \
+      wget libguestfs-tools p7zip
   ```
 
   This step may need to be adapted for your Linux distribution.
