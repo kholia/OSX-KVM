@@ -1,5 +1,5 @@
 # export SHORTNAME=monterey
-DISK_SIZE := 128G
+DISK_SIZE := 256G
 
 all: BaseSystem.img mac_hdd_ng.img
 
