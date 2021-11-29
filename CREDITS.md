@@ -130,4 +130,6 @@
 
 - https://github.com/jturnism - doc fixes
 
+- https://github.com/gjyoung1974 - OpenCore-Boot-macOS.sh script
+
 Note: Individual files have more specific 'credits' in them.

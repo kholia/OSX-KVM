@@ -7,7 +7,6 @@
 #
 # qemu-img create -f qcow2 mac_hdd_ng.img 128G
 #
-# echo 1 > /sys/module/kvm/parameters/ignore_msrs (this is required)
 
 ############################################################################
 # NOTE: Tweak the "MY_OPTIONS" line in case you are having booting problems!
@@ -17,6 +16,9 @@ MY_OPTIONS="+ssse3,+sse4.2,+popcnt,+avx,+aes,+xsave,+xsaveopt,check"
 
 # This script works for Big Sur, Catalina, Mojave, and High Sierra. Tested with
 # macOS 10.15.6, macOS 10.14.6, and macOS 10.13.6.
+#
+# This script supports running on a macOS host using the native HyperKit
+# hypervisor for macOS.
 
 ALLOCATED_RAM="3072" # MiB
 CPU_SOCKETS="1"
@@ -31,7 +33,7 @@ OVMF_DIR="."
 
 # shellcheck disable=SC2054
 args=(
-  -enable-kvm -m "$ALLOCATED_RAM" -cpu Penryn,kvm=on,vendor=GenuineIntel,+invtsc,vmware-cpuid-freq=on,"$MY_OPTIONS"
+  -m "$ALLOCATED_RAM" -cpu Penryn,vendor=GenuineIntel,+invtsc,vmware-cpuid-freq=on,"$MY_OPTIONS"
   -machine q35
   -usb -device usb-kbd -device usb-tablet
   -smp "$CPU_THREADS",cores="$CPU_CORES",sockets="$CPU_SOCKETS"
@@ -56,6 +58,7 @@ args=(
   -netdev user,id=net0 -device virtio-net-pci,netdev=net0,id=net0,mac=52:54:00:c9:18:27
   -monitor stdio
   -device VGA,vgamem_mb=128
+  -M accel=hvf
 )
 
 qemu-system-x86_64 "${args[@]}"

@@ -24,14 +24,9 @@ index 4754e8c..489570f 100644
 --- a/OpenCore/config.plist
 +++ b/OpenCore/config.plist
 @@ -692,7 +692,7 @@
-                        <key>ConsoleMode</key>
-                        <string></string>
                         <key>Resolution</key>
 -                       <string>Max</string>
 +                       <string>1920x1080</string>
-                        <key>ClearScreenOnModeSwitch</key>
-                        <false/>
-                        <key>IgnoreTextInGraphics</key>
 ```
 
 Ensure that the OVMF resolution is set equal to resolution set in your OpenCore
@@ -43,6 +38,9 @@ desired value (default is 1024x768). Commit changes and exit the OVMF menu.
 
 Note: The macOS VM's resolution can be changed via `Settings -> Displays`
 option easily.
+
+Note: After changing the `config.plist` file, please regenerate the
+`OpenCore.qcow2` file using the instructions included in this repository.
 
 
 ### GPU passthrough notes
