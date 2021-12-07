@@ -7,7 +7,6 @@
 #
 # qemu-img create -f qcow2 mac_hdd_ng.img 128G
 #
-# echo 1 > /sys/module/kvm/parameters/ignore_msrs (this is required)
 
 ############################################################################
 # NOTE: Tweak the "MY_OPTIONS" line in case you are having booting problems!
