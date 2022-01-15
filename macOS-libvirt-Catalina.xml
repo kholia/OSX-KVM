@@ -196,10 +196,10 @@
     <qemu:arg value='isa-applesmc,osk=ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc'/>
     <qemu:arg value='-smbios'/>
     <qemu:arg value='type=2'/>
-    <qemu:arg value='-device'/>
-    <qemu:arg value='usb-tablet'/>
-    <qemu:arg value='-device'/>
-    <qemu:arg value='usb-kbd'/>
+    <qemu:arg value='-usbdevice'/>
+    <qemu:arg value='tablet'/>
+    <qemu:arg value='-usbdevice'/>
+    <qemu:arg value='keyboard'/>
     <qemu:arg value='-cpu'/>
     <qemu:arg value='Penryn,kvm=on,vendor=GenuineIntel,+invtsc,vmware-cpuid-freq=on,+ssse3,+sse4.2,+popcnt,+avx,+aes,+xsave,+xsaveopt,check'/>
     <!-- <qemu:arg value='Penryn,vendor=GenuineIntel,+hypervisor,+invtsc,kvm=on,+fma,+avx,+avx2,+aes,+ssse3,+sse4_2,+popcnt,+sse4a,+bmi1,+bmi2'/> -->
