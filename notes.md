@@ -269,7 +269,8 @@ present.
 
 ![USB Sound Card](./screenshots/QHM623_USB_Sound_Card_1.jpg)
 
-This cheap(est) USB sound card works pretty well on macOS.
+This cheap(est) USB sound card works pretty well on macOS *without* requiring
+USB-controller-passthrough.
 
 
 ### Building QEMU from source

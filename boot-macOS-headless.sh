@@ -50,11 +50,11 @@ args=(
   -usb -device usb-kbd -device usb-tablet
   -smp "$CPU_THREADS",cores="$CPU_CORES",sockets="$CPU_SOCKETS"
   -device isa-applesmc,osk="ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc"
-  -drive if=pflash,format=raw,readonly,snapshot=off,file="$REPO_PATH/$OVMF_DIR/OVMF_CODE.fd"
+  -drive if=pflash,format=raw,snapshot=off,file="$REPO_PATH/$OVMF_DIR/OVMF_CODE.fd"
   -drive if=pflash,format=raw,snapshot=on,file="$REPO_PATH/$OVMF_DIR/OVMF_VARS-1024x768.fd"
   -smbios type=2
   -device ich9-ahci,id=sata
-  # -drive id=OpenCoreBoot,if=none,snapshot=on,format=qcow2,file="$REPO_PATH/OpenCore/OpenCore.qcow2"
+  -drive id=OpenCoreBoot,if=none,snapshot=on,format=qcow2,file="$REPO_PATH/OpenCore/OpenCore.qcow2"
   -device ide-hd,bus=sata.2,drive=OpenCoreBoot
   -device ide-hd,bus=sata.3,drive=InstallMedia
   -drive id=InstallMedia,if=none,file="$REPO_PATH/BaseSystem.img",format=raw

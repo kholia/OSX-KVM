@@ -40,6 +40,8 @@ args=(
   # -device usb-mouse,bus=ehci.0
   -device nec-usb-xhci,id=xhci
   -global nec-usb-xhci.msi=off
+  # -device usb-host,vendorid=0x8086,productid=0x0808  # 2 USD USB Sound Card
+  # -device usb-host,vendorid=0x1b3f,productid=0x2008  # Another 2 USD USB Sound Card
   -device isa-applesmc,osk="ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc"
   -drive if=pflash,format=raw,readonly=on,file="$REPO_PATH/$OVMF_DIR/OVMF_CODE.fd"
   -drive if=pflash,format=raw,file="$REPO_PATH/$OVMF_DIR/OVMF_VARS-1024x768.fd"

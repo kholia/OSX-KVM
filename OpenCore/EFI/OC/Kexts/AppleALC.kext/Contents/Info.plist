@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>BuildMachineOSBuild</key>
-	<string>19H1519</string>
+	<string>20G306</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleExecutable</key>
@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>KEXT</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.6.7</string>
+	<string>1.6.9</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleSupportedPlatforms</key>
@@ -25,23 +25,23 @@
 		<string>MacOSX</string>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1.6.7</string>
+	<string>1.6.9</string>
 	<key>DTCompiler</key>
 	<string>com.apple.compilers.llvm.clang.1_0</string>
 	<key>DTPlatformBuild</key>
-	<string>12D4e</string>
+	<string>13C100</string>
 	<key>DTPlatformName</key>
 	<string>macosx</string>
 	<key>DTPlatformVersion</key>
-	<string>11.1</string>
+	<string>12.1</string>
 	<key>DTSDKBuild</key>
-	<string>20C63</string>
+	<string>21C46</string>
 	<key>DTSDKName</key>
-	<string>macosx11.1</string>
+	<string>macosx12.1</string>
 	<key>DTXcode</key>
-	<string>1240</string>
+	<string>1321</string>
 	<key>DTXcodeBuild</key>
-	<string>12D4e</string>
+	<string>13C100</string>
 	<key>IOKitPersonalities</key>
 	<dict>
 		<key>ALCUserClientProvider</key>
@@ -2104,7 +2104,7 @@
 					<integer>36</integer>
 					<key>WakeConfigData</key>
 					<data>
-					AUcMAgIXDAI=
+					AUcMAgIXDAIBlwcl
 					</data>
 					<key>WakeVerbReinit</key>
 					<true/>
@@ -4391,6 +4391,32 @@
 					<key>WakeConfigData</key>
 					<data>
 					AUcMAg==
+					</data>
+					<key>WakeVerbReinit</key>
+					<true/>
+				</dict>
+				<dict>
+					<key>AFGLowPowerState</key>
+					<data>
+					AwAAAA==
+					</data>
+					<key>CodecID</key>
+					<integer>283902569</integer>
+					<key>Comment</key>
+					<string>Custom ALC269-VC Samsung np540U4E by majonez</string>
+					<key>ConfigData</key>
+					<data>
+					ASccEAEnHQABJx6mAScfkAG3HCABtx0AAbce
+					FwG3H5ABVxwwAVcdEAFXHiEBVx8AAYccQAGH
+					HZABhx6BAYcfAgG3DAIBVwwC
+					</data>
+					<key>FuncGroup</key>
+					<integer>1</integer>
+					<key>LayoutID</key>
+					<integer>34</integer>
+					<key>WakeConfigData</key>
+					<data>
+					AVcMAg==
 					</data>
 					<key>WakeVerbReinit</key>
 					<true/>
@@ -10102,7 +10128,9 @@
 					<key>ConfigData</key>
 					<data>
 					AUccEAFHHUABRx4BAUcfAQFHDAIBhxwgAYcd
-					kAGHHqABhx+BAaccMAGnHTABpx6BAacfAQ==
+					kAGHHqABhx+BAaccMAGnHTABpx6BAacfAQGX
+					HEABlx2QAZcegQGXHwIBtxxQAbcdQAG3HiEB
+					tx8CAbcMAg==
 					</data>
 					<key>FuncGroup</key>
 					<integer>1</integer>
@@ -11896,6 +11924,35 @@
 					<key>CodecID</key>
 					<integer>283906408</integer>
 					<key>CodecName</key>
+					<string>Realtek ALC S1220P_MSI_Z490i_UNIFY_ by_vio</string>
+					<key>ConfigData</key>
+					<data>
+					AUccEAFHHVABRx4BAUcfAQFHDAIBVxwgAVcd
+					EAFXHgEBVx8BAWccMAFnHRABZx4BAWcfAQGH
+					HEABhx0QAYceoAGHH5EBlxxQAZcdkAGXHosB
+					lx8CAaccYAGnHRABpx6BAacfAQG3HHABtx1A
+					AbceIQG3HwIBtwwCAeccgAHnHREB5x5FAecf
+					AQ==
+					</data>
+					<key>FuncGroup</key>
+					<integer>1</integer>
+					<key>LayoutID</key>
+					<integer>8</integer>
+					<key>WakeConfigData</key>
+					<data>
+					AUcMAg==
+					</data>
+					<key>WakeVerbReinit</key>
+					<true/>
+				</dict>
+				<dict>
+					<key>AFGLowPowerState</key>
+					<data>
+					AwAAAA==
+					</data>
+					<key>CodecID</key>
+					<integer>283906408</integer>
+					<key>CodecName</key>
 					<string>Realtek ALC S1220A Kushamot for Asus Z270G mb (based on Mirone's layout 7)</string>
 					<key>ConfigData</key>
 					<data>
@@ -12179,14 +12236,14 @@
 					AwAAAA==
 					</data>
 					<key>Codec</key>
-					<string>rdmitry0911 - Conexant CX8200 for LG Gram 17 17z990</string>
+					<string>Conexant CX8200 for LG Gram Z990/Z90N</string>
 					<key>CodecID</key>
 					<integer>351346696</integer>
 					<key>ConfigData</key>
 					<data>
 					AXccEAF3HQEBdx4XAXcfkQF3DAIBpxwgAacd
-					AQGnHqcBpx+VAZccMAGXHRABlx6BAZcfBAFn
-					HEABZx0QAWceIQFnHwQBZwwC
+					AQGnHqABpx+VAZccMAGXHRABlx6LAZcfBAGX
+					ByQBZxxAAWcdEAFnHisBZx8EAWcMAg==
 					</data>
 					<key>FuncGroup</key>
 					<integer>1</integer>
@@ -12194,7 +12251,7 @@
 					<integer>80</integer>
 					<key>WakeConfigData</key>
 					<data>
-					AWcMAgF3DAI=
+					AWcMAgF3DAIBlwck
 					</data>
 					<key>WakeVerbReinit</key>
 					<true/>
@@ -14034,6 +14091,36 @@
 					<integer>1</integer>
 					<key>LayoutID</key>
 					<integer>12</integer>
+					<key>WakeConfigData</key>
+					<data>
+					AUcMAgG3DAI=
+					</data>
+					<key>WakeVerbReinit</key>
+					<true/>
+				</dict>
+				<dict>
+					<key>AFGLowPowerState</key>
+					<data>
+					AwAAAA==
+					</data>
+					<key>Codec</key>
+					<string>Custom ALC897 by Sergey_Galan  for GIGABYTE Z590M</string>
+					<key>CodecID</key>
+					<integer>283904151</integer>
+					<key>ConfigData</key>
+					<data>
+					AUccEAFHHUABRx4RAUcfAQFHDAIBVxzwAVcd
+					AAFXHgABVx9AAWcc8AFnHQABZx4AAWcfQAF3
+					HPABdx0AAXceAAF3H0ABhxxAAYcdkAGHHqAB
+					hx+QAZccYAGXHZABlx6BAZcfAgGnHFABpx0w
+					AacegQGnHwEBtxxwAbcdQAG3HiEBtx8CAbcM
+					AgEXHJABFx1hARceSwEXHwEB9xzwAfcdAAH3
+					HgAB9x9AAecc8AHnHQAB5x4AAecfQA==
+					</data>
+					<key>FuncGroup</key>
+					<integer>1</integer>
+					<key>LayoutID</key>
+					<integer>11</integer>
 					<key>WakeConfigData</key>
 					<data>
 					AUcMAgG3DAI=
