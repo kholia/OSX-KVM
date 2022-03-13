@@ -129,7 +129,7 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
   4. Big Sur (11.6) - RECOMMENDED
   5. Monterey (latest)
 
-  Choose a product to download (1-5):
+  Choose a product to download (1-5): 4
   ```
 
   Note: Modern NVIDIA GPUs are supported on HighSierra but not on later
@@ -165,7 +165,10 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
 
   Note: This same script works for Big Sur, Catalina, Mojave, and High Sierra.
 
-- You are all set! 🙌
+- Use the `Disk Utility` tool within the macOS installer to partition, and
+  format the virtual disk attached to the macOS VM.
+
+- Go ahead, and install macOS 🙌
 
 - TIP: Using a non-APFS filesystem is recommended.
 
