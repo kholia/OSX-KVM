@@ -31,18 +31,25 @@ all: Monterey-recovery.img
 	ln $< $@ || cp $< $@
 
 ifeq ($(OS),MACOS)
+
 Monterey-full.dmg : $(MONTEREY_APP)
 	hdiutil create -o "$@" -size 14g -layout GPTSPUD -fs HFS+J
 	hdiutil attach -noverify -mountpoint /Volumes/install_build "$@"
 	sudo "$</Contents/Resources/createinstallmedia" --volume /Volumes/install_build --nointeraction
 	hdiutil detach "/Volumes/Install macOS Monterey"
-else
-Monterey-full.dmg :
-	$(error "Building a full installer requires this script to be run on macOS, run 'make Monterey-recovery.img' instead")
-endif
 
+# Avoid redownloading Monterey if the app already exists
+ifeq (,$(wildcard $(MONTEREY_APP)))
 $(MONTEREY_APP) : InstallAssistant.pkg
 	sudo installer -pkg $< -target /
+endif
+
+else
+
+Monterey-full.dmg :
+	$(error "Building a full installer requires this script to be run on macOS, run 'make Monterey-recovery.img' instead")
+
+endif
 
 Monterey-recovery.dmg : BaseSystem.dmg
 	rm -f $@
