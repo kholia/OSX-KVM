@@ -679,7 +679,7 @@ git checkout OVMF_VARS-1024x768.fd
 ```
 
 
-### Enable rc.local functionality on moden Ubuntu versions
+### Enable rc.local functionality on modern Ubuntu versions
 
 Create `/etc/rc.local` file with the following content, if it doesn't exist:
 

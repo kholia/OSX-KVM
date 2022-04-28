@@ -37,7 +37,7 @@ OVMF_DIR="."
 args=(
   -enable-kvm -m "$ALLOCATED_RAM" -cpu Penryn,kvm=on,vendor=GenuineIntel,+invtsc,vmware-cpuid-freq=on,"$MY_OPTIONS"
   -machine q35
-  -usb -device usb-kbd -device usb-tablet
+  -usb -device usb-kbd -device usb-tablet -device usb-mouse
   -smp "$CPU_THREADS",cores="$CPU_CORES",sockets="$CPU_SOCKETS"
   -device usb-ehci,id=ehci
   -vga none
@@ -45,12 +45,12 @@ args=(
   #         Subsystem: Sapphire Technology Limited Nitro+ Radeon RX 570/580/590 [1da2:e366]
   # 01:00.1 Audio device [0403]: Advanced Micro Devices, Inc. [AMD/ATI] Ellesmere HDMI Audio [Radeon RX 470/480 / 570/580/590] [1002:aaf0]
   #         Subsystem: Sapphire Technology Limited Ellesmere HDMI Audio [Radeon RX 470/480 / 570/580/590] [1da2:aaf0]
-  -device vfio-pci,host=01:00.0,multifunction=on
+  -device vfio-pci,host=01:00.0,multifunction=on,x-no-kvm-intx=on
   # -device vfio-pci,host=01:00.0,multifunction=on,romfile=gpu_original_bios.bin
   -device vfio-pci,host=01:00.1
   # ASMedia ASM1142 USB 3.1 Host Controller (comment out as needed)
   # 03:00.0 USB controller [0c03]: ASMedia Technology Inc. ASM1142 USB 3.1 Host Controller [1b21:1242]
-  -device vfio-pci,host=03:00.0,bus=pcie.0
+  # -device vfio-pci,host=03:00.0,bus=pcie.0
   -device isa-applesmc,osk="ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc"
   -drive if=pflash,format=raw,readonly=on,file="$REPO_PATH/$OVMF_DIR/OVMF_CODE.fd"
   -drive if=pflash,format=raw,file="$REPO_PATH/$OVMF_DIR/OVMF_VARS-1024x768.fd"
@@ -67,6 +67,9 @@ args=(
   -netdev user,id=net0 -device vmxnet3,netdev=net0,id=net0,mac=52:54:00:c9:18:27
   -monitor stdio
   -display none
+  # -object input-linux,id=kbd1,evdev=/dev/input/by-id/usb-SEMITEK_USB-HID_Gaming_Keyboard_SN0000000001-event-kbd,grab_all=on,repeat=on
+  # -object input-linux,id=mouse1,evdev=/dev/input/by-id/usb-PixArt_Dell_MS116_USB_Optical_Mouse-event-mouse
+  -vnc 0.0.0.0:1,password -k en-us
 )
 
 qemu-system-x86_64 "${args[@]}"
