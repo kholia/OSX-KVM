@@ -196,6 +196,7 @@
     <qemu:arg value='isa-applesmc,osk=ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc'/>
     <qemu:arg value='-smbios'/>
     <qemu:arg value='type=2'/>
+    <qemu:arg value='-usb'/>
     <qemu:arg value='-device'/>
     <qemu:arg value='usb-tablet'/>
     <qemu:arg value='-device'/>

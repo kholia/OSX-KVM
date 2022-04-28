@@ -132,4 +132,10 @@
 
 - https://github.com/gjyoung1974 - OpenCore-Boot-macOS.sh script
 
+- cppLawyer - Bump up the RAM size for `Apple iPhone Emulator`
+
+- SsNiPeR1 - Typo fix
+
+- sumad200 - XML fixes
+
 Note: Individual files have more specific 'credits' in them.
