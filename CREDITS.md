@@ -132,4 +132,6 @@
 
 - https://github.com/gjyoung1974 - OpenCore-Boot-macOS.sh script
 
+- cppLawyer - Bump up the RAM size for `Apple iPhone Emulator`
+
 Note: Individual files have more specific 'credits' in them.
