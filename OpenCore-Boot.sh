@@ -56,6 +56,7 @@ args=(
   -device ide-hd,bus=sata.4,drive=MacHDD
   # -netdev tap,id=net0,ifname=tap0,script=no,downscript=no -device virtio-net-pci,netdev=net0,id=net0,mac=52:54:00:c9:18:27
   -netdev user,id=net0 -device virtio-net-pci,netdev=net0,id=net0,mac=52:54:00:c9:18:27
+  # -netdev user,id=net0 -device vmxnet3,netdev=net0,id=net0,mac=52:54:00:c9:18:27  # Note: Use this line for High Sierra
   -monitor stdio
   -device VGA,vgamem_mb=128
 )

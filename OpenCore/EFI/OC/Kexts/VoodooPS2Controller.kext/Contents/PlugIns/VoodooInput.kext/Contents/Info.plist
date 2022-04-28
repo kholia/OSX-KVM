@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>BuildMachineOSBuild</key>
+	<string>20G417</string>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleExecutable</key>
+	<string>VoodooInput</string>
+	<key>CFBundleIdentifier</key>
+	<string>me.kishorprins.VoodooInput</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>VoodooInput</string>
+	<key>CFBundlePackageType</key>
+	<string>KEXT</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.1.3</string>
+	<key>CFBundleSupportedPlatforms</key>
+	<array>
+		<string>MacOSX</string>
+	</array>
+	<key>CFBundleVersion</key>
+	<string>1.1.3</string>
+	<key>DTCompiler</key>
+	<string>com.apple.compilers.llvm.clang.1_0</string>
+	<key>DTPlatformBuild</key>
+	<string>12E507</string>
+	<key>DTPlatformName</key>
+	<string>macosx</string>
+	<key>DTPlatformVersion</key>
+	<string>11.3</string>
+	<key>DTSDKBuild</key>
+	<string>20E214</string>
+	<key>DTSDKName</key>
+	<string>macosx11.3</string>
+	<key>DTXcode</key>
+	<string>1251</string>
+	<key>DTXcodeBuild</key>
+	<string>12E507</string>
+	<key>IOKitPersonalities</key>
+	<dict>
+		<key>Voodoo Input</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>me.kishorprins.VoodooInput</string>
+			<key>IOClass</key>
+			<string>VoodooInput</string>
+			<key>IOProbeScore</key>
+			<integer>200</integer>
+			<key>IOPropertyMatch</key>
+			<dict>
+				<key>VoodooInputSupported</key>
+				<true/>
+			</dict>
+			<key>IOProviderClass</key>
+			<string>IOService</string>
+		</dict>
+	</dict>
+	<key>LSMinimumSystemVersion</key>
+	<string>10.11</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>Copyright © 2019 Kishor Prins. All rights reserved.</string>
+	<key>OSBundleLibraries</key>
+	<dict>
+		<key>com.apple.iokit.IOHIDFamily</key>
+		<string>2.0</string>
+		<key>com.apple.kpi.iokit</key>
+		<string>14</string>
+		<key>com.apple.kpi.libkern</key>
+		<string>14</string>
+		<key>com.apple.kpi.mach</key>
+		<string>13.0</string>
+	</dict>
+	<key>OSBundleRequired</key>
+	<string>Root</string>
+</dict>
+</plist>

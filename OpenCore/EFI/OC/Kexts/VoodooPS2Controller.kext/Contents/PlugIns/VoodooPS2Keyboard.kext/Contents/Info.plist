@@ -1,0 +1,620 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>BuildMachineOSBuild</key>
+	<string>20G417</string>
+	<key>CFBundleExecutable</key>
+	<string>VoodooPS2Keyboard</string>
+	<key>CFBundleGetInfoString</key>
+	<string>2.2.8, Copyright Apple Computer, Inc. 2000-2003, RehabMan 2012-2013</string>
+	<key>CFBundleIdentifier</key>
+	<string>as.acidanthera.voodoo.driver.PS2Keyboard</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>Voodoo PS/2 Keyboard</string>
+	<key>CFBundlePackageType</key>
+	<string>KEXT</string>
+	<key>CFBundleShortVersionString</key>
+	<string>2.2.8</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleSupportedPlatforms</key>
+	<array>
+		<string>MacOSX</string>
+	</array>
+	<key>CFBundleVersion</key>
+	<string>2.2.8</string>
+	<key>DTCompiler</key>
+	<string>com.apple.compilers.llvm.clang.1_0</string>
+	<key>DTPlatformBuild</key>
+	<string>12E507</string>
+	<key>DTPlatformName</key>
+	<string>macosx</string>
+	<key>DTPlatformVersion</key>
+	<string>11.3</string>
+	<key>DTSDKBuild</key>
+	<string>20E214</string>
+	<key>DTSDKName</key>
+	<string>macosx11.3</string>
+	<key>DTXcode</key>
+	<string>1251</string>
+	<key>DTXcodeBuild</key>
+	<string>12E507</string>
+	<key>IOKitPersonalities</key>
+	<dict>
+		<key>ApplePS2Keyboard</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>as.acidanthera.voodoo.driver.PS2Keyboard</string>
+			<key>IOClass</key>
+			<string>ApplePS2Keyboard</string>
+			<key>IOProviderClass</key>
+			<string>ApplePS2KeyboardDevice</string>
+			<key>Platform Profile</key>
+			<dict>
+				<key>DELL</key>
+				<dict>
+					<key>Dell-Keys</key>
+					<dict>
+						<key>Breakless PS2</key>
+						<array>
+							<string>e005</string>
+							<string>e006</string>
+						</array>
+						<key>Function Keys Special</key>
+						<array>
+							<string>;The following 12 items map Fn+fkeys to fkeys</string>
+							<string>e020=3b</string>
+							<string>e02e=3c</string>
+							<string>e030=3d</string>
+							<string>e022=3e</string>
+							<string>;Fn+f5 macro</string>
+							<string>;Fn+f6 macro</string>
+							<string>;Fn+f7 macro</string>
+							<string>;Fn+f8 macro</string>
+							<string>;Fn+f9 macro</string>
+							<string>;Fn+f10 no code</string>
+							<string>e005=57</string>
+							<string>e006=58</string>
+							<string>;The following 12 items map fkeys to Fn+fkeys</string>
+							<string>3b=e020</string>
+							<string>3c=e02e</string>
+							<string>3d=e030</string>
+							<string>3e=e022</string>
+							<string>;Fn+f5 macro</string>
+							<string>;Fn+f6 macro</string>
+							<string>;Fn+f7 macro</string>
+							<string>;Fn+f8 macro</string>
+							<string>;Fn+f9 macro</string>
+							<string>;Fn+f10 no code</string>
+							<string>57=e005</string>
+							<string>58=e006</string>
+						</array>
+						<key>Function Keys Standard</key>
+						<array>
+							<string>;The following 12 items map Fn+fkeys to Fn+fkeys</string>
+							<string>e020=e020</string>
+							<string>e02e=e02e</string>
+							<string>e030=e030</string>
+							<string>e022=e022</string>
+							<string>;Fn+f5 macro</string>
+							<string>;Fn+f6 macro</string>
+							<string>;Fn+f7 macro</string>
+							<string>;Fn+f8 macro</string>
+							<string>;Fn+f9 macro</string>
+							<string>;Fn+f10 no code</string>
+							<string>e005=e005</string>
+							<string>e006=e006</string>
+							<string>;The following 12 items map fkeys to fkeys</string>
+							<string>3b=3b</string>
+							<string>3c=3c</string>
+							<string>3d=3d</string>
+							<string>3e=3e</string>
+							<string>3f=3f</string>
+							<string>40=40</string>
+							<string>41=41</string>
+							<string>42=42</string>
+							<string>43=43</string>
+							<string>44=44</string>
+							<string>57=57</string>
+							<string>58=58</string>
+						</array>
+					</dict>
+					<key>HSW-LPT</key>
+					<string>Dell-Keys</string>
+					<key>SNB-CPT</key>
+					<dict>
+						<key>ActionSwipeDown</key>
+						<string>63 d, 63 u</string>
+						<key>ActionSwipeUp</key>
+						<string>61 d, 61 u</string>
+						<key>Breakless PS2</key>
+						<array>
+							<string>e01e;Touchpad Fn+f3 is breakless</string>
+							<string>e06e;REVIEW: temporary for case that macro inversion does not work...</string>
+						</array>
+						<key>Custom ADB Map</key>
+						<array>
+							<string>e009=83;Dell Support to Launchpad</string>
+							<string>e0f1=71;Call brightens up w RKA1 for special mode (was =90)</string>
+							<string>e0f2=6b;Call brightens down w RKA2 for special mode (was =91)</string>
+							<string>e06e=70;Map vidmirror key for special mode default is adb90</string>
+						</array>
+						<key>Custom PS2 Map</key>
+						<array>
+							<string>e01e=e037;Map tp disable to Fn+f3</string>
+							<string>e037=e01e;Prevent PrntScr from triggering tp disable</string>
+						</array>
+						<key>Function Keys Special</key>
+						<array>
+							<string>;The following 12 items map Fn+fkeys to fkeys</string>
+							<string>e06e=3b</string>
+							<string>e008=3c</string>
+							<string>e01e=3d</string>
+							<string>e005=3e</string>
+							<string>e006=3f</string>
+							<string>e00c=40</string>
+							<string>;Fn+f7 no dedicated macro</string>
+							<string>e010=42</string>
+							<string>e022=43</string>
+							<string>e019=44</string>
+							<string>e02e=57</string>
+							<string>e030=58</string>
+							<string>;The following 12 items map fkeys to Fn+fkeys</string>
+							<string>3b=e06e;Map vidmirror key to f1</string>
+							<string>3c=e0f0;Map radio toggle action from EC query to f2</string>
+							<string>3d=e037;Map touchpad toggle button to f3</string>
+							<string>3e=e0f2;Map acpi RKA2 to f4 brightness down</string>
+							<string>3f=e0f1;Map acpi RKA1 to f5 brightness up</string>
+							<string>40=e0f3;Map acpi RKA3 to f6 keyboard backlight</string>
+							<string>;Fn+f7 no macro</string>
+							<string>42=e010</string>
+							<string>43=e022</string>
+							<string>44=e019</string>
+							<string>57=e02e</string>
+							<string>58=e030</string>
+						</array>
+						<key>Function Keys Standard</key>
+						<array>
+							<string>;The following 12 items map Fn+fkeys to Fn+fkeys</string>
+							<string>e06e=e06e;Fn+f1 macro translated</string>
+							<string>e008=e008;Fn+f2 regular scancode and EC query call q8c</string>
+							<string>e01e=e037;Fn+f3 regular scancode and EC controls LED</string>
+							<string>e005=e005;Fn+f4 no ps2scancode and EC query call q81</string>
+							<string>e006=e006;Fn+f5 no ps2scancode and EC query call q80</string>
+							<string>e00c=e00c;Fn+f6 no ps2scancode and EC query call q8a</string>
+							<string>;Fn+f7 no macro just regular f key</string>
+							<string>e010=e010; Fn+f8 regular scancode</string>
+							<string>e022=e022; Fn+f9 regular scancode</string>
+							<string>e019=e019;Fn+f10 regular scancode</string>
+							<string>e02e=e02e;Fn+f11 regular scancode</string>
+							<string>e030=e030;Fn+f12 regular scancode</string>
+							<string>;Fn+f13 is mute dedicated button that always produces e020 regardless of Fn</string>
+							<string>;The following 12 items map fkeys to fkeys</string>
+							<string>3b=3b</string>
+							<string>3c=3c</string>
+							<string>3d=3d</string>
+							<string>3e=3e</string>
+							<string>3f=3f</string>
+							<string>40=40</string>
+							<string>41=41</string>
+							<string>42=42</string>
+							<string>43=43</string>
+							<string>44=44</string>
+							<string>57=57</string>
+							<string>58=58</string>
+						</array>
+						<key>Macro Inversion</key>
+						<array>
+							<string>;This section maps ps2 codes (packet format) received quickly (macros) into fake ps2 codes (packet format)</string>
+							<string>;Fn+F1</string>
+							<data>
+							//8CbgAAAAACWwEZ
+							</data>
+							<data>
+							//8C7gAAAAAC2wGZ
+							</data>
+							<data>
+							//8C7gAAAAABmQLb
+							</data>
+						</array>
+						<key>MaximumMacroTime</key>
+						<integer>35000000</integer>
+						<key>Note-Author</key>
+						<string>TimeWalker aka TimeWalker75a</string>
+						<key>Note-Comment</key>
+						<string>Keyboard Profile for DELL SandyBridge SecureCore Tiano based laptops (Vostro 3450 &amp; 3750, Inspiron N4110, XPS L502x &amp; L702x &amp; L511z)</string>
+					</dict>
+					<key>WN09</key>
+					<dict>
+						<key>Breakless PS2</key>
+						<array>
+							<string>e01b</string>
+							<string>e008</string>
+							<string>e01e</string>
+							<string>e005</string>
+							<string>e06e</string>
+							<string>e006</string>
+						</array>
+						<key>Custom ADB Map</key>
+						<array>
+							<string>e01b=70</string>
+							<string>e06e=83</string>
+						</array>
+						<key>Custom PS2 Map</key>
+						<array>
+							<string>56=2b</string>
+							<string>29=56</string>
+							<string>2b=29</string>
+							<string>e01e=e037</string>
+							<string>e037=e01e</string>
+						</array>
+					</dict>
+					<key>WN09a</key>
+					<dict>
+						<key>Breakless PS2</key>
+						<array>
+							<string>e01b</string>
+							<string>e008</string>
+							<string>e01e</string>
+							<string>e005</string>
+							<string>e06e</string>
+							<string>e006</string>
+						</array>
+						<key>Custom ADB Map</key>
+						<array>
+							<string>e01b=70</string>
+							<string>e06e=83</string>
+						</array>
+						<key>Custom PS2 Map</key>
+						<array>
+							<string>e01e=e037</string>
+							<string>e037=e01e</string>
+						</array>
+					</dict>
+				</dict>
+				<key>Default</key>
+				<dict>
+					<key>Breakless PS2</key>
+					<array>
+						<string>;Items must be strings in the form of breaklessscan (in hex)</string>
+					</array>
+					<key>Custom ADB Map</key>
+					<array>
+						<string>;Items must be strings in the form of scanfrom=adbto (in hex)</string>
+					</array>
+					<key>Custom PS2 Map</key>
+					<array>
+						<string>;Items must be strings in the form of scanfrom=scanto (in hex)</string>
+						<string>e027=0;disable discrete fnkeys toggle</string>
+						<string>e028=0;disable discrete trackpad toggle</string>
+					</array>
+					<key>HIDF12EjectDelay</key>
+					<integer>250</integer>
+					<key>LogScanCodes</key>
+					<integer>0</integer>
+					<key>Make Application key into Apple Fn key</key>
+					<false/>
+					<key>Make Application key into right windows</key>
+					<true/>
+					<key>Make right modifier keys into Hangul and Hanja</key>
+					<false/>
+					<key>SleepPressTime</key>
+					<integer>0</integer>
+					<key>Swap capslock and left control</key>
+					<false/>
+					<key>Swap command and option</key>
+					<false/>
+					<key>Use ISO layout keyboard</key>
+					<false/>
+					<key>alt_handler_id</key>
+					<integer>3</integer>
+				</dict>
+				<key>HPQOEM</key>
+				<dict>
+					<key>1411</key>
+					<string>ProBook-102;ProBook 4520s</string>
+					<key>1619</key>
+					<string>ProBook-87;ProBook 6560b</string>
+					<key>161C</key>
+					<string>ProBook-87;ProBook 8460p</string>
+					<key>164F</key>
+					<string>ProBook-87;ProBook 5330m</string>
+					<key>167C</key>
+					<string>ProBook-102;ProBook 4530s</string>
+					<key>167E</key>
+					<string>ProBook-102;ProBook 4330s</string>
+					<key>1680</key>
+					<string>ProBook-102;ProBook 4230s</string>
+					<key>179B</key>
+					<string>ProBook-87;ProBook 6470b</string>
+					<key>179C</key>
+					<string>ProBook-87;ProBook 6470b</string>
+					<key>17A9</key>
+					<string>ProBook-87;ProBook 8570b</string>
+					<key>17F0</key>
+					<string>ProBook-102;ProBook 4340s</string>
+					<key>17F3</key>
+					<string>ProBook-102;ProBook 4440s</string>
+					<key>17F6</key>
+					<string>ProBook-102;ProBook 4540s</string>
+					<key>1942</key>
+					<string>ProBook-87;ProBook 450s G1</string>
+					<key>1949</key>
+					<string>ProBook-87;ProBook 450s G1</string>
+					<key>1962</key>
+					<string>Haswell-Envy;HP Envy 15-j063cl</string>
+					<key>1963</key>
+					<string>Haswell-Envy;HP Envy 15-j063cl</string>
+					<key>1965</key>
+					<string>Haswell-Envy;HP Envy 17t-j100</string>
+					<key>1966</key>
+					<string>Haswell-Envy;HP Envy 17t-j000</string>
+					<key>198F</key>
+					<string>ProBook-87;ProBook 450s G0</string>
+					<key>Haswell-Envy</key>
+					<dict>
+						<key>Custom ADB Map</key>
+						<array>
+							<string>e019=42;next</string>
+							<string>e010=4d;previous</string>
+						</array>
+						<key>Custom PS2 Map</key>
+						<array>
+							<string>e045=e037</string>
+							<string>e0ab=0;bogus Fn+F2/F3</string>
+						</array>
+					</dict>
+					<key>ProBook-102</key>
+					<dict>
+						<key>Custom PS2 Map</key>
+						<array>
+							<string>e005=0</string>
+						</array>
+						<key>Function Keys Special</key>
+						<array>
+							<string>;The following 12 items map Fn+fkeys to fkeys</string>
+							<string>e05f=3b</string>
+							<string>e012=3c</string>
+							<string>e017=3d</string>
+							<string>e06e=3e</string>
+							<string>e00a=3f</string>
+							<string>e009=40</string>
+							<string>e020=41</string>
+							<string>e02e=42</string>
+							<string>e030=43</string>
+							<string>e010=44</string>
+							<string>e022=57</string>
+							<string>e019=58</string>
+							<string>;The following 12 items map fkeys to Fn+fkeys</string>
+							<string>3b=e05f</string>
+							<string>3c=e012</string>
+							<string>3d=e017</string>
+							<string>3e=e06e</string>
+							<string>3f=e00a</string>
+							<string>40=e009</string>
+							<string>41=e020</string>
+							<string>42=e02e</string>
+							<string>43=e030</string>
+							<string>44=e010</string>
+							<string>57=e022</string>
+							<string>58=e019</string>
+						</array>
+						<key>Function Keys Standard</key>
+						<array>
+							<string>;The following 12 items map Fn+fkeys to Fn+fkeys</string>
+							<string>e05f=e05f</string>
+							<string>e012=e012</string>
+							<string>e017=e017</string>
+							<string>e06e=e06e</string>
+							<string>e00a=e00a</string>
+							<string>e009=e009</string>
+							<string>e020=e020</string>
+							<string>e02e=e02e</string>
+							<string>e030=e030</string>
+							<string>e010=e010</string>
+							<string>e022=e022</string>
+							<string>e019=e019</string>
+							<string>;The following 12 items map fkeys to fkeys</string>
+							<string>3b=3b</string>
+							<string>3c=3c</string>
+							<string>3d=3d</string>
+							<string>3e=3e</string>
+							<string>3f=3f</string>
+							<string>40=40</string>
+							<string>41=41</string>
+							<string>42=42</string>
+							<string>43=43</string>
+							<string>44=44</string>
+							<string>57=57</string>
+							<string>58=58</string>
+						</array>
+						<key>SleepPressTime</key>
+						<integer>3000</integer>
+					</dict>
+					<key>ProBook-87</key>
+					<dict>
+						<key>Custom ADB Map</key>
+						<array>
+							<string>46=4d;scroll =&gt; Previous-track</string>
+							<string>e045=34;pause =&gt; Play-Pause</string>
+							<string>e052=42;insert =&gt; Next-track</string>
+							<string>e046=92;break =&gt; Eject</string>
+						</array>
+						<key>Custom PS2 Map</key>
+						<array>
+							<string>e005=0</string>
+						</array>
+						<key>Function Keys Special</key>
+						<array>
+							<string>;The following 8 items map Fn+fkeys to fkeys</string>
+							<string>e05f=3d</string>
+							<string>e06e=3e</string>
+							<string>e02e=40</string>
+							<string>e030=41</string>
+							<string>e009=42</string>
+							<string>e012=43</string>
+							<string>e017=44</string>
+							<string>e033=57</string>
+							<string>;The following 8 items map fkeys to Fn+fkeys</string>
+							<string>3d=e05f</string>
+							<string>3e=e06e</string>
+							<string>40=e02e</string>
+							<string>41=e030</string>
+							<string>42=e037</string>
+							<string>43=e012</string>
+							<string>44=e017</string>
+						</array>
+						<key>Function Keys Standard</key>
+						<array>
+							<string>;The following 8 items map Fn+fkeys to Fn+fkeys</string>
+							<string>e05f=e05f</string>
+							<string>e06e=e06e</string>
+							<string>e02e=e02e</string>
+							<string>e030=e030</string>
+							<string>e009=e009</string>
+							<string>e012=e012</string>
+							<string>e017=e017</string>
+							<string>e033=e033</string>
+							<string>;The following 8 items map fkeys to fkeys</string>
+							<string>3d=3d</string>
+							<string>3e=3e</string>
+							<string>40=40</string>
+							<string>41=41</string>
+							<string>42=42</string>
+							<string>43=43</string>
+							<string>44=44</string>
+						</array>
+						<key>SleepPressTime</key>
+						<integer>3000</integer>
+					</dict>
+				</dict>
+				<key>Intel</key>
+				<dict>
+					<key>CALPELLA</key>
+					<string>SamsungKeys</string>
+					<key>SamsungKeys</key>
+					<dict>
+						<key>Breakless PS2</key>
+						<array>
+							<string>e003</string>
+							<string>e002</string>
+							<string>e004</string>
+							<string>e020</string>
+							<string>;e031</string>
+							<string>e033</string>
+							<string>e006</string>
+							<string>e077</string>
+							<string>e079</string>
+							<string>e008</string>
+							<string>e009</string>
+						</array>
+						<key>Custom ADB Map</key>
+						<array>
+							<string>e002=70</string>
+							<string>e006=80</string>
+							<string>e008=71 (was =90)</string>
+							<string>e009=6b (was =91)</string>
+						</array>
+						<key>Function Keys Special</key>
+						<array>
+							<string>;The following 12 items map Fn+fkeys to fkeys</string>
+							<string>;fn+f1 no code</string>
+							<string>e003=3c</string>
+							<string>;fn+f3 weird code</string>
+							<string>e002=3e</string>
+							<string>e004=3f</string>
+							<string>e020=40</string>
+							<string>e031=41</string>
+							<string>e033=42</string>
+							<string>e006=43</string>
+							<string>;fn+f10 weird code</string>
+							<string>;fn+f11 no code</string>
+							<string>;fn+f12 scrolllock</string>
+							<string>;The following 12 items map fkeys to Fn+fkeys</string>
+							<string>;fn+f1 no code</string>
+							<string>3c=e003</string>
+							<string>;fn+f3 weird code</string>
+							<string>3e=e002</string>
+							<string>3f=e004</string>
+							<string>40=e020</string>
+							<string>41=e031</string>
+							<string>42=e033</string>
+							<string>43=e006</string>
+							<string>;fn+f10 weird code</string>
+							<string>;fn+f11 no code</string>
+							<string>;fn+f12 scrolllock</string>
+						</array>
+						<key>Function Keys Standard</key>
+						<array>
+							<string>;The following 12 items map Fn+fkeys to Fn+fkeys</string>
+							<string>;fn+f1 no code</string>
+							<string>e003=e003</string>
+							<string>;fn+f3 weird code</string>
+							<string>e002=e002</string>
+							<string>e004=e004</string>
+							<string>e020=e020</string>
+							<string>e031=e031</string>
+							<string>e033=e033</string>
+							<string>e006=e006</string>
+							<string>;fn+f10 weird code</string>
+							<string>;fn+f11 no code</string>
+							<string>;fn+f12 scrolllock</string>
+							<string>;The following 12 items map fkeys to fkeys</string>
+							<string>3b=3b</string>
+							<string>3c=3c</string>
+							<string>3d=3d</string>
+							<string>3e=3e</string>
+							<string>3f=3f</string>
+							<string>40=40</string>
+							<string>41=41</string>
+							<string>42=42</string>
+							<string>43=43</string>
+							<string>44=44</string>
+							<string>57=57</string>
+							<string>58=58</string>
+						</array>
+					</dict>
+				</dict>
+				<key>SECCSD</key>
+				<dict>
+					<key>LH43STAR</key>
+					<string>SamsungKeys</string>
+					<key>SamsungKeys</key>
+					<dict>
+						<key>Breakless PS2</key>
+						<array>
+							<string>e020</string>
+							<string>e02e</string>
+							<string>e030</string>
+						</array>
+					</dict>
+				</dict>
+			</dict>
+		</dict>
+	</dict>
+	<key>LSMinimumSystemVersion</key>
+	<string>10.11</string>
+	<key>OSBundleLibraries</key>
+	<dict>
+		<key>as.acidanthera.voodoo.driver.PS2Controller</key>
+		<string>2.2.8</string>
+		<key>com.apple.iokit.IOHIDFamily</key>
+		<string>1.0.0b1</string>
+		<key>com.apple.kpi.bsd</key>
+		<string>8.0.0</string>
+		<key>com.apple.kpi.iokit</key>
+		<string>8.0.0</string>
+		<key>com.apple.kpi.libkern</key>
+		<string>8.0.0</string>
+		<key>com.apple.kpi.mach</key>
+		<string>8.0.0</string>
+		<key>com.apple.kpi.unsupported</key>
+		<string>8.0.0</string>
+	</dict>
+	<key>OSBundleRequired</key>
+	<string>Console</string>
+</dict>
+</plist>
