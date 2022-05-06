@@ -20,7 +20,7 @@ MY_OPTIONS="+ssse3,+sse4.2,+popcnt,+avx,+aes,+xsave,+xsaveopt,check"
 # This script supports running on a macOS host using the native HyperKit
 # hypervisor for macOS.
 
-ALLOCATED_RAM="3072" # MiB
+ALLOCATED_RAM="4096" # MiB
 CPU_SOCKETS="1"
 CPU_CORES="2"
 CPU_THREADS="4"
