@@ -49,9 +49,20 @@ sed -i s/4096/8192/ OpenCore-Boot.sh
 
 7. Run the installer ./OpenCore-Boot.sh
 
-There is a problem with the Qemu keyboard so you will need to configure the on screen keyboard for install and login screen
+There is a problem with the Qemu keyboard so you will need to configure the on screen keyboard for install and login screen.
+When you earase the disk leave the name of the disk as "Untitled"
 See this link for details on enabling the on screen keyboard at the login screen:
 https://support.apple.com/en-il/guide/mac-help/mchlaa57f797/mac#:~:text=Anyone%20who%20logs%20in%20to,display%20the%20Accessibility%20Shortcuts%20panel.
+
+Warning:
+If you don't have the on-screen keyboard on your new Mac login screen you will be locked out from your cloud Mac. 
+After you configure the keyboard on screen I recommend you install Anydesk remote access tool and connect to your new cloud Mac.
+
+I tested Teamviewer and it failed for me.
+Anydesk works well.
+Others may also work.
+
+
 
 
 
