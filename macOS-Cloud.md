@@ -33,7 +33,7 @@ gcloud compute ssh $VM_NAME --project=$PROJECT --zone=$ZONE
 
 2. Setup VNC on your instance, follow this guide:
    https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-vnc-on-ubuntu-20-04
-3. Configure you VNC client to use full color
+3. Configure your VNC client to use full color
 4. Connect to your new insance via VNC and complete the install via VNC connection
 5. Configure your nested VM to use 8GB RAM:
 ```sed -i s/4096/8192/ OpenCore-Boot.sh```
