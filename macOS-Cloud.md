@@ -2,16 +2,15 @@
 
 ### How to setup you MacOS VM in Google compute cloud (GCP)
 
-I started my macOS journey to the cloud a week or so ago, AWS has a bare metal macOS instance that cost $950 a month fixed price, at this price I can buy one Mac every month!!
-
-So I wanted to setup a Mac in the cloud for our QA team.
+My macOS journey to the cloud begins...
+AWS has a bare metal macOS instance that cost $950 a month fixed price, at this price I can buy one Mac every month!!
 
 AFAIK AWS doesn't have any VM instances that support netsted virtualization :(
 GCP has instances that support nested virtualization
 
 Setup procedure:
 1. Launch an Ubuntu 22.04 n1-standard-8 VM with a 100GB SSD drive.
-   This server is oversized so we can speedup the install.
+   This server is oversized so we can speedup the install, later we can shrink it.
 ``` 
 #!/bin/bash
 
@@ -50,10 +49,10 @@ https://support.apple.com/en-il/guide/mac-help/mchlaa57f797/mac#:~:text=Anyone%2
 
 ## Warning:
 If you don't have the on-screen keyboard on your new Mac login screen you will be locked out from your cloud Mac.
-After you configure the keyboard on screen I recommend you install Anydesk remote access tool and connect to your new cloud Mac.
+After you configure the keyboard on screen I recommend you install AnyDesk remote access tool and connect to your new cloud Mac via AnyDesk.
 
-I tested Teamviewer and it failed for me.
-Anydesk works well.
+I tested TeamViewer and it failed for me.
+AnyDesk works well.
 Others may also work.
 
 Ping me if you have any questions.
