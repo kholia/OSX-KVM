@@ -1,6 +1,6 @@
 
 
-### How to setup you MacOS VM in Google compute cloud (GCP)
+### How to setup your MacOS VM in Google compute cloud (GCP)
 
 My macOS journey to the cloud begins...
 AWS has a bare metal macOS instance that cost $950 a month fixed price, at this price I can buy one Mac every month!!
