@@ -43,7 +43,7 @@ gcloud compute ssh $VM_NAME --project=$PROJECT --zone=$ZONE
 ```./OpenCore-Boot.sh```
 
 When you erase the disk leave the name of the disk as "Untitled".
-There is a problem with the Qemu keyboard so you MUST configure the on-screen keyboard to be active on the during the MacOS install process AND for the MacOS login screen.
+There is a problem with the Qemu keyboard so you MUST configure the on-screen keyboard to be active during the MacOS install process AND on the MacOS login screen.
 
 To activate the on-screen keyboard during the install process select "Motor" from this screen:
 
