@@ -46,14 +46,16 @@ When you erase the disk leave the name of the disk as "Untitled".
 There is a problem with the Qemu keyboard so you MUST configure the on-screen keyboard to be active on the during the MacOS install process AND for the MacOS login screen.
 
 To activate the on-screen keyboard during the install process select "Motor" from this screen:
-![Accessibilty Motor](https://github.com/AAber/OSX-KVM/blob/gcp/screenshots/Motor.png | width=100)
+
+<a href="url"><img src="https://github.com/AAber/OSX-KVM/blob/gcp/screenshots/Motor.png" align="center" height="530" ></a>
 
 Then enable the on-screen keyboard:
-![On-screen keyboard](https://github.com/AAber/OSX-KVM/blob/gcp/screenshots/AccessibilityKeyboard.png | width=100)
+
+<a href="url"><img src="https://github.com/AAber/OSX-KVM/blob/gcp/screenshots/AccessibilityKeyboard.png" align="center" height="500" ></a>
 
 See this link for details on enabling the on-screen keyboard on the MacOS login screen:
 https://support.apple.com/en-il/guide/mac-help/mchlaa57f797/mac#:~:text=Anyone%20who%20logs%20in%20to,display%20the%20Accessibility%20Shortcuts%20panel.
-![Login screen On-screen keyboard](https://github.com/AAber/OSX-KVM/blob/gcp/screenshots/LoginKeyboard.png | width=100)
+![Login screen On-screen keyboard](https://github.com/AAber/OSX-KVM/blob/gcp/screenshots/LoginKeyboard.png)
 
 ## Warning:
 If you don't have the on-screen keyboard on your new Mac login screen you will be locked out from your cloud Mac.
