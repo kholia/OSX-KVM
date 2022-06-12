@@ -53,6 +53,7 @@ Then enable the on-screen keyboard:
 
 See this link for details on enabling the on-screen keyboard on the MacOS login screen:
 https://support.apple.com/en-il/guide/mac-help/mchlaa57f797/mac#:~:text=Anyone%20who%20logs%20in%20to,display%20the%20Accessibility%20Shortcuts%20panel.
+![Login screen On-screen keyboard](https://github.com/AAber/OSX-KVM/blob/gcp/screenshots/LoginKeyboard.png)
 
 ## Warning:
 If you don't have the on-screen keyboard on your new Mac login screen you will be locked out from your cloud Mac.
