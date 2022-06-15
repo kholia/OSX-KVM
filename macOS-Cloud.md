@@ -15,7 +15,8 @@ Setup procedure:
 #!/bin/bash
 
 VM_NAME=ubuntu-nested
-DISKSIZE=100
+DISKSIZE=202
+DISKTYPE=pd-ssd
 MACHINETYPE=c2-standard-8
 IMAGE=projects/ubuntu-os-cloud/global/images/ubuntu-2204-jammy-v20220609
 ZONE=some-zone
@@ -25,7 +26,7 @@ gcloud compute instances create $VM_NAME \
   --machine-type=$MACHINETYPE \
   --enable-nested-virtualization \
   --zone=$ZONE --project=$PROJECT \
-  --boot-disk-size=$DISKSIZE --image=$IMAGE \
+  --boot-disk-size=$DISKSIZE --image=$IMAGE --boot-disk-type=$DISKTYPE \
   --min-cpu-platform="Intel Haswell"
 
 gcloud compute ssh $VM_NAME --project=$PROJECT --zone=$ZONE
