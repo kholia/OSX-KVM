@@ -16,7 +16,7 @@ Setup procedure:
 
 VM_NAME=ubuntu-nested
 DISKSIZE=100
-MACHINETYPE=n1-standard-8
+MACHINETYPE=c2-standard-8
 IMAGE=projects/ubuntu-os-cloud/global/images/ubuntu-2204-jammy-v20220609
 ZONE=some-zone
 PROJECT=my-project
