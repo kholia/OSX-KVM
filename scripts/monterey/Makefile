@@ -60,7 +60,7 @@ else
 endif
 
 BaseSystem.dmg :
-	../../fetch-macOS-v2.py --action download --board-id Mac-7BA5B2D9E42DDD94 --os latest
+	../../fetch-macOS-v2.py --action download --board-id Mac-F60DEB81FF30ACF6 --os latest
 
 InstallAssistant.pkg :
 	../../backups/fetch-macOS.py --version latest --title "macOS Monterey"
