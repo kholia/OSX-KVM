@@ -164,7 +164,7 @@ def save_image(url, sess, filename='', directory=''):
     if filename.find('/') >= 0 or filename == '':
         raise RuntimeError('Invalid save path ' + filename)
 
-    print('Saving ' + url + ' to ' + filename + '...')
+    print('Saving ' + url + ' to ' + os.path.join(directory, filename) + '...')
 
     with open(os.path.join(directory, filename), 'wb') as fhandle:
         response = run_query(url, headers, raw=True)
@@ -448,6 +448,14 @@ def main():
         print('ERROR: Cannot use MLBs in non 17 character format!')
         sys.exit(1)
 
+    outdir = os.path.abspath(args.outdir)
+    if not os.path.exists(outdir):
+        print('ERROR: Directory not found: ' + outdir)
+        sys.exit(1)
+    if not os.access(outdir, os.W_OK):
+        print('ERROR: Unable to save to ' + outdir)
+        sys.exit(1)
+
     if args.action == 'download':
         return action_download(args)
     if args.action == 'selfcheck':
@@ -498,7 +506,7 @@ def main():
     except:
         os_type = "default"
     args = gdata(mlb = product["m"], board_id = product["b"], diagnostics =
-            False, os_type = os_type, verbose=False, basename="", outdir=".")
+            False, os_type = os_type, verbose=False, basename="", outdir=outdir)
     action_download(args)
 
 
