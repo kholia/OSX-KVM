@@ -1,6 +1,5 @@
 *.iso
-mac_hdd.img
-mac_hdd_ng.img
+*.chunklist
 *.sha256sum
 *.sucatalog
 *.img
@@ -8,6 +7,4 @@ mac_hdd_ng.img
 *.dist
 *.smd
 *.dmg
-OVMF_VARS-1024x768.fd
-OVMF_VARS*.fd
 OpenCore-Catalina/EFI/OC/Resources/

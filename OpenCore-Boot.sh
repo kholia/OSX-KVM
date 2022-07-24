@@ -13,6 +13,10 @@
 # NOTE: Tweak the "MY_OPTIONS" line in case you are having booting problems!
 ############################################################################
 
+# Tell git to ignore changes in files that will change anyway after first run
+# https://compiledsuccessfully.dev/git-skip-worktree/
+git update-index --skip-worktree OVMF_VARS*.fd
+
 MY_OPTIONS="+ssse3,+sse4.2,+popcnt,+avx,+aes,+xsave,+xsaveopt,check"
 
 # This script works for Big Sur, Catalina, Mojave, and High Sierra. Tested with
