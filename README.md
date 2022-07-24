@@ -225,24 +225,7 @@ work, patience, and a bit of luck (perhaps?).
 
 ### Post-Installation
 
-* See [networking notes](networking-qemu-kvm-howto.txt) to setup guest networking.
-
-  I have the following commands present in `/etc/rc.local`.
-
-  ```
-  #!/usr/bin/env bash
-
-  sudo ip tuntap add dev tap0 mode tap
-  sudo ip link set tap0 up promisc on
-  sudo ip link set dev virbr0 up
-  sudo ip link set dev tap0 master virbr0
-  ```
-
-  This has been enough for me so far.
-
-  Note: You may need to enable the `rc.local` functionality manually on modern
-  Ubuntu versions. Check out the [notes](notes.md) included in this repository
-  for details.
+* See [networking notes](networking-qemu-kvm-howto.txt) on how to setup networking in your VM, outbound and also inbound for remote access to your VM via SSH, VNC, etc.
 
 * To passthrough GPUs and other devices, see [these notes](notes.md#gpu-passthrough-notes).
 

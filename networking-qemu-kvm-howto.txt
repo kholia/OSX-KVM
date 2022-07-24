@@ -30,13 +30,26 @@ MacOS.
 
 To use this adapter, replace network_adapter with e1000-82545em
 
-vmxnet3 - An alternative solution to e1000 is to use vmxnet3 instead. Unlike
-the e1000, vmxnet3 is a paravirtualized NIC, which can allow for better
+vmxnet3,virtio-net-pci - An alternative solution to e1000. Instead of emulating
+the e1000, these are paravirtualized NICs, which can allow for better
 performance (in theory). The only catch is that the you need to have a recent
 version of MacOS (10.11 or later).
 
-To use this adapter, replace network_adapter with vmxnet3
+To use these adapters, replace network_adapter with vmxnet3 or virtio-net-pci.
 
+
+SSH access in user mode
+-----------------------
+
+Although the IP address of the VM is not visible to the outside, it is possible
+to use port forwarding to access the VM's ports from your host, eg the SSH port.
+To achieve that:
+
+- In MacOS, turn on SSH under System Preferences > Sharing > Remote Login.
+- Modify the startup script to include `-netdev user,id=net0,hostfwd=tcp::10022-:22`
+- Use `ssh localhost -p10022` to get in.
+
+You can use the same for VNC.
 
 -----------------------------------
 Tap Networking (Better Performance)
@@ -61,6 +74,25 @@ virsh net-autostart default
 
 Add "-netdev tap,id=net0,ifname=tap0,script=no,downscript=no -device e1000-82545em,netdev=net0,id=net0,mac=52:54:00:c9:18:27 \"
 to your qemu-system-x86_64 command.
+
+
+Using an rc.local startup script
+--------------------------------
+
+I have the following commands present in `/etc/rc.local`.
+
+#!/usr/bin/env bash
+sudo ip tuntap add dev tap0 mode tap
+sudo ip link set tap0 up promisc on
+sudo ip link set dev virbr0 up
+sudo ip link set dev tap0 master virbr0
+
+This has been enough for me so far.
+
+Note: You may need to enable the `rc.local` functionality manually on modern
+Ubuntu versions. Check out the [notes](notes.md) included in this repository
+for details.
+
 
 QEMU networking tip
 -------------------
