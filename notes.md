@@ -418,6 +418,36 @@ get some performance gain.
 +         -device virtio-blk-pci,drive=MacHDD \
 ```
 
+#### Unrecognized Network Device Caused by virtio-blk-pci
+
+After substituting `virtio-blk-pci`,
+macOS may not be able to recognize network device anymore
+(confirmed with Monterey 12.1 & QEMU 6.2.0).
+
+The workaround is to pass option
+`-global ICH9-LPC.acpi-pci-hotplug-with-bridge-support=off`
+to QEMU.
+
+Here is a working gist:
+
+```
+qemu-system-x86_64
+    ...
+    -global ICH9-LPC.acpi-pci-hotplug-with-bridge-support=off \
+    -device pcie-root-port,id=port.1,bus=pcie.0,multifunction=on,port=1,chassis=1 \
+    -drive id=base,if=none,format=${BASE_IMG_PATH##*.},file="$BASE_IMG_PATH" \
+    -device virtio-blk-pci,drive=base \
+    -netdev tap,id=net0,br=bridge0,helper='/usr/libexec/qemu-bridge-helper' \
+    -device virtio-net-pci,id=net0,netdev=net0,mac="$MAC_ADDRESS",bus=port.1
+    ...
+```
+
+Please note that
+the following two options are only required
+if you are passing through other PCI devices.
+
+* `-device pcie-root-port,id=port.1,bus=pcie.0,multifunction=on,port=1,chassis=1`
+* `bus=port.1` of `virtio-net-pci,id=net0`
 
 ### Permission problems with libvirt / qemu?
 
