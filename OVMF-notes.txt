@@ -1,6 +1,6 @@
 Current OVMF blobs are borrowed from the following URL(s),
 
-- http://ftp.debian.org/debian/pool/main/e/edk2/ (ovmf_2021.08-2_all.deb)
+- http://ftp.debian.org/debian/pool/main/e/edk2/ (ovmf_2022.08-1_all.deb)
 
 Building OVMF
 -------------

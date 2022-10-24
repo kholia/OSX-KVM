@@ -670,7 +670,7 @@ The `-smp line` should read something like the following:
 Check out [this Dortania article on this topic](https://dortania.github.io/OpenCore-Post-Install/universal/iservices.html#using-gensmbios).
 
 
-### Fix 'guest boots to UEFI shell' problem
+### Fix 'guest boots to UEFI shell' problem (stuck at startup.nsh problem)
 
 Use a fresh copy of the `OVMF_VARS-1024x768.fd` file.
 

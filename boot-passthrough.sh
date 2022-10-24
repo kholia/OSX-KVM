@@ -8,10 +8,19 @@
 # qemu-img create -f qcow2 mac_hdd_ng.img 128G
 #
 # echo 1 > /sys/module/kvm/parameters/ignore_msrs (this is required)
-
+#
 ############################################################################
 # NOTE: Tweak the "MY_OPTIONS" line in case you are having booting problems!
 ############################################################################
+#
+# VNC Usage:
+#
+# $ ./boot-passthrough.sh
+#
+# Set your desired VNC password below.
+#
+# (qemu) change vnc password
+# Password: ********
 
 MY_OPTIONS="+ssse3,+sse4.2,+popcnt,+avx,+aes,+xsave,+xsaveopt,check"
 

@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>BuildMachineOSBuild</key>
-	<string>21F79</string>
+	<string>21G83</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleExecutable</key>
@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>KEXT</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.6.0</string>
+	<string>1.6.2</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleSupportedPlatforms</key>
@@ -25,11 +25,11 @@
 		<string>MacOSX</string>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1.6.0</string>
+	<string>1.6.2</string>
 	<key>DTCompiler</key>
 	<string>com.apple.compilers.llvm.clang.1_0</string>
 	<key>DTPlatformBuild</key>
-	<string>13F100</string>
+	<string>14A400</string>
 	<key>DTPlatformName</key>
 	<string>macosx</string>
 	<key>DTPlatformVersion</key>
@@ -39,9 +39,9 @@
 	<key>DTSDKName</key>
 	<string>macosx12.3</string>
 	<key>DTXcode</key>
-	<string>1341</string>
+	<string>1401</string>
 	<key>DTXcodeBuild</key>
-	<string>13F100</string>
+	<string>14A400</string>
 	<key>IOKitPersonalities</key>
 	<dict>
 		<key>NVHDAEnabler</key>
