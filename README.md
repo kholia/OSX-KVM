@@ -123,7 +123,7 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
   Sample run:
 
   ```
-  $ ./fetch-macOS.py
+  $ ./fetch-macOS-v2.py
   1. High Sierra (10.13)
   2. Mojave (10.14)
   3. Catalina (10.15)
