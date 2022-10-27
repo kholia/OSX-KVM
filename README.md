@@ -123,14 +123,15 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
   Sample run:
 
   ```
-  $ ./fetch-macOS-v2.py
+  $ ./fetch-macOS.py
   1. High Sierra (10.13)
   2. Mojave (10.14)
   3. Catalina (10.15)
   4. Big Sur (11.6) - RECOMMENDED
-  5. Monterey (latest)
+  5. Monterey 
+  6. Ventura (latest)
 
-  Choose a product to download (1-5): 4
+  Choose a product to download (1-6) 4
   ```
 
   Note: Modern NVIDIA GPUs are supported on HighSierra but not on later
