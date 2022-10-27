@@ -41,9 +41,9 @@ help (pull-requests!) with the following work items:
 
 ### Requirements
 
-* A modern Linux distribution. E.g. Ubuntu 20.04 LTS 64-bit or later.
+* A modern Linux distribution. E.g. Ubuntu 22.04 LTS 64-bit or later.
 
-* QEMU >= 4.2.0
+* QEMU >= 6.2.0
 
 * A CPU with Intel VT-x / AMD SVM support is required (`grep -e vmx -e svm /proc/cpuinfo`)
 
@@ -127,10 +127,11 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
   1. High Sierra (10.13)
   2. Mojave (10.14)
   3. Catalina (10.15)
-  4. Big Sur (11.6) - RECOMMENDED
-  5. Monterey (latest)
+  4. Big Sur (11.7) - RECOMMENDED
+  5. Monterey (12.6)
+  6. Ventura (13)
 
-  Choose a product to download (1-5): 4
+  Choose a product to download (1-6): 4
   ```
 
   Note: Modern NVIDIA GPUs are supported on HighSierra but not on later
@@ -140,12 +141,6 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
 
   ```
   dmg2img -i BaseSystem.dmg BaseSystem.img
-  ```
-
-  OR
-
-  ```
-  qemu-img convert BaseSystem.dmg -O raw BaseSystem.img  # can be problematic on newer systems
   ```
 
 * Create a virtual HDD image where macOS will be installed. If you change the
