@@ -166,6 +166,8 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
   ```
 
   Note: This same script works for Big Sur, Catalina, Mojave, and High Sierra.
+  Ventura requires avx2 cpu instruction to be enabled by changing `-cpu Penryn` to `-cpu host` and adding `+avx2` to the `MY_OPTIONS` 
+  line in `OpenCore-Boot.sh` see [notes](https://github.com/kholia/OSX-KVM/blob/master/notes.md#exposing-avx-and-avx2-instructions-to-macos).
 
 - Use the `Disk Utility` tool within the macOS installer to partition, and
   format the virtual disk attached to the macOS VM.
