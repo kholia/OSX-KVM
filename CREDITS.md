@@ -138,4 +138,6 @@
 
 - sumad200 - XML fixes
 
+- MobCode100 - Ventura + AVX2 docs
+
 Note: Individual files have more specific 'credits' in them.
