@@ -331,7 +331,8 @@ Other host CPU features can be similarly exposed to the macOS guest.
 The following command can be used on macOS to verify that AES-NI instructions are exposed,
 
 ```
-sysctl -a | grep machdep.features
+sysctl -a | grep machdep.cpu.features
+
 ```
 
 On machines with OpenSSL installed, the following two commands can be used to
