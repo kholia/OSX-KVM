@@ -16,6 +16,30 @@ This fix was found by `Glnk2012` of https://www.tonymacx86.com/ site.
 Also tweaking the `smbios.plist` file can help (?).
 
 
+### Resolution in Ventura (WIP)
+
+From https://superuser.com: macOS Ventura screen resolution settings includes
+only 3 predefined options but choosing any of them breaks my installation (I'm
+getting black screen with only small portion visible).
+
+Process to reset the resolution (using that small visible) display portion:
+
+Log in (in a blind fashion!), open Terminal and run the following commands:
+
+```
+sudo rm /Library/Preferences/com.apple.windowserver.plist
+
+rm ~/Library/Preferences/ByHost/com.apple.windowserver*
+
+sudo reboot
+```
+
+Reboot the macOS Ventura VM.
+
+Note: Running `displayplacer "id:FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF mode:10"`
+doesn't help with this resolution problem on macOS Ventura.
+
+
 ### Change resolution in OpenCore
 
 ```diff
