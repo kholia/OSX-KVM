@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleGetInfoString</key>
+	<string>AppleIntelMCEReporter Disabler 1.0, © 2019 by XLNC. All rights reserved.</string>
+	<key>CFBundleIdentifier</key>
+	<string>org.xlnc.disabler.MCEReporter</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>DisableAppleIntelMCEReporter</string>
+	<key>CFBundlePackageType</key>
+	<string>KEXT</string>
+	<key>CFBundleVersion</key>
+	<string>1.2</string>
+	<key>IOKitPersonalities</key>
+	<dict>
+		<key>DisableMCEInterruptController</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.apple.driver.AppleIntelMCEReporter</string>
+			<key>IOClass</key>
+			<string>IOService</string>
+			<key>IOMatchCategory</key>
+			<string>AppleIntelMCEInterruptController</string>
+			<key>IOProbeScore</key>
+			<integer>5000</integer>
+			<key>IOPropertyMatch</key>
+			<array>
+				<dict>
+					<key>board-id</key>
+					<string>Mac-F60DEB81FF30ACF6</string>
+				</dict>
+				<dict>
+					<key>board-id</key>
+					<string>Mac-7BA5B2D9E42DDD94</string>
+				</dict>
+				<dict>
+					<key>board-id</key>
+					<string>Mac-27AD2F918AE68F61</string>
+				</dict>
+			</array>
+			<key>IOProviderClass</key>
+			<string>IOPlatformExpertDevice</string>
+		</dict>
+		<key>DisableMCEReporter</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.apple.driver.AppleIntelMCEReporter</string>
+			<key>IOClass</key>
+			<string>IOService</string>
+			<key>IOMatchCategory</key>
+			<string>AppleIntelMCEReporter</string>
+			<key>IOProbeScore</key>
+			<integer>5000</integer>
+			<key>IOProviderClass</key>
+			<string>AppleIntelMCEInterruptNub</string>
+		</dict>
+	</dict>
+	<key>OSBundleRequired</key>
+	<string>Root</string>
+</dict>
+</plist>
