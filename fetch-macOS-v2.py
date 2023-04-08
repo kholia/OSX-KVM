@@ -434,7 +434,7 @@ def main():
                         help='use specified os type, defaults to default ' + MLB_ZERO)
     parser.add_argument('-diag', '--diagnostics', action='store_true', help='download diagnostics image')
     parser.add_argument('-s', '--shortname', type=str, default='',
-                        help='available options: high-sierra, mojave, catalina, big-sur, monterey')
+                        help='available options: high-sierra, mojave, catalina, big-sur, monterey, ventura')
     parser.add_argument('-v', '--verbose', action='store_true', help='print debug information')
     parser.add_argument('-db', '--board-db', type=str, default=os.path.join(SELF_DIR, 'boards.json'),
                         help='use custom board list for checking, defaults to boards.json')
