@@ -96,3 +96,30 @@ to work, it needs to be setuid root. This can be accomplished with this command:
 
 Note that this is sometimes viewed as a security hole. Be careful and understand
 what you are doing before running this command.
+
+
+-----------------------
+Bridged Networking 2023
+-----------------------
+
+sudo mkdir -p /etc/qemu
+
+sudo cp bridge.conf /etc/qemu
+
+sudo chmod u+s /usr/lib/qemu/qemu-bridge-helper
+
+sudo ip link add name br0 type bridge
+
+sudo ip link set dev br0 up
+
+sudo ip link set enx00e04c680a67 master br0 && sudo dhclient br0
+
+$ brctl show
+bridge name	bridge id		STP enabled	interfaces
+br0		8000.ead0ee60b7c1	yes		enx00e04c680a67
+							tap0
+Use the following network device in scripts:
+
+-netdev bridge,id=net0,br=br0,"helper=/usr/lib/qemu/qemu-bridge-helper" -device virtio-net-pci,netdev=net0,id=net0,mac=00:16:CB:00:11:34
+
+Also see https://dortania.github.io/OpenCore-Post-Install/universal/iservices.html to tweak the config.plist file.

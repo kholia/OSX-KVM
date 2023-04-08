@@ -16,7 +16,12 @@ This fix was found by `Glnk2012` of https://www.tonymacx86.com/ site.
 Also tweaking the `smbios.plist` file can help (?).
 
 
-### Resolution in Ventura (WIP)
+### Resolution in Ventura
+
+Update: Switching to `vmware-svga` device seems to have "fixed" the following
+problem!
+
+...
 
 From https://superuser.com: macOS Ventura screen resolution settings includes
 only 3 predefined options but choosing any of them breaks my installation (I'm
@@ -355,7 +360,7 @@ Other host CPU features can be similarly exposed to the macOS guest.
 The following command can be used on macOS to verify that AES-NI instructions are exposed,
 
 ```
-sysctl -a | grep machdep.features
+sysctl -a | grep machdep.cpu.features
 ```
 
 On machines with OpenSSL installed, the following two commands can be used to
