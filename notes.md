@@ -3,20 +3,24 @@
 Do you see the "Your device or computer could not be verified" message when you
 try to login to the App Store? If yes, here are the steps to fix it.
 
-* Make sure that your wired ethernet connection is called "en0" (and not "en1" or
-something else). Use "ifconfig" command to verify this.
+- Make sure that your wired ethernet connection is called "en0" (and not "en1"
+  or something else). Use "ifconfig" command to verify this.
 
-* If the wired ethernet connection is not called "en0", then then go to Network
-in System Preferences and delete all the devices, and apply the changes. Next,
-go to the console and type in `sudo rm /Library/Preferences/SystemConfiguration/NetworkInterfaces.plist`.
-Finally reboot, and then use the App Store without problems.
+- If the wired ethernet connection is not called "en0", then then go to Network
+  in System Preferences and delete all the devices, and apply the changes.
+  Next, go to the console and type in `sudo rm /Library/Preferences/SystemConfiguration/NetworkInterfaces.plist`.
+  Finally reboot, and then use the App Store without problems.
 
 This fix was found by `Glnk2012` of https://www.tonymacx86.com/ site.
 
 Also tweaking the `smbios.plist` file can help (?).
 
+### Resolution in Ventura
 
-### Resolution in Ventura (WIP)
+Update: Switching to `vmware-svga` device seems to have "fixed" the following
+problem!
+
+...
 
 From https://superuser.com: macOS Ventura screen resolution settings includes
 only 3 predefined options but choosing any of them breaks my installation (I'm
@@ -38,7 +42,6 @@ Reboot the macOS Ventura VM.
 
 Note: Running `displayplacer "id:FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF mode:10"`
 doesn't help with this resolution problem on macOS Ventura.
-
 
 ### Change resolution in OpenCore
 
@@ -64,8 +67,8 @@ Note: The macOS VM's resolution can be changed via `Settings -> Displays`
 option easily.
 
 Note: After changing the `config.plist` file, please regenerate the
-`OpenCore.qcow2` file using the instructions included in this repository.
-
+`OpenCore.qcow2` file using the [instructions](./OpenCore/README.md#notes)
+included in this repository.
 
 ### GPU passthrough notes
 
@@ -76,7 +79,7 @@ for general-purpose guidance and details.
 I am running Ubuntu 20.04.2 LTS on Intel i5-6500 + ASUS Z170-AR motherboard +
 AMD RX 570 GPU (May 2021).
 
-* Blacklist the required kernel modules.
+- Blacklist the required kernel modules.
 
   ```
   $ cat /etc/modprobe.d/blacklist.conf
@@ -86,7 +89,7 @@ AMD RX 570 GPU (May 2021).
   blacklist radeon
   ```
 
-* Find details of the PCIe devices to passthrough.
+- Find details of the PCIe devices to passthrough.
 
   ```
   $ lspci -nnk | grep AMD
@@ -94,7 +97,7 @@ AMD RX 570 GPU (May 2021).
   01:00.1 Audio device [0403]: Advanced Micro Devices, Inc. [AMD/ATI] Ellesmere HDMI Audio [Radeon RX 470/480 / 570/580/590] [1002:aaf0]
   ```
 
-* Enable IOMMU support and configure VFIO.
+- Enable IOMMU support and configure VFIO.
 
   Append the given line to `GRUB_CMDLINE_LINUX_DEFAULT` in `/etc/default/grub`.
 
@@ -106,7 +109,7 @@ AMD RX 570 GPU (May 2021).
 
   `iommu=pt amd_iommu=on <remaining-line-from-above...>`
 
-* Tweak module configuration a bit according to the following output (thanks to Mathias Hueber).
+- Tweak module configuration a bit according to the following output (thanks to Mathias Hueber).
 
   ```
   $ cat /etc/modprobe.d/vfio.conf
@@ -117,18 +120,19 @@ AMD RX 570 GPU (May 2021).
   softdep drm pre: vfio-pci
   ```
 
-* Update GRUB, initramfs, and then reboot.
+- Update GRUB, initramfs, and then reboot.
 
   ```
-  $ sudo update-grub2
-  $ sudo update-initramfs -k all -u
+  sudo update-grub2
+
+  sudo update-initramfs -k all -u
   ```
 
-* In the BIOS setup, set the `Primary Display` to `IGFX` (aka CPU graphics / onboard graphics).
+- In the BIOS setup, set the `Primary Display` to `IGFX` (aka CPU graphics / onboard graphics).
 
   Tip: Update the BIOS!
 
-* Verify that the IOMMU ("VT-d" for Intel) is enabled, and `vfio-pci` is
+- Verify that the IOMMU ("VT-d" for Intel) is enabled, and `vfio-pci` is
   working as expected. Verify that the expected devices are using `vfio-pci` as
   their kernel driver.
 
@@ -169,7 +173,7 @@ AMD RX 570 GPU (May 2021).
           01:00.1 Audio device [0403]: Advanced Micro Devices, Inc. [AMD/ATI] Ellesmere HDMI Audio [Radeon RX 470/480 / 570/580/590] [1002:aaf0] (rev ff)
    ```
 
-* Fix permissions for the `/dev/vfio/1` device (modify as needed):
+- Fix permissions for the `/dev/vfio/1` device (modify as needed):
 
   ```
   sudo cp vfio-kvm.rules /etc/udev/rules.d/vfio-kvm.rules
@@ -178,7 +182,7 @@ AMD RX 570 GPU (May 2021).
   sudo udevadm trigger
   ```
 
-* Open `/etc/security/limits.conf` file and add the following lines:
+- Open `/etc/security/limits.conf` file and add the following lines:
 
   ```
   @kvm            soft    memlock         unlimited
@@ -189,10 +193,10 @@ AMD RX 570 GPU (May 2021).
 
   Thanks to `Heiko Sieger` for this solution.
 
-* Confirm the contents of `boot-passthrough.sh` and run it to boot macOS with
+- Confirm the contents of `boot-passthrough.sh` and run it to boot macOS with
   GPU passthrough.
 
-* To reuse the keyboard and mouse devices from the host, setup "Automatic
+- To reuse the keyboard and mouse devices from the host, setup "Automatic
   login" in System Preferences in macOS and configure Synergy software.
 
 Note: On `Pop!_OS`, use the `kernelstub` command to change the kernel boot
@@ -211,12 +215,11 @@ work in a rugged, consistent manner.
 
 [Link to a list of supported GPUs](https://dortania.github.io/GPU-Buyers-Guide/modern-gpus/amd-gpu.html).
 
-
 ### USB passthrough notes
 
 These steps will need to be adapted for your particular setup.
 
-* Isolate the passthrough PCIe devices with vfio-pci, with the help of `lspci
+- Isolate the passthrough PCIe devices with vfio-pci, with the help of `lspci
   -nnk` command.
 
   ```
@@ -228,13 +231,13 @@ These steps will need to be adapted for your particular setup.
   Add `1b21:1242` to `GRUB_CMDLINE_LINUX_DEFAULT` in `/etc/default/grub` file
   in the required format. See `GPU passthrough notes` (above) for details.
 
-* Update initramfs, and then reboot.
+- Update initramfs, and then reboot.
 
   ```
-  $ sudo update-initramfs -k all -u
+  sudo update-initramfs -k all -u
   ```
 
-* Use the helper scripts to isolate the USB controller.
+- Use the helper scripts to isolate the USB controller.
 
   ```
   $ scripts/lsgroup.sh
@@ -249,19 +252,18 @@ These steps will need to be adapted for your particular setup.
   ```
 
   ```
-  $ scripts/vfio-group.sh 13
+  scripts/vfio-group.sh 13
   ```
 
-* Add `-device vfio-pci,host=03:00.0,bus=pcie.0` line to `boot-passthrough.sh`.
+- Add `-device vfio-pci,host=03:00.0,bus=pcie.0` line to `boot-passthrough.sh`.
 
-* Boot the VM, and devices attached to the ASMedia USB controller should just work under macOS.
+- Boot the VM, and devices attached to the ASMedia USB controller should just work under macOS.
 
 [Here is a link to a list of recommended USB PCIe cards](http://blog.greggant.com/posts/2018/05/07/definitive-mac-pro-upgrade-guide.html).
 
-
 ### Synergy Notes
 
-* Get Synergy from https://sourceforge.net/projects/synergy-stable-builds.
+- Get Synergy from https://sourceforge.net/projects/synergy-stable-builds.
 
   I installed "synergy-v1.8.8-stable-MacOSX-x86_64.dmg" on the macOS guest and
   configured it as a client.
@@ -270,11 +272,10 @@ These steps will need to be adapted for your particular setup.
   System Preferences -> Users & Groups -> Select your user account -> Login Items
   -> Add a login item
 
-* On the Linux host machine, install "synergy-v1.8.8-stable-Linux-x86_64.deb"
+- On the Linux host machine, install "synergy-v1.8.8-stable-Linux-x86_64.deb"
   or newer, configure `~/.synergy.conf` and run `synergys` command.
 
-* The included `.synergy.conf` will need to be adapted according to your setup.
-
+- The included `.synergy.conf` will need to be adapted according to your setup.
 
 ### Virtual Sound Device
 
@@ -296,7 +297,6 @@ present.
 This cheap(est) USB sound card works pretty well on macOS *without* requiring
 USB-controller-passthrough.
 
-
 ### Building QEMU from source
 
 See http://wiki.qemu-project.org/Hosts/Linux for help.
@@ -314,7 +314,6 @@ $ ../configure --prefix=/home/$(whoami)/QEMU --enable-trace-backend=simple \
 $ make -j8; make install
 ```
 
-
 ### Connect iPhone / iPad to macOS guest
 
 iDevices can be passed through in two ways: USB or USB OTA.
@@ -328,7 +327,6 @@ https://github.com/EthanArbuckle/usbfluxd-usage
 VFIO USB Passthrough:
 
 https://github.com/Silfalion/Iphone_docker_osx_passthrough
-
 
 ### Exposing AES-NI instructions to macOS
 
@@ -355,7 +353,7 @@ Other host CPU features can be similarly exposed to the macOS guest.
 The following command can be used on macOS to verify that AES-NI instructions are exposed,
 
 ```
-sysctl -a | grep machdep.features
+sysctl -a | grep machdep.cpu.features
 ```
 
 On machines with OpenSSL installed, the following two commands can be used to
@@ -366,7 +364,6 @@ openssl speed aes-128-cbc
 
 openssl speed -evp aes-128-cbc  # uses AES-NI
 ```
-
 
 ### Exposing AVX and AVX2 instructions to macOS
 
@@ -396,7 +393,6 @@ machdep.cpu.leaf7_features: SMEP BMI1 AVX2 BMI2
 machdep.cpu.leaf7_feature_bits: 424
 ```
 
-
 ### Enabling Hypervisor.Framework (Nested Virtualization / Docker for Mac / Android Emulator / etc)
 
 Docker for Mac, the Android Emulator and other virtualization products require
@@ -418,17 +414,16 @@ If the `VMX` flag is missing, use the following steps to enable it:
 - Make sure the VM is booted with VMX support passed through using one of the
   two below strategies:
 
-  - You may add `vmx,rdtscp` arguments to the `-cpu` option in `boot-macOS.sh`
-    file (easier option).
+  You may add `vmx,rdtscp` arguments to the `-cpu` option in `boot-macOS.sh`
+  file (easier option).
 
-  - You may add `+vmx,` to the front of `MY_OPTIONS` in the boot script while
-    changing `-cpu Penryn` to `-cpu Skylake-Client` or [any other suitable supported CPU](https://manpages.ubuntu.com/manpages/disco/man7/qemu-cpu-models.7.html).
+  You may add `+vmx,` to the front of `MY_OPTIONS` in the boot script while
+  changing `-cpu Penryn` to `-cpu Skylake-Client` or [any other suitable supported CPU](https://manpages.ubuntu.com/manpages/disco/man7/qemu-cpu-models.7.html).
 
-    Note: Host CPU passthrough is troublesome and not generally recommended.
+  Note: Host CPU passthrough is troublesome and not generally recommended.
 
 Note: You may need to `Reset NVRAM` on the next reboot, but after that you
 should see a `1` when you re-check `sysctl kern.hv_support`.
-
 
 ### Using virtio-blk-pci with macOS
 
@@ -442,8 +437,7 @@ get some performance gain.
 +         -device virtio-blk-pci,drive=MacHDD \
 ```
 
-
-### Permission problems with libvirt / qemu?
+### Permission problems with libvirt / qemu
 
 ```
 sudo setfacl -m u:libvirt-qemu:rx /home/$USER
@@ -454,12 +448,11 @@ In general,
 sudo setfacl -R -m u:libvirt-qemu:rx <path>  # fix virt-manager perm problems
 ```
 
-
 ### Extract .pkg files
 
-* http://mackyle.github.io/xar/ is unmaintained and may fail for many `.pkg` files.
+- http://mackyle.github.io/xar/ is unmaintained and may fail for many `.pkg` files.
 
-* Use a modern version of `7-Zip` instead.
+- Use a modern version of `7-Zip` instead.
 
   ```
   7z l example.pkg
@@ -469,21 +462,18 @@ sudo setfacl -R -m u:libvirt-qemu:rx <path>  # fix virt-manager perm problems
   gunzip -c <something>.pkg/Payload | cpio -i
   ```
 
-
 ### QEMU quits with `gtk initialization failed`
 
 Append the `display=none` argument to your QEMU execution script (this has
 already been done for `boot-passthrough.sh`)
 
-
 ### ISO/DMG (`createinstallmedia` generated) install medium not detected
 
 In OpenCore's `config.plist` and set `ScanPolicy` to `0` ([For more information, check the Dortania Troubleshooting Guide](https://dortania.github.io/OpenCore-Install-Guide/troubleshooting/troubleshooting.html#can-t-see-macos-partitions))
 
-
 ### Attach physical drive to QEMU VM
 
-*Note: If using NVMe, passing the controller may be a better option then passing it as a block device*
+Note: If using NVMe, passing the controller may be a better option then passing it as a block device.
 
 Run `ls -la /dev/disk/by-id/` to get the unique mapping for the device you want to attach to the VM (like `sda`, `sdb`, `nvme0n1`, while you can attach only a partition like `sda1`, this is not recommended)
 
@@ -515,29 +505,26 @@ block device without `root` permissions)
 -device ide-hd,bus=sata.4,drive=NVMeDrive \
 ```
 
-
 ### Run the Virtual Machine on Boot
 
-* Edit your QEMU launch script and set the absolute path of `OSX-KVM` as the
+- Edit your QEMU launch script and set the absolute path of `OSX-KVM` as the
   value of `REPO_PATH`
 
-* Edit `/etc/rc.local` and add the absolute path of the script (with or without
+- Edit `/etc/rc.local` and add the absolute path of the script (with or without
   `sudo` depending on your needs) to the bottom of the script.
-
 
 ### Setup SSH for internal remote access
 
 Presuming your network interface has a statically defined internal IP (on Ubuntu).
 
 ```
-$ sudo apt install openssh-server -y
-$ sudo ufw allow ssh
-$ sudo update-rc.d ssh defaults
-$ sudo systemctl enable ssh
-$ sudo systemctl enable ssh.socket
-$ sudo systemctl enable ssh.service
+sudo apt install openssh-server -y
+sudo ufw allow ssh
+sudo update-rc.d ssh defaults
+sudo systemctl enable ssh
+sudo systemctl enable ssh.socket
+sudo systemctl enable ssh.service
 ```
-
 
 ### AMD GPU Notes
 
@@ -546,7 +533,6 @@ $ sudo systemctl enable ssh.service
 - Consider using CMMChris's [RadeonBoost.kext](https://forums.macrumors.com/threads/tired-of-low-geekbench-scores-use-radeonboost.2231366/)
   for the RX480, RX580, RX590 and Radeon VII GPUs.
 
-
 ### USB passthrough notes
 
 #### USB 3.0 flash drive
@@ -554,38 +540,45 @@ $ sudo systemctl enable ssh.service
 The following USB configuration works for usb passthrough of a USB 3.0 flash
 drive to Fedora 25 guest.
 
-    -device nec-usb-xhci,id=xhci \
-    -device usb-host,bus=xhci.0,vendorid=0x0781,productid=0x5590 \
-    -usb -device usb-mouse,bus=usb-bus.0 -device usb-kbd,bus=usb-bus.0 \
-    ...
+```
+-device nec-usb-xhci,id=xhci \
+-device usb-host,bus=xhci.0,vendorid=0x0781,productid=0x5590 \
+-usb -device usb-mouse,bus=usb-bus.0 -device usb-kbd,bus=usb-bus.0 \
+...
+```
 
 #### Moto G3 phone
 
 The following USB configuration works for usb passthrough of a Moto G3 phone to
 Fedora 25 guest.
 
+```
     -device usb-host,bus=usb-bus.0,vendorid=0x22b8,productid=0x002e \
     -usb -device usb-mouse,bus=usb-bus.0 -device usb-kbd,bus=usb-bus.0 \
     ...
+```
 
 #### CoolerMaster keyboard
 
 The following USB configuration works for usb passthrough of a CoolerMaster
 keyboard to macOS Sierra guest!
 
+```
     -device usb-host,bus=usb-bus.0,vendorid=0x2516,productid=0x0004 \
     -usb -device usb-tablet,bus=usb-bus.0 -device usb-kbd,bus=usb-bus.0 \
     ...
-
+```
 
 #### Virtual USB disk
 
 The following USB configuration works for attaching a virtual USB disk to macOS
 Sierra guest. Use "qemu-img" to create "disk.raw" virtual disk.
 
+```
     -drive if=none,id=usbstick,file=disk.raw,format=raw \
     -device usb-storage,bus=usb-bus.0,drive=usbstick \
     ...
+```
 
 However USB passthrough of EHCI, and XHCI (USB 3.0) devices does not work with
 macOS Sierra. See https://bugs.launchpad.net/qemu/+bug/1509336 for
@@ -597,8 +590,7 @@ It seems that this problem can be fixed by using OVMF + Clover.
 Update: OVMF + Clover doesn't help. It seems that macOS is missing the required
 drivers for the EHCI, and XHCI controllers that are exposed by QEMU.
 
-
-### Generate macOS Mojave / Catalina installation ISO.
+### Generate macOS Mojave / Catalina installation ISO
 
   This step currently needs to be run on an existing macOS system.
 
@@ -608,21 +600,19 @@ drivers for the EHCI, and XHCI controllers that are exposed by QEMU.
   ./create_dmg_catalina.sh
   ```
 
-
 ### Tweaks for macOS
 
-1. Disable `Energy Saver` in `System Preferences`.
+- Disable `Energy Saver` in `System Preferences`.
 
-2. Disable `Screen Saver` in `System Preferences -> Desktop & Screen Saver`.
+- Disable `Screen Saver` in `System Preferences -> Desktop & Screen Saver`.
 
-3. Turn off indexing using the following command.
+- Turn off indexing using the following command.
 
-   ```
-   sudo mdutil -a -i off
-   ```
+  ```
+  sudo mdutil -a -i off
+  ```
 
-4. Enable `Remote Login` (aka SSH) via `System Preferences -> Sharing`.
-
+- Enable `Remote Login` (aka SSH) via `System Preferences -> Sharing`.
 
 ### Snapshot Debugging Tips
 
@@ -635,7 +625,6 @@ drivers for the EHCI, and XHCI controllers that are exposed by QEMU.
 
   Ensure that you have plenty of free space in `/var/tmp` and `/`.
 
-
   To use a separate storage location for storing snapshots, use the following
   trick (from `zimbatm`):
 
@@ -643,13 +632,11 @@ drivers for the EHCI, and XHCI controllers that are exposed by QEMU.
   export TMPDIR=$PWD/tmp
   ```
 
-
 ### 'Fix' weird boot problems
 
 ```
 cp OVMF_VARS-1024x768.fd.bak OVMF_VARS-1024x768.fd
 ```
-
 
 ### 'Fix' time drift problems
 
@@ -658,7 +645,6 @@ Run the following command periodically from root's crontab:
 ```
 sntp -S pool.ntp.org
 ```
-
 
 ### Pass through all CPU cores / threads
 
@@ -688,11 +674,9 @@ The `-smp line` should read something like the following:
 -smp "$CPU_TOTAL",cores="$CPU_CORES",sockets="$CPU_SOCKETS",threads="$CPU_THREADS",maxcpus="$CPU_TOTAL"
 ```
 
-
-### Trouble with iMessage?
+### Troubles with iMessage
 
 Check out [this Dortania article on this topic](https://dortania.github.io/OpenCore-Post-Install/universal/iservices.html#using-gensmbios).
-
 
 ### Fix 'guest boots to UEFI shell' problem (stuck at startup.nsh problem)
 
@@ -701,7 +685,6 @@ Use a fresh copy of the `OVMF_VARS-1024x768.fd` file.
 ```
 git checkout OVMF_VARS-1024x768.fd
 ```
-
 
 ### Enable rc.local functionality on modern Ubuntu versions
 
