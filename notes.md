@@ -16,7 +16,12 @@ This fix was found by `Glnk2012` of https://www.tonymacx86.com/ site.
 Also tweaking the `smbios.plist` file can help (?).
 
 
-### Resolution in Ventura (WIP)
+### Resolution in Ventura
+
+Update: Switching to `vmware-svga` device seems to have "fixed" the following
+problem!
+
+...
 
 From https://superuser.com: macOS Ventura screen resolution settings includes
 only 3 predefined options but choosing any of them breaks my installation (I'm
