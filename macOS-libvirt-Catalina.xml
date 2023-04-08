@@ -44,7 +44,7 @@
     <type arch='x86_64' machine='pc-q35-4.2'>hvm</type>
     <!-- We don't need patched OVMF anymore when using latest OpenCore, stock one is okay -->
     <loader readonly='yes' type='pflash'>/home/CHANGEME/OSX-KVM/OVMF_CODE.fd</loader>
-    <nvram>/home/CHANGEME/OSX-KVM/OVMF_VARS-1024x768.fd</nvram>
+    <nvram>/home/CHANGEME/OSX-KVM/OVMF_VARS.fd</nvram>
   </os>
   <features>
     <acpi/>
@@ -161,7 +161,7 @@
       <listen type='address'/>
     </graphics>
     <video>
-      <model type="vga" vram="65536" heads="1" primary="yes"/>
+      <model type="vmvga" vram="131072" heads="1" primary="yes"/>
     </video>
     <!-- If you wanna passthrough GPU, make sure the gfx and audio are in the same bus (like 0x01) but different function (0x00 and 0x01)-->
     <!-- <hostdev mode='subsystem' type='pci' managed='yes'>
