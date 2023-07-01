@@ -136,9 +136,12 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
   Choose a product to download (1-6): 4
   ```
 
-  Note: Modern NVIDIA GPUs are supported on HighSierra but not on later
+  Note 1: Modern NVIDIA GPUs are supported on HighSierra but not on later
   versions of macOS.
 
+  Note 2: Monterey and Ventura can ONLY be installed by creating a full
+  installer (can only be created from MacOS).
+  
 * Convert the downloaded `BaseSystem.dmg` file into the `BaseSystem.img` file.
 
   ```
