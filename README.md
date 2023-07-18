@@ -160,6 +160,28 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
 
 ### Installation
 
+- (OPTIONAL) Edit launch script to add more ram or cpu cores. open the 'OpenCore-Boot.sh'
+  file using youre favourite text editor and change this.
+
+  ```
+   ....
+
+  ############################################################################
+  # NOTE: Tweak the "MY_OPTIONS" line in case you are having booting problems!
+  ############################################################################
+
+  MY_OPTIONS="+ssse3,+sse4.2,+popcnt,+avx,+aes,+xsave,+xsaveopt,check"
+
+  # This script works for Big Sur, Catalina, Mojave, and High Sierra. Tested with
+  # macOS 10.15.6, macOS 10.14.6, and macOS 10.13.6.
+
+  ALLOCATED_RAM="4096" # <---- Tweak this for more memory the value is in MB
+  CPU_SOCKETS="1" # <---- Dont tweek this setting
+  CPU_CORES="2" # <---- Tweek this setting for adding more cores dont put too many or else the sys will crash (Recommend putting half of the cores your cpu has)
+  CPU_THREADS="4" # <---- You have to tweek this setting if the number in threads is not double the number of cores
+
+   ....
+  ```
 - CLI method (primary). Just run the `OpenCore-Boot.sh` script to start the
   installation process.
 
