@@ -182,6 +182,7 @@ Phenom II X3 720 does not. Ryzen processors work just fine.
 
    ....
   ```
+  
 - CLI method (primary). Just run the `OpenCore-Boot.sh` script to start the
   installation process.
 
