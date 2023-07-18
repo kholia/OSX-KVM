@@ -18,10 +18,10 @@ MY_OPTIONS="+ssse3,+sse4.2,+popcnt,+avx,+aes,+xsave,+xsaveopt,check"
 # This script works for Big Sur, Catalina, Mojave, and High Sierra. Tested with
 # macOS 10.15.6, macOS 10.14.6, and macOS 10.13.6.
 
-ALLOCATED_RAM="4096" # MiB
-CPU_SOCKETS="1"
-CPU_CORES="2"
-CPU_THREADS="4"
+ALLOCATED_RAM="4096" # <---- Tweak this for more memory the value is in MB
+CPU_SOCKETS="1" # <---- Dont tweek this setting
+CPU_CORES="2" # <---- Tweek this setting for adding more cores dont put too many or else the sys will crash (Recommend putting half of the cores your cpu has)
+CPU_THREADS="4" # <---- You have to tweek this setting if the number in threads is not double the number of cores
 
 REPO_PATH="."
 OVMF_DIR="."
