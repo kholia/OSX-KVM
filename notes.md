@@ -69,7 +69,7 @@ Note: The macOS VM's resolution can be changed via `Settings -> Displays`
 option easily.
 
 Note: After changing the `config.plist` file, please regenerate the
-`OpenCore.qcow2` file using the instructions included in this repository.
+`OpenCore.qcow2` file using the [instructions](/OpenCore/README.md#notes) included in this repository.
 
 
 ### GPU passthrough notes
