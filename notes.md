@@ -217,6 +217,21 @@ work in a rugged, consistent manner.
 [Link to a list of supported GPUs](https://dortania.github.io/GPU-Buyers-Guide/modern-gpus/amd-gpu.html).
 
 
+### GPU passthrough notes for macOS Ventura and pre-Haswell CPUs
+
+macOS Ventura drops support for pre-Haswell CPUs, as assorted macOS components and macOS GPU drivers require the AVX2 CPU instruction support. The `CryptexFixup` kext, included in the latest `OpenCore.qcow2`, automatically forces the macOS installer/updater to install the non-AVX2 Apple Silicon Cryptex, taking care of the problematic macOS components. Post- VM installation patching with OpenCore Legacy Patcher (OCLP) takes care of the problematic GPU drivers.
+
+* Configure a QEMU host to boot a macOS Ventura guest with a "soft" display (with `-device vmware-svga`, etc.)
+
+* Configure the same QEMU host to also pass-through a "secondary" hardware GPU to a macOS Ventura guest (with `-device vfio-pci`, etc.) OCLP must be able to detect a supported hardware GPU to offer an appropriate patching capability.
+
+* After booting the macOS guest, install and launch the OCLP app and select the "Post-Install Root Patch" function. If the GPU passthrough setup is working properly, OCLP should show the "Graphics: AMD Legacy Polaris" (or equivalent - Polaris, Vega, etc.) patching capability.
+
+* Should OCLP require it, disable macOS System Integrity Protection (SIP) and/or Apple Mobile File Integrity (AMFI) through OpenCore `config.plist` editing. Make sure to "Reset NVRAM" in OpenCore boot menu.
+
+Confirmed to work as of Ubuntu 22.04, QEMU 6.2.0, macOS Ventura 13.5 and OCLP v0.6.7 with no stability issues.
+
+
 ### USB passthrough notes
 
 These steps will need to be adapted for your particular setup.
