@@ -229,6 +229,14 @@ macOS Ventura drops support for pre-Haswell CPUs, as assorted macOS components a
 
 * Should OCLP require it, disable macOS System Integrity Protection (SIP) and/or Apple Mobile File Integrity (AMFI) through OpenCore `config.plist` editing. Make sure to "Reset NVRAM" in OpenCore boot menu.
 
+  ```
+  <key>csr-active-config</key>
+  <data>AwgAAA==</data>
+  ...
+  <key>boot-args</key>
+  <string>[other-boot-args-here] amfi_get_out_of_my_way=0x1</string>
+  ```
+
 Confirmed to work as of Ubuntu 22.04, QEMU 6.2.0, macOS Ventura 13.5 and OCLP v0.6.7 with no stability issues.
 
 
