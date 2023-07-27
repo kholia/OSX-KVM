@@ -219,7 +219,7 @@ work in a rugged, consistent manner.
 
 ### GPU passthrough notes for macOS Ventura and pre-Haswell CPUs
 
-macOS Ventura drops support for pre-Haswell CPUs, as assorted macOS components and macOS GPU drivers require the AVX2 CPU instruction support. The `CryptexFixup` kext, included in the latest `OpenCore.qcow2`, automatically forces the macOS installer/updater to install the non-AVX2 Apple Silicon Cryptex, taking care of the problematic macOS components. Post- VM installation patching with OpenCore Legacy Patcher (OCLP) takes care of the problematic GPU drivers.
+macOS Ventura drops support for pre-Haswell CPUs, as assorted macOS components and macOS GPU drivers require the AVX2 CPU instruction. The `CryptexFixup` kext, included in `OpenCore.qcow2`, automatically forces the macOS installer/updater to install the non-AVX2 Apple Silicon Cryptex, taking care of the problematic macOS components. However, problematic GPU drivers require manual, post- VM installation patching with [OpenCore Legacy Patcher](https://dortania.github.io/OpenCore-Legacy-Patcher/) (OCLP).
 
 * Configure a QEMU host to boot a macOS Ventura guest with a "soft" display (with `-device vmware-svga`, etc.)
 
