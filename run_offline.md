@@ -8,9 +8,11 @@
 -drive id=MacDVD,if=none,file="$REPO_PATH/InstallAssistant.iso",format=raw
 -device ide-hd,bus=sata.5,drive=MacDVD
 ```
-- Create your qcow2 file 
-`qemu-img create -f qcow2 -o preallocation=off mac_hdd_ng.img 256G`
-- Run ./OpenCore-Boot.sh from the terminal
+- Create your qcow2 file
+```
+qemu-img create -f qcow2 -o preallocation=off mac_hdd_ng.img 256G
+```
+- Run `./OpenCore-Boot.sh` from the terminal
 - Use the `Disk Utility` tool within the macOS installer to partition, and format the virtual disk attached with name **macOS**
 - When completed, close `Disk Utility`
 - Go to the Terminal in your virtual machine, Click `Utilities`, select `Terminal`
