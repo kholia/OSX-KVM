@@ -5,7 +5,7 @@
 - Add the following to your `OpenCore-Boot.sh`
 
 ```
--drive id=MacDVD,if=none,file="./InstallAssistant.iso",format=raw
+-drive id=MacDVD,if=none,file="$REPO_PATH/InstallAssistant.iso",format=raw
 -device ide-hd,bus=sata.5,drive=MacDVD
 ```
 - Create your qcow2 file 
