@@ -1,7 +1,7 @@
 ### How to run the Installation offline without macOS
 
 - Download the ventura file (InstallAssistant.pkg) from https://mrmacintosh.com/macos-ventura-13-full-installer-database-download-directly-from-apple/(https://mrmacintosh.com/macos-ventura-13-full-installer-database-download-directly-from-apple/)
-- Create an iso file `InstallAssistant.iso` with the InstallAssistant.pkg(https://swcdn.apple.com/content/downloads/13/14/042-43677-A_H6GWAAJ2G9/6yl1pnz2f3m5sg2b4gpic7vz2i1s1n9n23/InstallAssistant.pkg) and `run_offline.sh` in the `scripts/run_offline.sh` files
+- Create an iso file `InstallAssistant.iso` with the downloaded InstallAssistant.pkg and `run_offline.sh` in the `scripts/run_offline.sh` files
 - Add the following to your `OpenCore-Boot.sh`
 
 ```
