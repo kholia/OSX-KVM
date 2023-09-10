@@ -2,6 +2,18 @@
 
 - Download the ventura file (InstallAssistant.pkg) from https://mrmacintosh.com/macos-ventura-13-full-installer-database-download-directly-from-apple/(https://mrmacintosh.com/macos-ventura-13-full-installer-database-download-directly-from-apple/)
 - Create an iso file `InstallAssistant.iso` with the downloaded InstallAssistant.pkg and `run_offline.sh` in the `scripts/run_offline.sh` files
+```
+mkisofs -allow-limited-size -l -J -r -iso-level 3 -V InstallAssistant -o <output.iso> <source file or directory>
+
+mkisofs -allow-limited-size -l -J -r -iso-level 3 -V InstallAssistant -o InstallAssistant.iso path/to/InstallAssistant.pkg path/to/OSX-KVM/scripts/run_offline.sh
+```
+#### or
+```
+genisoimage -allow-limited-size -l -J -r -iso-level 3 -V InstallAssistant -o <output.iso> <source file or directory>
+
+genisoimage -allow-limited-size -l -J -r -iso-level 3 -V InstallAssistant -o InstallAssistant.iso path/to/InstallAssistant.pkg path/to/OSX-KVM/scripts/run_offline.sh
+```
+- ***On windows, use poweriso***
 - Add the following to your `OpenCore-Boot.sh`
 
 ```
