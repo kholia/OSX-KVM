@@ -9,9 +9,6 @@
 #
 # echo 1 > /sys/module/kvm/parameters/ignore_msrs (this is required)
 
-DISK_IMAGE=mac_hdd_ng.img
-DISK_FORMAT=qcow2
-
 ############################################################################
 # NOTE: Tweak the "MY_OPTIONS" line in case you are having booting problems!
 ############################################################################
@@ -28,6 +25,9 @@ CPU_THREADS="4"
 
 REPO_PATH="."
 OVMF_DIR="."
+DISK_IMAGE="$REPO_PATH/mac_hdd_ng.img"
+DISK_FORMAT="qcow2"
+
 
 # shellcheck disable=SC2054
 args=(
