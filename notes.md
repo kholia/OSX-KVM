@@ -261,6 +261,21 @@ These steps will need to be adapted for your particular setup.
 
 [Here is a link to a list of recommended USB PCIe cards](http://blog.greggant.com/posts/2018/05/07/definitive-mac-pro-upgrade-guide.html).
 
+    
+- You can use the script `boot-usb-passthrough.py`.  
+Run the script as follow:
+```
+sudo python boot-usb-passthrough.py
+```
+This script detects when USB is connected and starts macos by performing USB Passthrough.  
+**Note:** It also works by connecting different USB devices.  
+
+**How it works:**  
+When the program starts, an analysis of all the USB devices that will be connected from that moment until the enter key is pressed to confirm is started.
+The program will propose the parameters necessary to perform USB Passthrough to be passed to QEMU.
+The program will ask you to start macOS, if you accept, it will read the contents of the `OpenCore-Boot.sh` file and run a fixed script by adding the parameters mentioned above.
+
+
 ### Synergy Notes
 
 - Get Synergy from https://sourceforge.net/projects/synergy-stable-builds.
