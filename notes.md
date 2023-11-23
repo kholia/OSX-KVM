@@ -268,7 +268,7 @@ Run the script as follow:
 sudo python boot-usb-passthrough.py
 ```
 This script detects when USB is connected and starts macos by performing USB Passthrough.  
-**Note:** It also works by connecting different USB devices.  
+**Note:** It has only been tested with one USB but it should also work by connecting different USB devices.  
 
 **How it works:**  
 When the program starts, an analysis of all the USB devices that will be connected from that moment until the enter key is pressed to confirm is started.
