@@ -101,6 +101,10 @@ AMD RX 570 GPU (May 2021).
 
   Append the given line to `GRUB_CMDLINE_LINUX_DEFAULT` in `/etc/default/grub`.
 
+  **NOTE:** Each boot manager has a different way of adding parameters.   
+  In *REFind*, for example, the file in which to add parameters should be `/boot/refind_linux.conf`.  
+  For more information: [https://wiki.archlinux.org/title/kernel_parameters](https://wiki.archlinux.org/title/kernel_parameters)  
+
   ##### Intel CPU Systems
 
   `iommu=pt intel_iommu=on vfio-pci.ids=1002:67df,1002:aaf0 kvm.ignore_msrs=1 video=vesafb:off,efifb:off`
@@ -228,8 +232,8 @@ These steps will need to be adapted for your particular setup.
   03:00.0 USB controller: ASMedia ASM1142 USB 3.1 Host Controller [1b21:1242]
   ```
 
-  Add `1b21:1242` to `GRUB_CMDLINE_LINUX_DEFAULT` in `/etc/default/grub` file
-  in the required format. See `GPU passthrough notes` (above) for details.
+  Add `1b21:1242` to `GRUB_CMDLINE_LINUX_DEFAULT` in `/etc/default/grub` file or `/boot/refind_linux.conf` for *REFind*, in the required format. (More information: [https://wiki.archlinux.org/title/kernel_parameters](https://wiki.archlinux.org/title/kernel_parameters))  
+  See also `GPU passthrough notes` (above) for details.
 
 - Update initramfs, and then reboot.
 
