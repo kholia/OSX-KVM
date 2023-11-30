@@ -51,7 +51,7 @@ Ventura-full.dmg :
 
 endif
 
-Ventura-recovery.dmg : BaseSystem.dmg
+Ventura-recovery.dmg : com.apple.recovery.boot/BaseSystem.dmg
 	rm -f $@
 ifeq ($(OS),MACOS)
 	hdiutil convert $< -format UDRW -o $@
@@ -59,12 +59,12 @@ else
 	qemu-img convert $< -O raw $@
 endif
 
-BaseSystem.dmg :
-	../../fetch-macOS-v2.py --action download --board-id Mac-AF89B6D9451A490B --os latest
+com.apple.recovery.boot/BaseSystem.dmg :
+	../../fetch-macOS-v2.py --action download --board-id Mac-4B682C642B45593E --os latest
 
 InstallAssistant.pkg :
 	../../backups/fetch-macOS.py --version latest --title "macOS Ventura"
 
 clean :
-	rm -f BaseSystem.chunklist BaseSystem.dmg SharedSupport.dmg InstallAssistant.pkg Ventura-recovery.img Ventura-full.img Ventura-recovery.dmg Ventura-full.dmg
-	rm -rf content
+	rm -f SharedSupport.dmg InstallAssistant.pkg Ventura-recovery.img Ventura-full.img Ventura-recovery.dmg Ventura-full.dmg
+	rm -rf content com.apple.recovery.boot
