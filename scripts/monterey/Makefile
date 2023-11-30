@@ -51,7 +51,7 @@ Monterey-full.dmg :
 
 endif
 
-Monterey-recovery.dmg : BaseSystem.dmg
+Monterey-recovery.dmg : com.apple.recovery.boot/BaseSystem.dmg
 	rm -f $@
 ifeq ($(OS),MACOS)
 	hdiutil convert $< -format UDRW -o $@
@@ -59,12 +59,12 @@ else
 	qemu-img convert $< -O raw $@
 endif
 
-BaseSystem.dmg :
+com.apple.recovery.boot/BaseSystem.dmg :
 	../../fetch-macOS-v2.py --action download --board-id Mac-F60DEB81FF30ACF6 --os latest
 
 InstallAssistant.pkg :
 	../../backups/fetch-macOS.py --version latest --title "macOS Monterey"
 
 clean :
-	rm -f BaseSystem.chunklist BaseSystem.dmg SharedSupport.dmg InstallAssistant.pkg Monterey-recovery.img Monterey-full.img
-	rm -rf content
+	rm -f SharedSupport.dmg InstallAssistant.pkg Monterey-recovery.img Monterey-full.img
+	rm -rf content com.apple.recovery.boot

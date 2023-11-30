@@ -46,7 +46,7 @@ endif
 $(BIG_SUR_APP) : InstallAssistant.pkg
 	sudo installer -pkg $< -target /
 
-BigSur-recovery.dmg : BaseSystem.dmg
+BigSur-recovery.dmg : com.apple.recovery.boot/BaseSystem.dmg
 	rm -f $@
 ifeq ($(OS),MACOS)
 	hdiutil convert $< -format UDRW -o $@
@@ -54,12 +54,12 @@ else
 	qemu-img convert $< -O raw $@
 endif
 
-BaseSystem.dmg :
+com.apple.recovery.boot/BaseSystem.dmg :
 	../../fetch-macOS-v2.py --action download --board-id Mac-2BD1B31983FE1663
 
 InstallAssistant.pkg :
 	../../backups/fetch-macOS.py --version latest --title "macOS Big Sur"
 
 clean :
-	rm -f BaseSystem.chunklist BaseSystem.dmg SharedSupport.dmg InstallAssistant.pkg BigSur-recovery.img BigSur-full.img
-	rm -rf content
+	rm -f SharedSupport.dmg InstallAssistant.pkg BigSur-recovery.img BigSur-full.img
+	rm -rf content com.apple.recovery.boot
