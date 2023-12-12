@@ -140,4 +140,8 @@
 
 - MobCode100 - Ventura + AVX2 docs
 
+- Murilo Rocha Pereira - https://github.com/murilopereirame - Typo fixes
+
+- gotjoshua - Typo fixes
+
 Note: Individual files have more specific 'credits' in them.

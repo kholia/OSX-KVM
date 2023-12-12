@@ -5,20 +5,20 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleGetInfoString</key>
-	<string>AppleIntelMCEReporter Disabler 1.0, © 2019 by XLNC. All rights reserved.</string>
+	<string>MCEReporterDisabler 0.5, Copyright (GPLv2) © 2017 by RehabMan. All rights reserved.</string>
 	<key>CFBundleIdentifier</key>
-	<string>org.xlnc.disabler.MCEReporter</string>
+	<string>org.rehabman.disabler.MCEReporter</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>DisableAppleIntelMCEReporter</string>
+	<string>MCEReporterDisabler</string>
 	<key>CFBundlePackageType</key>
 	<string>KEXT</string>
 	<key>CFBundleVersion</key>
-	<string>1.2</string>
+	<string>0.5</string>
 	<key>IOKitPersonalities</key>
 	<dict>
-		<key>DisableMCEInterruptController</key>
+		<key>MCEInterruptControllerDisabler</key>
 		<dict>
 			<key>CFBundleIdentifier</key>
 			<string>com.apple.driver.AppleIntelMCEReporter</string>
@@ -46,7 +46,7 @@
 			<key>IOProviderClass</key>
 			<string>IOPlatformExpertDevice</string>
 		</dict>
-		<key>DisableMCEReporter</key>
+		<key>MCEReporterDisabler</key>
 		<dict>
 			<key>CFBundleIdentifier</key>
 			<string>com.apple.driver.AppleIntelMCEReporter</string>
@@ -60,7 +60,5 @@
 			<string>AppleIntelMCEInterruptNub</string>
 		</dict>
 	</dict>
-	<key>OSBundleRequired</key>
-	<string>Root</string>
 </dict>
 </plist>

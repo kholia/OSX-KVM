@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>BuildMachineOSBuild</key>
+	<string>21G83</string>
+	<key>CFBundleIdentifier</key>
+	<string>as.acidanthera.injector.BrcmNonPatchRAM2</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>BrcmNonPatchRAM2</string>
+	<key>CFBundlePackageType</key>
+	<string>KEXT</string>
+	<key>CFBundleShortVersionString</key>
+	<string>2.6.5</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleSupportedPlatforms</key>
+	<array>
+		<string>MacOSX</string>
+	</array>
+	<key>CFBundleVersion</key>
+	<string>2.6.5</string>
+	<key>DTCompiler</key>
+	<string>com.apple.compilers.llvm.clang.1_0</string>
+	<key>DTPlatformBuild</key>
+	<string>14A400</string>
+	<key>DTPlatformName</key>
+	<string>macosx</string>
+	<key>DTPlatformVersion</key>
+	<string>12.3</string>
+	<key>DTSDKBuild</key>
+	<string>21E226</string>
+	<key>DTSDKName</key>
+	<string>macosx12.3</string>
+	<key>DTXcode</key>
+	<string>1401</string>
+	<key>DTXcodeBuild</key>
+	<string>14A400</string>
+	<key>IOKitPersonalities</key>
+	<dict>
+		<key>03f0_231d native</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.apple.iokit.BroadcomBluetoothHostControllerUSBTransport</string>
+			<key>IOClass</key>
+			<string>BroadcomBluetoothHostControllerUSBTransport</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBHostDevice</string>
+			<key>idProduct</key>
+			<integer>8989</integer>
+			<key>idVendor</key>
+			<integer>1008</integer>
+		</dict>
+		<key>03f0_231d no firmware</key>
+		<dict>
+			<key>#FirmwareKey</key>
+			<string>only load and unload native bluetooth</string>
+			<key>CFBundleIdentifier</key>
+			<string>as.acidanthera.BrcmNonPatchRAM2</string>
+			<key>DisplayName</key>
+			<string>HP 231d (ProBook BT built-in firmware)</string>
+			<key>IOClass</key>
+			<string>BrcmPatchRAM2</string>
+			<key>IOMatchCategory</key>
+			<string>BrcmPatchRAM2</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBHostDevice</string>
+			<key>idProduct</key>
+			<integer>8989</integer>
+			<key>idVendor</key>
+			<integer>1008</integer>
+		</dict>
+		<key>0489_e030 native</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.apple.iokit.BroadcomBluetoothHostControllerUSBTransport</string>
+			<key>IOClass</key>
+			<string>BroadcomBluetoothHostControllerUSBTransport</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBHostDevice</string>
+			<key>idProduct</key>
+			<integer>57392</integer>
+			<key>idVendor</key>
+			<integer>1161</integer>
+		</dict>
+		<key>0489_e030 no firmware</key>
+		<dict>
+			<key>#FirmwareKey</key>
+			<string>only load and unload native bluetooth</string>
+			<key>CFBundleIdentifier</key>
+			<string>as.acidanthera.BrcmNonPatchRAM2</string>
+			<key>DisplayName</key>
+			<string>Foxconn AW-NB290</string>
+			<key>IOClass</key>
+			<string>BrcmPatchRAM2</string>
+			<key>IOMatchCategory</key>
+			<string>BrcmPatchRAM2</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBHostDevice</string>
+			<key>idProduct</key>
+			<integer>57392</integer>
+			<key>idVendor</key>
+			<integer>1161</integer>
+		</dict>
+		<key>0a5c_219a native</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.apple.iokit.BroadcomBluetoothHostControllerUSBTransport</string>
+			<key>IOClass</key>
+			<string>BroadcomBluetoothHostControllerUSBTransport</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBHostDevice</string>
+			<key>idProduct</key>
+			<integer>2652</integer>
+			<key>idVendor</key>
+			<integer>8602</integer>
+		</dict>
+		<key>0a5c_219a no firmware</key>
+		<dict>
+			<key>#FirmwareKey</key>
+			<string>only load and unload native bluetooth</string>
+			<key>CFBundleIdentifier</key>
+			<string>as.acidanthera.BrcmNonPatchRAM2</string>
+			<key>DisplayName</key>
+			<string>Broadcom BCM2070 0a5c_219a (BT on BCM43225HMB)</string>
+			<key>IOClass</key>
+			<string>BrcmPatchRAM2</string>
+			<key>IOMatchCategory</key>
+			<string>BrcmPatchRAM2</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBHostDevice</string>
+			<key>idProduct</key>
+			<integer>2652</integer>
+			<key>idVendor</key>
+			<integer>8602</integer>
+		</dict>
+		<key>0b05_1788 native</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.apple.iokit.BroadcomBluetoothHostControllerUSBTransport</string>
+			<key>IOClass</key>
+			<string>BroadcomBluetoothHostControllerUSBTransport</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBHostDevice</string>
+			<key>idProduct</key>
+			<integer>6024</integer>
+			<key>idVendor</key>
+			<integer>2821</integer>
+		</dict>
+		<key>0b05_1788 no firmware</key>
+		<dict>
+			<key>#FirmwareKey</key>
+			<string>only load and unload native bluetooth</string>
+			<key>CFBundleIdentifier</key>
+			<string>as.acidanthera.BrcmNonPatchRAM2</string>
+			<key>DisplayName</key>
+			<string>Asus BT-270(20702A built-in firmware)</string>
+			<key>IOClass</key>
+			<string>BrcmPatchRAM2</string>
+			<key>IOMatchCategory</key>
+			<string>BrcmPatchRAM2</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBHostDevice</string>
+			<key>idProduct</key>
+			<integer>6024</integer>
+			<key>idVendor</key>
+			<integer>2821</integer>
+		</dict>
+		<key>0b05_178a native</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.apple.iokit.BroadcomBluetoothHostControllerUSBTransport</string>
+			<key>IOClass</key>
+			<string>BroadcomBluetoothHostControllerUSBTransport</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBHostDevice</string>
+			<key>idProduct</key>
+			<integer>6026</integer>
+			<key>idVendor</key>
+			<integer>2821</integer>
+		</dict>
+		<key>0b05_178a no firmware</key>
+		<dict>
+			<key>#FirmwareKey</key>
+			<string>only load and unload native bluetooth</string>
+			<key>CFBundleIdentifier</key>
+			<string>as.acidanthera.BrcmNonPatchRAM2</string>
+			<key>DisplayName</key>
+			<string>HP EliteBook NB-290 (built-in firmware)</string>
+			<key>IOClass</key>
+			<string>BrcmPatchRAM2</string>
+			<key>IOMatchCategory</key>
+			<string>BrcmPatchRAM2</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBHostDevice</string>
+			<key>idProduct</key>
+			<integer>6026</integer>
+			<key>idVendor</key>
+			<integer>2821</integer>
+		</dict>
+		<key>13d3_3295 native</key>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.apple.iokit.BroadcomBluetoothHostControllerUSBTransport</string>
+			<key>IOClass</key>
+			<string>BroadcomBluetoothHostControllerUSBTransport</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBHostDevice</string>
+			<key>idProduct</key>
+			<integer>12949</integer>
+			<key>idVendor</key>
+			<integer>5075</integer>
+		</dict>
+		<key>13d3_3295 no firmware</key>
+		<dict>
+			<key>#FirmwareKey</key>
+			<string>only load and unload native bluetooth</string>
+			<key>CFBundleIdentifier</key>
+			<string>as.acidanthera.BrcmNonPatchRAM2</string>
+			<key>DisplayName</key>
+			<string>Azurewave BCM943225 (20702A built-in firmware)</string>
+			<key>IOClass</key>
+			<string>BrcmPatchRAM2</string>
+			<key>IOMatchCategory</key>
+			<string>BrcmPatchRAM2</string>
+			<key>IOProviderClass</key>
+			<string>IOUSBHostDevice</string>
+			<key>idProduct</key>
+			<integer>12949</integer>
+			<key>idVendor</key>
+			<integer>5075</integer>
+		</dict>
+	</dict>
+	<key>LSMinimumSystemVersion</key>
+	<string>10.8</string>
+</dict>
+</plist>

@@ -1,3 +1,9 @@
+### macOS Sonoma support
+
+- Change `Penryn` to `Haswell-noTSX` in OpenCore-Boot.sh file.
+
+- This worked fine even on a `AMD Ryzen 9 5900HS` CPU.
+
 ### App Store problems
 
 Do you see the "Your device or computer could not be verified" message when you

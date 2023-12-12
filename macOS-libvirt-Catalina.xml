@@ -161,7 +161,7 @@
       <listen type='address'/>
     </graphics>
     <video>
-      <model type="vmvga" vram="131072" heads="1" primary="yes"/>
+      <model type="virtio" heads="1" primary="yes"/>
     </video>
     <!-- If you wanna passthrough GPU, make sure the gfx and audio are in the same bus (like 0x01) but different function (0x00 and 0x01)-->
     <!-- <hostdev mode='subsystem' type='pci' managed='yes'>

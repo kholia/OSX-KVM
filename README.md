@@ -54,7 +54,7 @@ help (pull-requests!) with the following work items:
 * A CPU with AVX2 support is required for >= macOS Mojave
 
 Note: Older AMD CPU(s) are known to be problematic but modern AMD Ryzen
-processors work just fine.
+processors work just fine (even for macOS Sonoma).
 
 
 ### Installation Preparation
@@ -174,11 +174,10 @@ processors work just fine.
   Note: This same script works for all recent macOS versions.
 
 - Use the `Disk Utility` tool within the macOS installer to partition, and
-  format the virtual disk attached to the macOS VM.
+  format the virtual disk attached to the macOS VM. Use `APFS` (the default)
+  for modern macOS versions.
 
 - Go ahead, and install macOS 🙌
-
-- TIP: Using a non-APFS filesystem is recommended.
 
 - (OPTIONAL) Use this macOS VM disk with libvirt (virt-manager / virsh stuff).
 

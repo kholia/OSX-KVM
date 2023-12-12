@@ -9,9 +9,14 @@
 #
 # echo 1 > /sys/module/kvm/parameters/ignore_msrs (this is required)
 
-############################################################################
+###############################################################################
 # NOTE: Tweak the "MY_OPTIONS" line in case you are having booting problems!
-############################################################################
+###############################################################################
+#
+# Change `Penryn` to `Haswell-noTSX` in OpenCore-Boot.sh file for macOS Sonoma!
+#
+###############################################################################
+
 
 MY_OPTIONS="+ssse3,+sse4.2,+popcnt,+avx,+aes,+xsave,+xsaveopt,check"
 
