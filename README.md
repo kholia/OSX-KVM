@@ -178,7 +178,7 @@ processors work just fine.
 
 - Go ahead, and install macOS 🙌
 
-- TIP: Using a non-APFS filesystem is recommended.
+- TIP: Using a non-APFS filesystem is recommended. (if you are installing OSX older than Mohave) 
 
 - (OPTIONAL) Use this macOS VM disk with libvirt (virt-manager / virsh stuff).
 
