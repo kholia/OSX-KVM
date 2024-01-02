@@ -62,7 +62,7 @@ processors work just fine (even for macOS Sonoma).
 * Install QEMU and other packages.
 
   ```
-  sudo apt-get install qemu uml-utilities virt-manager git \
+  sudo apt-get install qemu-system uml-utilities virt-manager git \
       wget libguestfs-tools p7zip-full make dmg2img tesseract-ocr \
       tesseract-ocr-eng genisoimage -y
   ```
