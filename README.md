@@ -60,12 +60,22 @@ processors work just fine (even for macOS Sonoma).
 ### Installation Preparation
 
 * Install QEMU and other packages.
-
+  * Debian
   ```
   sudo apt-get install qemu uml-utilities virt-manager git \
       wget libguestfs-tools p7zip-full make dmg2img tesseract-ocr \
       tesseract-ocr-eng genisoimage -y
   ```
+  * Arch
+  ```
+  pacman -S qemu virt-manager git \
+  wget libguestfs p7zip make dmg2img tesseract cdrtools \
+  paru && paru -S uml_utilities
+  ```
+      
+
+
+
 
   This step may need to be adapted for your Linux distribution.
 
