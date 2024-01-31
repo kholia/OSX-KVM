@@ -68,7 +68,7 @@ processors work just fine (even for macOS Sonoma).
   ```
   * Arch
   ```
-  pacman -S qemu virt-manager git \
+  sudo pacman -S qemu virt-manager git \
   wget libguestfs p7zip make dmg2img tesseract cdrtools \
   paru && paru -S uml_utilities
   ```
