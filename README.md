@@ -204,6 +204,8 @@ processors work just fine (even for macOS Sonoma).
     sudo setfacl -R -m u:libvirt-qemu:rx /home/$USER/OSX-KVM
     ```
 
+  - If issues persist, you can try to move the `OVMF_VARS.fd` and `OVMF_CODE.fd` files to `~/.config/libvirt/qemu/nvram` and update their paths in `macOS.xml`, but keep in mind that they will no longer be in sync with the repo and will need to be updated manually.
+
   - Launch `virt-manager` and start the `macOS` virtual machine.
 
 
