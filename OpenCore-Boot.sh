@@ -17,6 +17,8 @@
 #
 ###############################################################################
 
+#cd to script location
+cd "${0%/*}"
 
 MY_OPTIONS="+ssse3,+sse4.2,+popcnt,+avx,+aes,+xsave,+xsaveopt,check"
 
