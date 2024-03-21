@@ -40,13 +40,14 @@ OVMF_DIR="."
 args=(
   -enable-kvm -m "$ALLOCATED_RAM" -cpu Penryn,kvm=on,vendor=GenuineIntel,+invtsc,vmware-cpuid-freq=on,"$MY_OPTIONS"
   -machine q35
-  -usb -device usb-kbd -device usb-tablet
+  -device qemu-xhci,id=xhci
+  -device usb-kbd,bus=xhci.0 -device usb-tablet,bus=xhci.0
   -smp "$CPU_THREADS",cores="$CPU_CORES",sockets="$CPU_SOCKETS"
   -device usb-ehci,id=ehci
   # -device usb-kbd,bus=ehci.0
   # -device usb-mouse,bus=ehci.0
-  -device nec-usb-xhci,id=xhci
-  -global nec-usb-xhci.msi=off
+  # -device nec-usb-xhci,id=xhci
+  # -global nec-usb-xhci.msi=off
   -global ICH9-LPC.acpi-pci-hotplug-with-bridge-support=off
   # -device usb-host,vendorid=0x8086,productid=0x0808  # 2 USD USB Sound Card
   # -device usb-host,vendorid=0x1b3f,productid=0x2008  # Another 2 USD USB Sound Card
