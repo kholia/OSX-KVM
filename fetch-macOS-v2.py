@@ -374,7 +374,7 @@ def action_selfcheck(args):
     if product_default[INFO_PRODUCT] != valid_default[INFO_PRODUCT]:
         # Product-only MLB can give the same value with valid default MLB.
         # This is not an error for all models, but for our chosen code it is.
-        print('ERROR: Valid and product MLB give mismatch, got {product_default[INFO_PRODUCT]} and {valid_default[INFO_PRODUCT]}')
+        print(f'ERROR: Valid and product MLB give mismatch, got {product_default[INFO_PRODUCT]} and {valid_default[INFO_PRODUCT]}')
         return 1
 
     print('SUCCESS: Found no discrepancies with MLB validation algorithm!')
