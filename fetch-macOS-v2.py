@@ -34,6 +34,7 @@ except ImportError:
 
 SELF_DIR = os.path.dirname(os.path.realpath(__file__))
 
+RECENT_MAC_SNAME = 'high-sierra'
 RECENT_MAC = 'Mac-7BA5B2D9E42DDD94'
 MLB_ZERO = '00000000000000000'
 MLB_VALID = 'C02749200YGJ803AX'
@@ -297,7 +298,7 @@ def action_download(args):
     info = get_image_info(session, bid=args.board_id, mlb=args.mlb, diag=args.diagnostics, os_type=args.os_type)
     if args.verbose:
         print(info)
-    print(f'Downloading {info[INFO_PRODUCT]}...')
+    print(f'Downloading {args.shortname if len(args.shortname) else RECENT_MAC_SNAME} {info[INFO_PRODUCT]}...')
     dmgname = '' if args.basename == '' else args.basename + '.dmg'
     dmgpath = save_image(info[INFO_IMAGE_LINK], info[INFO_IMAGE_SESS], dmgname, args.outdir)
     cnkname = '' if args.basename == '' else args.basename + '.chunklist'
@@ -557,7 +558,8 @@ def main():
     except:
         os_type = "default"
     args = gdata(mlb = product["m"], board_id = product["b"], diagnostics =
-            False, os_type = os_type, verbose=False, basename="", outdir=".")
+            False, os_type = os_type, verbose=False, basename="", outdir=".",
+            shortname=product["short"])
     action_download(args)
 
 
