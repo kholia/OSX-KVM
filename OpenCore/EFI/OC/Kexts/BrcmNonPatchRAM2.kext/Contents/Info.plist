@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>BuildMachineOSBuild</key>
-	<string>21G83</string>
+	<string>21H1015</string>
 	<key>CFBundleIdentifier</key>
 	<string>as.acidanthera.injector.BrcmNonPatchRAM2</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -13,7 +13,7 @@
 	<key>CFBundlePackageType</key>
 	<string>KEXT</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.6.5</string>
+	<string>2.6.9</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleSupportedPlatforms</key>
@@ -21,23 +21,23 @@
 		<string>MacOSX</string>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>2.6.5</string>
+	<string>2.6.9</string>
 	<key>DTCompiler</key>
 	<string>com.apple.compilers.llvm.clang.1_0</string>
 	<key>DTPlatformBuild</key>
-	<string>14A400</string>
+	<string>14C18</string>
 	<key>DTPlatformName</key>
 	<string>macosx</string>
 	<key>DTPlatformVersion</key>
-	<string>12.3</string>
+	<string>13.1</string>
 	<key>DTSDKBuild</key>
-	<string>21E226</string>
+	<string>22C55</string>
 	<key>DTSDKName</key>
-	<string>macosx12.3</string>
+	<string>macosx13.1</string>
 	<key>DTXcode</key>
-	<string>1401</string>
+	<string>1420</string>
 	<key>DTXcodeBuild</key>
-	<string>14A400</string>
+	<string>14C18</string>
 	<key>IOKitPersonalities</key>
 	<dict>
 		<key>03f0_231d native</key>
