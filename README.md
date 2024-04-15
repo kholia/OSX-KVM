@@ -43,15 +43,15 @@ help (pull-requests!) with the following work items:
 
 ### Requirements
 
-* A modern Linux distribution. E.g. Ubuntu 22.04 LTS 64-bit or later.
+* A modern Linux distribution. E.g. Ubuntu 24.04 LTS 64-bit or later.
 
-* QEMU >= 6.2.0
+* QEMU >= 8.2.2
 
 * A CPU with Intel VT-x / AMD SVM support is required (`grep -e vmx -e svm /proc/cpuinfo`)
 
 * A CPU with SSE4.1 support is required for >= macOS Sierra
 
-* A CPU with AVX2 support is required for >= macOS Mojave
+* A CPU with AVX2 support is required for >= macOS Ventura
 
 Note: Older AMD CPU(s) are known to be problematic but modern AMD Ryzen
 processors work just fine (even for macOS Sonoma).
@@ -62,9 +62,9 @@ processors work just fine (even for macOS Sonoma).
 * Install QEMU and other packages.
 
   ```
-  sudo apt-get install qemu uml-utilities virt-manager git \
+  sudo apt-get install qemu-system uml-utilities virt-manager git \
       wget libguestfs-tools p7zip-full make dmg2img tesseract-ocr \
-      tesseract-ocr-eng genisoimage -y
+      tesseract-ocr-eng genisoimage vim net-tools screen -y
   ```
 
   This step may need to be adapted for your Linux distribution.
@@ -137,7 +137,7 @@ processors work just fine (even for macOS Sonoma).
   6. Ventura (13) - RECOMMENDED
   7. Sonoma (14)
 
-  Choose a product to download (1-6): 6
+  Choose a product to download (1-7): 6
   ```
 
   Note: Modern NVIDIA GPUs are supported on HighSierra but not on later
