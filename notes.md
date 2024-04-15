@@ -82,8 +82,8 @@ These steps will need to be adapted for your particular setup. A host machine
 with IOMMU support is required. Consult [this Arch Wiki article](https://wiki.archlinux.org/title/PCI_passthrough_via_OVMF)
 for general-purpose guidance and details.
 
-I am running Ubuntu 20.04.2 LTS on Intel i5-6500 + ASUS Z170-AR motherboard +
-AMD RX 570 GPU (May 2021).
+I am running Ubuntu 22.04.4 LTS on Intel i5-6500 + ASUS Z170-AR motherboard +
+AMD RX 6600 GPU (April 2024).
 
 - Blacklist the required kernel modules.
 
@@ -213,7 +213,8 @@ to dump the AMD GPU bios, and pass on to QEMU. This is especially required if
 your AMD GPU is not starting up properly (resulting in "no signal" on the
 monitor).
 
-Tested GPUs: ZOTAC GeForce GT 710 DDR3 (<= Big Sur), Sapphire Radeon RX 570.
+Tested GPUs: Sapphire AMD RX 6600 (RECOMMENDED!), ZOTAC GeForce GT 710 DDR3 (<=
+Big Sur), Sapphire Radeon RX 570.
 
 UPDATE: Project sponsors get access to the `Private OSX-KVM repository`, and
 direct support. This private repository has a playbook to automate 95% of this

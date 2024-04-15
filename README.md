@@ -64,7 +64,7 @@ processors work just fine (even for macOS Sonoma).
   ```
   sudo apt-get install qemu uml-utilities virt-manager git \
       wget libguestfs-tools p7zip-full make dmg2img tesseract-ocr \
-      tesseract-ocr-eng genisoimage -y
+      tesseract-ocr-eng genisoimage vim net-tools screen -y
   ```
 
   This step may need to be adapted for your Linux distribution.
