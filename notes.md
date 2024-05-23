@@ -304,6 +304,21 @@ present.
 This cheap(est) USB sound card works pretty well on macOS *without* requiring
 USB-controller-passthrough.
 
+Since Catalina, Apple included a native virtio-sound driver, supported since
+QEMU 8.2. It can be enabled by adding `-device virtio-sound,audiodev=snd0
+-audiodev pa,id=snd0` to the command line. libvirt support is scheduled to be
+added in 10.4.0, and could then be enabled like this:
+```
+    <sound model="virtio" streams="2">
+      <audio id="1"/>
+      <address type="pci" domain="0x0000" bus="0x00" slot="0x1b" function="0x0"/>
+    </sound>
+    <audio id="1" type="pulseaudio" serverName="/run/user/1000/pulse/native">
+      <input mixingEngine="no"/>
+      <output mixingEngine="no"/>
+    </audio>
+```
+
 ### Building QEMU from source
 
 See http://wiki.qemu-project.org/Hosts/Linux for help.
