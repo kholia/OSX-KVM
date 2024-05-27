@@ -221,7 +221,7 @@ def save_image(url, sess, filename='', directory=''):
     if filename.find('/') >= 0 or filename == '':
         raise RuntimeError('Invalid save path ' + filename)
 
-    print(f'Saving {url} to {directory}/{filename}...')
+    print(f'\nSaving {url} to {directory}/{filename}...')
 
     with open(os.path.join(directory, filename), 'wb') as fh:
         response = run_query(url, headers, raw=True)
@@ -229,9 +229,9 @@ def save_image(url, sess, filename='', directory=''):
         # print(total_size)
         if total_size < 1:
             total_size = response.headers['content-length']
-            print("Note: The total download size is %s bytes" % total_size)
+            print("\nNote: The total download size is %s bytes" % total_size)
         else:
-            print("Note: The total download size is %0.2f MB" % total_size)
+            print("\nNote: The total download size is %0.2f MB" % total_size)
         size = 0
         while True:
             chunk = response.read(2**20)
@@ -241,13 +241,13 @@ def save_image(url, sess, filename='', directory=''):
             size += len(chunk)
             print(f'\r{size / (2**20)} MBs downloaded...', end='')
             sys.stdout.flush()
-        print('\rDownload complete!\t\t\t\t\t')
+        print('\rDownload complete!' + ' ' * 20)
 
     return os.path.join(directory, os.path.basename(filename))
 
 
 def verify_image(dmgpath, cnkpath):
-    print('Verifying image with chunklist...')
+    print('\nVerifying image with chunklist...')
 
     with open(dmgpath, 'rb') as dmgf:
         cnkcount = 0
@@ -297,7 +297,7 @@ def action_download(args):
     info = get_image_info(session, bid=args.board_id, mlb=args.mlb, diag=args.diagnostics, os_type=args.os_type)
     if args.verbose:
         print(info)
-    print(f'Downloading {info[INFO_PRODUCT]}...')
+    print(f'\nDownloading {info[INFO_PRODUCT]}...')
     dmgname = '' if args.basename == '' else args.basename + '.dmg'
     dmgpath = save_image(info[INFO_IMAGE_LINK], info[INFO_IMAGE_SESS], dmgname, args.outdir)
     cnkname = '' if args.basename == '' else args.basename + '.chunklist'
