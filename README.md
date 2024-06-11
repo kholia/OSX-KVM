@@ -137,7 +137,7 @@ processors work just fine (even for macOS Sonoma).
   6. Ventura (13) - RECOMMENDED
   7. Sonoma (14)
 
-  Choose a product to download (1-6): 6
+  Choose a product to download (1-7): 6
   ```
 
   Note: Modern NVIDIA GPUs are supported on HighSierra but not on later
