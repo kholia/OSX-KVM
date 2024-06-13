@@ -23,7 +23,7 @@ MY_OPTIONS="+ssse3,+sse4.2,+popcnt,+avx,+aes,+xsave,+xsaveopt,check"
 # This script works for Big Sur, Catalina, Mojave, and High Sierra. Tested with
 # macOS 10.15.6, macOS 10.14.6, and macOS 10.13.6.
 
-ALLOCATED_RAM="12288" # MiB
+ALLOCATED_RAM="8192" # MiB
 CPU_SOCKETS="1"
 CPU_CORES="2"
 CPU_THREADS="4"

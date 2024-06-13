@@ -99,6 +99,8 @@ sudo shutdown -h now
 
 ## Additional Notes
 
+When you use the VSCode Remote SSH extension, you will disconnect from the VM as soon as the VM enters sleep mode. To prevent this, you can enable automatic login and disable lock screen in the macOS settings. This way, the user will be logged in automatically when the VM starts and won't enter sleep mode.
+
 I personally use Nix flakes to manage the environment, so I can install all the required tools with `nix develop` and run the scripts from there. (The Nix package manager does not support XCode, so you need to install it manually first.)
 
 Additionally, I use GitHub to store my credentials, which allows me to just copy the `.gitconfig` and `.git-credentials` to the user home directory on the VM.
