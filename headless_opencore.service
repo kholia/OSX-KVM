@@ -1,0 +1,12 @@
+[Unit]
+Description=OpenCore VM
+After=network.target
+
+[Service]
+Type=forking
+ExecStart=%repo_path%/headless_boot.sh
+ExecStop=/usr/bin/pkill -f qemu-system-x86_64
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

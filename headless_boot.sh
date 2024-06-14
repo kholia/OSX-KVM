@@ -7,7 +7,7 @@ CPU_SOCKETS="1"
 CPU_CORES="2"
 CPU_THREADS="4"
 
-REPO_PATH="."
+REPO_PATH=$(dirname "$(readlink -f "$0")")
 OVMF_DIR="."
 
 args=(
@@ -42,9 +42,20 @@ args=(
   -device virtio-net-pci,netdev=net0,id=net0,mac=52:54:00:c9:18:27
 
   # Disable the QEMU monitor interface and graphical output
+  # Comment out the following lines if you want to enable conectivity to the VM via VNC
   -monitor none
   -nographic
+
+  # Uncomment the following lines if you want to enable conectivity to the VM via VNC
+  # -monitor stdio
+  # -device vmware-svga
+  # -display none
+  # -vnc 0.0.0.0:1,password=on -k en-us
 )
 
-# Start the QEMU virtual machine in the background and disown the process
-qemu-system-x86_64 "${args[@]}" > /dev/null 2>&1 & disown
+# Create log file for headless boot and clear it if it already exists
+touch "$REPO_PATH/headless_boot_log.txt"
+echo "" > "$REPO_PATH/headless_boot_log.txt"
+
+# Start the QEMU virtual machine and redirect the output to the log file
+qemu-system-x86_64 "${args[@]}" > "$REPO_PATH/headless_boot_log.txt" 2>&1 &

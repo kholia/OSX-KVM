@@ -24,6 +24,13 @@ Complete the macOS setup and install XCode and other GUI-dependent tools.
 
 If you need to install XCode, you'll need a unique serial number. Complete steps 1-5 below and start `./OpenCore-Boot.sh` again to connect to your Apple account, install XCode, and other tools.
 
+```bash
+# Download XCode from [Apple Developer](https://developer.apple.com/download/all/?q=xcode)
+xip -x ~/Downloads/$xcode_version.xip -C /Applications
+
+xcode-select --install
+```
+
 1. Navigate or clone GenSMBIOS repository into workspace:
 
     ```bash
@@ -39,7 +46,7 @@ If you need to install XCode, you'll need a unique serial number. Complete steps
     ```
 
 3. Install/Update MacSerial.
-4. Select `$osx_kvm_path/OpenCore/Boot-NoUI/config.plist` as the configuration file.
+4. Select `$osx_kvm_path/OpenCore/headless/config.plist` as the configuration file.
 5. Generate SMBIOS for `iMacPro1,1`.
 6. Generate UUID.
 
@@ -52,7 +59,7 @@ git submodule update --init --recursive ./resources/OcBinaryData
 cd ./OpenCore
 
 # Generate OpenCore image with NoUI configuration
-rm -f OpenCore.qcow2; sudo ./opencore-image-ng.sh --cfg ./Boot-NoUI/config.plist --img OpenCore.qcow2
+rm -f OpenCore.qcow2; sudo ./opencore-image-ng.sh --cfg ./headless/config.plist --img OpenCore.qcow2
 ```
 
 ### Step 6: Start OpenCore VM with NoUI Configuration
@@ -63,9 +70,9 @@ cd $osx_kvm_path
 # cd ..
 
 # Make the shell script executable
-chmod +x ./OpenCore-Boot-NoUI.sh
+chmod +x ./headless_boot.sh
 
-./OpenCore-Boot-NoUI.sh
+./headless_boot.sh
 ```
 
 ### Step 7: Connect to macOS VM with SSH
@@ -106,3 +113,27 @@ I personally use Nix flakes to manage the environment, so I can install all the 
 Additionally, I use GitHub to store my credentials, which allows me to just copy the `.gitconfig` and `.git-credentials` to the user home directory on the VM.
 
 To debug iOS apps, it's easiest to use XCode Wi-Fi debugging, so you don't need to connect the phone to the VM.
+
+### Install as a Service
+
+To install the VM as a service, you can run the `headless_service_install.sh` script. This script will install the VM as a service that starts on boot.
+
+```bash
+chmod +x ./headless_service_install.sh
+
+./headless_service_install.sh
+```
+
+#### Uninstall Service
+
+Run the commands below to uninstall the service:
+
+```bash
+sudo systemctl stop headless_opencore.service
+
+sudo systemctl disable headless_opencore.service
+
+sudo rm /etc/systemd/system/headless_opencore.service
+
+sudo systemctl daemon-reload
+```

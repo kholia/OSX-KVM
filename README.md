@@ -209,12 +209,7 @@ processors work just fine (even for macOS Sonoma).
 
 ### Headless macOS
 
-- Use the provided [boot-macOS-headless.sh](./boot-macOS-headless.sh) script.
-
-  ```
-  ./boot-macOS-headless.sh
-  ```
-
+You can follow the instructions in the `headless_readme.md` file to run the macOS VM in a headless mode.
 
 ### Setting Expectations Right
 
