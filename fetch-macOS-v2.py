@@ -17,6 +17,7 @@ pylint -> Your code has been rated at -0.08/10 ;(
 
 import argparse
 import binascii
+import glob
 import hashlib
 import json
 import linecache
@@ -469,6 +470,31 @@ def action_guess(args):
     print(f'UNKNOWN: Failed to determine supported models for MLB {mlb}!')
     return None
 
+def update_cpu(inputfile,product):
+   """ set the cpu type in the chosen file for Sonoma """
+   ocscript = inputfile
+   if product == 'sonoma':
+        newtype = "Haswell-noTSX"
+        oldtype = "Penryn"
+   else:
+            newtype = "Penryn"
+            oldtype = "Haswell-noTSX"
+   f = open(ocscript,'r')
+   filedata = f.read()
+   f.close()
+
+   newdata = filedata.replace(oldtype,newtype)
+
+   f = open(ocscript,'w')
+   f.write(newdata)
+   f.close()
+
+def update_scripts(product):
+    """ update the cpu type in supporting scripts for Sonoma """
+    for bash_script in glob.iglob('**/*.sh', recursive=True):
+        update_cpu(bash_script,product)
+    for libvirt_config in glob.iglob('**/*libvirt*.xml', recursive=True):
+        update_cpu(libvirt_config,product)
 
 # https://stackoverflow.com/questions/2280334/shortest-way-of-creating-an-object-with-arbitrary-attributes-in-python
 class gdata:
@@ -558,7 +584,17 @@ def main():
         os_type = "default"
     args = gdata(mlb = product["m"], board_id = product["b"], diagnostics =
             False, os_type = os_type, verbose=False, basename="", outdir=".")
-    action_download(args)
+    update_scripts(product['short'])
+#    if product['short'] == 'sonoma':
+#        with open("OpenCore-Boot.sh", "w") as OCScript:
+#            scriptdata = OCScript.read()
+#            scriptdata = scriptdata.replace('Penryn', 'Haswell-noTSX')
+#        with open('OpenCore-Boot.sh', 'w') as OCScript:
+#            OCScript.write(scriptdata)
+#    else:
+#        with open("Output.txt", "w") as text_file:
+#            text_file.write('DERP')
+    #action_download(args)
 
 
 if __name__ == '__main__':
