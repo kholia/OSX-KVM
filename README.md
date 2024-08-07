@@ -75,7 +75,7 @@ processors work just fine (even for macOS Sonoma).
   ```
   cd ~
 
-  git clone --depth 1 --recursive https://github.com/kholia/OSX-KVM.git
+  git clone --depth 1 --recursive --shallow-submodules https://github.com/kholia/OSX-KVM.git
 
   cd OSX-KVM
   ```
