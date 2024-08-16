@@ -221,6 +221,11 @@ def save_image(url, sess, filename='', directory=''):
     if filename.find('/') >= 0 or filename == '':
         raise RuntimeError('Invalid save path ' + filename)
 
+    path = os.path.join(directory, filename)
+    if os.path.isfile(path):
+        print(f"File {filename} already exists, Skipping...")
+        return os.path.join(directory, os.path.basename(filename))
+    
     print(f'Saving {url} to {directory}/{filename}...')
 
     with open(os.path.join(directory, filename), 'wb') as fh:
