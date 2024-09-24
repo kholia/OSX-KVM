@@ -16,28 +16,29 @@ pylint -> Your code has been rated at -0.08/10 ;(
 """
 
 import argparse
-import binascii
 import hashlib
 import json
 import linecache
 import os
 import random
 import struct
+import string
 import sys
 
 try:
     from urllib.request import Request, HTTPError, urlopen
     from urllib.parse import urlparse
 except ImportError:
-    from urllib2 import Request, HTTPError, urlopen
-    from urlparse import urlparse
+    print('ERROR: Python 2 is not supported, please use Python 3')
+    sys.exit(1)
 
 SELF_DIR = os.path.dirname(os.path.realpath(__file__))
 
-RECENT_MAC = 'Mac-7BA5B2D9E42DDD94'
+# MacPro7,1
+RECENT_MAC = 'Mac-27AD2F918AE68F61'
 MLB_ZERO = '00000000000000000'
-MLB_VALID = 'C02749200YGJ803AX'
-MLB_PRODUCT = '00000000000J80300'
+MLB_VALID = 'F5K105303J9K3F71M'
+MLB_PRODUCT = 'F5K00000000K3F700'
 
 TYPE_SID = 16
 TYPE_K = 64
@@ -52,12 +53,12 @@ INFO_SIGN_HASH = 'CH'
 INFO_SIGN_SESS = 'CT'
 INFO_REQURED = [INFO_PRODUCT, INFO_IMAGE_LINK, INFO_IMAGE_HASH, INFO_IMAGE_SESS, INFO_SIGN_LINK, INFO_SIGN_HASH, INFO_SIGN_SESS]
 
+# Use -2 for better resize stability on Windows
+TERMINAL_MARGIN = 2
 
 def run_query(url, headers, post=None, raw=False):
     if post is not None:
-        data = '\n'.join([entry + '=' + post[entry] for entry in post])
-        if sys.version_info[0] >= 3:
-            data = data.encode('utf-8')
+        data = '\n'.join(entry + '=' + post[entry] for entry in post).encode()
     else:
         data = None
     req = Request(url=url, headers=headers, data=data)
@@ -72,12 +73,11 @@ def run_query(url, headers, post=None, raw=False):
 
 
 def generate_id(id_type, id_value=None):
-    valid_chars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F']
-    return ''.join(random.choice(valid_chars) for i in range(id_type)) if not id_value else id_value
+    return id_value or ''.join(random.choices(string.hexdigits[:16].upper(), k=id_type))
 
 
 def product_mlb(mlb):
-    return '00000000000' + mlb[11] + mlb[12] + mlb[13] + mlb[14] + '00'
+    return '00000000000' + mlb[11:15] + '00'
 
 
 def mlb_from_eeee(eeee):
@@ -86,13 +86,6 @@ def mlb_from_eeee(eeee):
         sys.exit(1)
 
     return f'00000000000{eeee}00'
-
-
-def int_from_unsigned_bytes(byte_list, byteorder):
-    if byteorder == 'little':
-        byte_list = byte_list[::-1]
-    encoded = binascii.hexlify(byte_list)
-    return int(encoded, 16)
 
 
 # zhangyoufu https://gist.github.com/MCJack123/943eaca762730ca4b7ae460b731b68e7#gistcomment-3061078 2021-10-08
@@ -128,8 +121,8 @@ def verify_chunklist(cnkpath):
         if signature_method == 1:
             data = f.read(256)
             assert len(data) == 256
-            signature = int_from_unsigned_bytes(data, 'little')
-            plaintext = 0x1ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff003031300d0609608648016503040201050004200000000000000000000000000000000000000000000000000000000000000000 | int_from_unsigned_bytes(digest, 'big')
+            signature = int.from_bytes(data, 'little')
+            plaintext = int(f'0x1{"f"*404}003031300d060960864801650304020105000420{"0"*64}', 16) | int.from_bytes(digest, 'big')
             assert pow(signature, 0x10001, Apple_EFI_ROM_public_key_1) == plaintext
         elif signature_method == 2:
             data = f.read(32)
@@ -194,7 +187,9 @@ def get_image_info(session, bid, mlb=MLB_ZERO, diag=False, os_type='default', ci
         try:
             key, value = line.split(': ')
             info[key] = value
-        except Exception:
+        except KeyError:
+            continue
+        except ValueError:
             continue
 
     for k in INFO_REQURED:
@@ -214,34 +209,47 @@ def save_image(url, sess, filename='', directory=''):
     }
 
     if not os.path.exists(directory):
-        os.mkdir(directory)
+        os.makedirs(directory)
 
     if filename == '':
         filename = os.path.basename(purl.path)
-    if filename.find('/') >= 0 or filename == '':
+    if filename.find(os.sep) >= 0 or filename == '':
         raise RuntimeError('Invalid save path ' + filename)
 
-    print(f'Saving {url} to {directory}/{filename}...')
+    print(f'Saving {url} to {directory}{os.sep}{filename}...')
 
     with open(os.path.join(directory, filename), 'wb') as fh:
         response = run_query(url, headers, raw=True)
-        total_size = int(response.headers['content-length']) / float(2 ** 20)
-        # print(total_size)
-        if total_size < 1:
-            total_size = response.headers['content-length']
-            print("Note: The total download size is %s bytes" % total_size)
-        else:
-            print("Note: The total download size is %0.2f MB" % total_size)
+        headers = dict(response.headers)
+        totalsize = -1
+        for header in headers:
+            if header.lower() == 'content-length':
+                totalsize = int(headers[header])
+                break
         size = 0
+        oldterminalsize = 0
         while True:
             chunk = response.read(2**20)
             if not chunk:
                 break
             fh.write(chunk)
             size += len(chunk)
-            print(f'\r{size / (2**20)} MBs downloaded...', end='')
+            terminalsize = max(os.get_terminal_size().columns - TERMINAL_MARGIN, 0)
+            if oldterminalsize != terminalsize:
+                print(f'\r{"":<{terminalsize}}', end='')
+                oldterminalsize = terminalsize
+            if totalsize > 0:
+                progress = size / totalsize
+                barwidth = terminalsize // 3
+                print(f'\r{size / (2**20):.1f}/{totalsize / (2**20):.1f} MB ', end='')
+                if terminalsize > 55:
+                    print(f'|{"=" * int(barwidth * progress):<{barwidth}}|', end='')
+                print(f' {progress*100:.1f}% downloaded', end='')
+            else:
+                # Fallback if Content-Length isn't available
+                print(f'\r{size / (2**20)} MB downloaded...', end='')
             sys.stdout.flush()
-        print('\rDownload complete!\t\t\t\t\t')
+        print('\nDownload complete!')
 
     return os.path.join(directory, os.path.basename(filename))
 
@@ -250,10 +258,9 @@ def verify_image(dmgpath, cnkpath):
     print('Verifying image with chunklist...')
 
     with open(dmgpath, 'rb') as dmgf:
-        cnkcount = 0
-        for cnksize, cnkhash in verify_chunklist(cnkpath):
-            cnkcount += 1
-            print(f'\rChunk {cnkcount} ({cnksize} bytes)', end='')
+        for cnkcount, (cnksize, cnkhash) in enumerate(verify_chunklist(cnkpath), 1):
+            terminalsize = max(os.get_terminal_size().columns - TERMINAL_MARGIN, 0)
+            print(f'\r{f"Chunk {cnkcount} ({cnksize} bytes)":<{terminalsize}}', end='')
             sys.stdout.flush()
             cnk = dmgf.read(cnksize)
             if len(cnk) != cnksize:
@@ -262,7 +269,7 @@ def verify_image(dmgpath, cnkpath):
                 raise RuntimeError(f'Invalid chunk {cnkcount}: hash mismatch')
         if dmgf.read(1) != b'':
             raise RuntimeError('Invalid image: larger than chunklist')
-        print('\rImage verification complete!\t\t\t\t\t')
+        print('\nImage verification complete!')
 
 
 def action_download(args):
@@ -298,10 +305,10 @@ def action_download(args):
     if args.verbose:
         print(info)
     print(f'Downloading {info[INFO_PRODUCT]}...')
-    dmgname = '' if args.basename == '' else args.basename + '.dmg'
-    dmgpath = save_image(info[INFO_IMAGE_LINK], info[INFO_IMAGE_SESS], dmgname, args.outdir)
     cnkname = '' if args.basename == '' else args.basename + '.chunklist'
     cnkpath = save_image(info[INFO_SIGN_LINK], info[INFO_SIGN_SESS], cnkname, args.outdir)
+    dmgname = '' if args.basename == '' else args.basename + '.dmg'
+    dmgpath = save_image(info[INFO_IMAGE_LINK], info[INFO_IMAGE_SESS], dmgname, args.outdir)
     try:
         verify_image(dmgpath, cnkpath)
         return 0
@@ -374,7 +381,7 @@ def action_selfcheck(args):
     if product_default[INFO_PRODUCT] != valid_default[INFO_PRODUCT]:
         # Product-only MLB can give the same value with valid default MLB.
         # This is not an error for all models, but for our chosen code it is.
-        print('ERROR: Valid and product MLB give mismatch, got {product_default[INFO_PRODUCT]} and {valid_default[INFO_PRODUCT]}')
+        print(f'ERROR: Valid and product MLB give mismatch, got {product_default[INFO_PRODUCT]} and {valid_default[INFO_PRODUCT]}')
         return 1
 
     print('SUCCESS: Found no discrepancies with MLB validation algorithm!')
@@ -523,6 +530,7 @@ def main():
 
     # No action specified, so present a download menu instead
     # https://github.com/acidanthera/OpenCorePkg/blob/master/Utilities/macrecovery/boards.json
+    # https://github.com/corpnewt/gibMacOS
     products = [
             {"name": "High Sierra (10.13)", "b": "Mac-7BA5B2D9E42DDD94", "m": "00000000000J80300", "short": "high-sierra"},
             {"name": "Mojave (10.14)", "b": "Mac-7BA5B2DFE22DDD8C", "m": "00000000000KXPG00", "short": "mojave"},
@@ -530,7 +538,8 @@ def main():
             {"name": "Big Sur (11.7)", "b": "Mac-2BD1B31983FE1663", "m": "00000000000000000", "short": "big-sur"},
             {"name": "Monterey (12.6)", "b": "Mac-B809C3757DA9BB8D", "m": "00000000000000000", "os_type": "latest", "short": "monterey"},
             {"name": "Ventura (13) - RECOMMENDED", "b": "Mac-4B682C642B45593E", "m": "00000000000000000", "os_type": "latest", "short": "ventura"},
-            {"name": "Sonoma (14) ", "b": "Mac-A61BADE1FDAD7B05", "m": "00000000000000000", "short": "sonoma"}
+            {"name": "Sonoma (14) ", "b": "Mac-827FAC58A8FDFA22", "m": "00000000000000000", "short": "sonoma"},
+            {"name": "Sequoia (15) ", "b": "Mac-7BA5B2D9E42DDD94", "m": "00000000000000000", "short": "Sequoia", "os_type": "latest"},
     ]
     for index, product in enumerate(products):
         name = product["name"]
