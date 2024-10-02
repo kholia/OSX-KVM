@@ -234,7 +234,10 @@ def save_image(url, sess, filename='', directory=''):
                 break
             fh.write(chunk)
             size += len(chunk)
-            terminalsize = max(os.get_terminal_size().columns - TERMINAL_MARGIN, 0)
+            try:
+                terminalsize = max(os.get_terminal_size().columns - TERMINAL_MARGIN, 0)
+            except OSError:
+                terminalsize = 80
             if oldterminalsize != terminalsize:
                 print(f'\r{"":<{terminalsize}}', end='')
                 oldterminalsize = terminalsize
