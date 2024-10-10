@@ -508,7 +508,7 @@ def main():
                         help=f'use specified os type, defaults to default {MLB_ZERO}')
     parser.add_argument('-diag', '--diagnostics', action='store_true', help='download diagnostics image')
     parser.add_argument('-s', '--shortname', type=str, default='',
-                        help='available options: high-sierra, mojave, catalina, big-sur, monterey, ventura')
+                        help='available options: high-sierra, mojave, catalina, big-sur, monterey, ventura, sonoma, sequoia')
     parser.add_argument('-v', '--verbose', action='store_true', help='print debug information')
     parser.add_argument('-db', '--board-db', type=str, default=os.path.join(SELF_DIR, 'boards.json'),
                         help='use custom board list for checking, defaults to boards.json')
@@ -542,7 +542,7 @@ def main():
             {"name": "Monterey (12.6)", "b": "Mac-B809C3757DA9BB8D", "m": "00000000000000000", "os_type": "latest", "short": "monterey"},
             {"name": "Ventura (13) - RECOMMENDED", "b": "Mac-4B682C642B45593E", "m": "00000000000000000", "os_type": "latest", "short": "ventura"},
             {"name": "Sonoma (14) ", "b": "Mac-827FAC58A8FDFA22", "m": "00000000000000000", "short": "sonoma"},
-            {"name": "Sequoia (15) ", "b": "Mac-7BA5B2D9E42DDD94", "m": "00000000000000000", "short": "Sequoia", "os_type": "latest"},
+            {"name": "Sequoia (15) ", "b": "Mac-7BA5B2D9E42DDD94", "m": "00000000000000000", "short": "sequoia", "os_type": "latest"},
     ]
     for index, product in enumerate(products):
         name = product["name"]
