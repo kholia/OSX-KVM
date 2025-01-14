@@ -31,6 +31,8 @@ CPU_THREADS="4"
 REPO_PATH="."
 OVMF_DIR="."
 
+MOUNT_INSTALL_MEDIA=${MOUNT_INSTALL_MEDIA:-1}
+
 # shellcheck disable=SC2054
 args=(
   -enable-kvm -m "$ALLOCATED_RAM" -cpu Penryn,kvm=on,vendor=GenuineIntel,+invtsc,vmware-cpuid-freq=on,"$MY_OPTIONS"
@@ -54,8 +56,6 @@ args=(
   -device ich9-ahci,id=sata
   -drive id=OpenCoreBoot,if=none,snapshot=on,format=qcow2,file="$REPO_PATH/OpenCore/OpenCore.qcow2"
   -device ide-hd,bus=sata.2,drive=OpenCoreBoot
-  -device ide-hd,bus=sata.3,drive=InstallMedia
-  -drive id=InstallMedia,if=none,file="$REPO_PATH/BaseSystem.img",format=raw
   -drive id=MacHDD,if=none,file="$REPO_PATH/mac_hdd_ng.img",format=qcow2
   -device ide-hd,bus=sata.4,drive=MacHDD
   # -netdev tap,id=net0,ifname=tap0,script=no,downscript=no -device virtio-net-pci,netdev=net0,id=net0,mac=52:54:00:c9:18:27
@@ -65,5 +65,12 @@ args=(
   -device vmware-svga
   # -spice port=5900,addr=127.0.0.1,disable-ticketing=on
 )
+
+if [[ "${MOUNT_INSTALL_MEDIA}" == 1 ]]; then
+args+=(
+  -device ide-hd,bus=sata.3,drive=InstallMedia
+  -drive id=InstallMedia,if=none,file="$REPO_PATH/BaseSystem.img",format=raw
+)
+fi
 
 qemu-system-x86_64 "${args[@]}"
