@@ -540,8 +540,8 @@ def main():
             {"name": "Catalina (10.15)", "b": "Mac-00BE6ED71E35EB86", "m": "00000000000000000", "short": "catalina"},
             {"name": "Big Sur (11.7)", "b": "Mac-2BD1B31983FE1663", "m": "00000000000000000", "short": "big-sur"},
             {"name": "Monterey (12.6)", "b": "Mac-B809C3757DA9BB8D", "m": "00000000000000000", "os_type": "latest", "short": "monterey"},
-            {"name": "Ventura (13) - RECOMMENDED", "b": "Mac-4B682C642B45593E", "m": "00000000000000000", "os_type": "latest", "short": "ventura"},
-            {"name": "Sonoma (14) ", "b": "Mac-827FAC58A8FDFA22", "m": "00000000000000000", "short": "sonoma"},
+            {"name": "Ventura (13)", "b": "Mac-4B682C642B45593E", "m": "00000000000000000", "os_type": "latest", "short": "ventura"},
+            {"name": "Sonoma (14)  - RECOMMENDED", "b": "Mac-827FAC58A8FDFA22", "m": "00000000000000000", "short": "sonoma"},
             {"name": "Sequoia (15) ", "b": "Mac-7BA5B2D9E42DDD94", "m": "00000000000000000", "short": "sequoia", "os_type": "latest"},
     ]
     for index, product in enumerate(products):
