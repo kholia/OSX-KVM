@@ -70,7 +70,7 @@
     <disk type='file' device='disk'>
       <driver name='qemu' type='qcow2' cache='writeback' io='threads'/>
       <source file='/home/CHANGEME/OSX-KVM/mac_hdd_ng.img'/>
-      <target dev='sdb' bus='sata'/>
+      <target dev='sdb' bus='sata' rotation_rate='1'/>
       <boot order='1'/>
       <address type='drive' controller='0' bus='0' target='0' unit='1'/>
     </disk>

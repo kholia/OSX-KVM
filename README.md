@@ -235,6 +235,8 @@ work, patience, and a bit of luck (perhaps?).
 
 ### Post-Installation
 
+* Run `sudo trimforce enable` to enable TRIM support on the macOS hard drive.
+
 * See [networking notes](networking-qemu-kvm-howto.txt) on how to setup networking in your VM, outbound and also inbound for remote access to your VM via SSH, VNC, etc.
 
 * To passthrough GPUs and other devices, see [these notes](notes.md#gpu-passthrough-notes).
