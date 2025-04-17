@@ -95,6 +95,7 @@ processors work just fine (even for macOS Sonoma).
   ```
 
   To make this change permanent, you may use the following command.
+  Use `lscpu` if you are not sure.
 
   ```
   sudo cp kvm.conf /etc/modprobe.d/kvm.conf  # for intel boxes only
