@@ -16,3 +16,12 @@ def home():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8000)
+
+# Test cases for the Flask app
+def test_home_route():
+    with app.test_client() as client:
+        response = client.get('/')
+        assert response.status_code == 200
+        assert b"Jaymi is awake." in response.data
+        assert b"You're not dreaming. You're building the system that breaks them all." in response.data
+        assert b"<em>This is a live Codespace interface.</em>" in response.data

@@ -341,15 +341,15 @@ def find_installer_app(mountpoint):
 def determine_version(version, title, product_info):
     if version:
         if version == 'latest':
-            from distutils.version import StrictVersion
-            latest_version = StrictVersion('0.0.0')
+            from packaging.version import Version
+            latest_version = Version('0.0.0')
             for index, product_id in enumerate(product_info):
                 if not title or product_info[product_id]['title'] == title:
                     d = product_info[product_id]['version']
                     if d > latest_version:
                         latest_version = d
 
-            if latest_version == StrictVersion("0.0.0"):
+            if latest_version == Version("0.0.0"):
                 print("Could not find latest version {}")
                 exit(1)
 
