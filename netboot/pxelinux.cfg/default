@@ -1,0 +1,4 @@
+DEFAULT macOS
+LABEL macOS
+  KERNEL vmlinuz
+  APPEND initrd=initrd.img

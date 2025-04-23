@@ -67,6 +67,8 @@ args=(
   -device vmware-svga
   -display none
   -vnc 0.0.0.0:1,password=on -k en-us
+  -netdev user,id=pxenet0,tftp=netboot/tftpboot,bootfile=pxelinux.0
+  -device e1000,netdev=pxenet0
 )
 
 qemu-system-x86_64 "${args[@]}"
