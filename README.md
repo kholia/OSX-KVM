@@ -158,7 +158,11 @@ processors work just fine (even for macOS Sonoma).
   qemu-img create -f qcow2 mac_hdd_ng.img 256G
   ```
 
-  NOTE: Create this HDD image file on a fast SSD/NVMe disk for best results.
+> [!NOTE]
+> Create this HDD image file on a fast SSD/NVMe disk for best results.
+> 
+> To enable TRIM support inside macOS, you must run: `sudo trimforce enable` from
+> _inside the VM_ after it boots.
 
 * Now you are ready to install macOS 🚀
 
@@ -236,6 +240,10 @@ work, patience, and a bit of luck (perhaps?).
 ### Post-Installation
 
 * Run `sudo trimforce enable` to enable TRIM support on the macOS hard drive.
+  - NOTE: This is important so the `qcow2` image remains sparse, and does not
+    keep growing in size, even after deleting files to free space in the VM.
+  - This is supported by QEMU's `qcow2` image format block driver through the
+    `discard=unmap,detect-zeroes=unmap` parameters.
 
 * See [networking notes](networking-qemu-kvm-howto.txt) on how to setup networking in your VM, outbound and also inbound for remote access to your VM via SSH, VNC, etc.
 
