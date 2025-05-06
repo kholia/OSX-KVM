@@ -61,14 +61,14 @@
   <devices>
     <emulator>/usr/bin/qemu-system-x86_64</emulator>
     <disk type='file' device='disk'>
-      <driver name='qemu' type='qcow2' cache='writeback' io='threads'/>
+      <driver name='qemu' type='qcow2' cache='writeback' io='threads' discard='unmap' detect_zeroes='unmap'/>
       <source file='/home/CHANGEME/OSX-KVM/OpenCore/OpenCore.qcow2'/>
-      <target dev='sda' bus='sata'/>
+      <target dev='sda' bus='sata' rotation_rate='1'/>
       <boot order='2'/>
       <address type='drive' controller='0' bus='0' target='0' unit='0'/>
     </disk>
     <disk type='file' device='disk'>
-      <driver name='qemu' type='qcow2' cache='writeback' io='threads'/>
+      <driver name='qemu' type='qcow2' cache='writeback' io='threads' discard='unmap' detect_zeroes='unmap'/>
       <source file='/home/CHANGEME/OSX-KVM/mac_hdd_ng.img'/>
       <target dev='sdb' bus='sata' rotation_rate='1'/>
       <boot order='1'/>
