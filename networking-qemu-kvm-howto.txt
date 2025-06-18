@@ -155,4 +155,3 @@ Use the following network device in scripts:
 -netdev bridge,id=net0,br=br0,"helper=/usr/lib/qemu/qemu-bridge-helper" -device virtio-net-pci,netdev=net0,id=net0,mac=00:16:CB:00:11:34
 
 Also see https://dortania.github.io/OpenCore-Post-Install/universal/iservices.html to tweak the config.plist file.
- 
