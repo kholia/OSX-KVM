@@ -3,13 +3,13 @@
 **To install OSX-KVM and set up macOS in a VM, run**:
 
 ```bash
-sudo curl -fsSL https://raw.githubusercontent.com/kholia/OSX-KVM/master/install-macos-kvm.sh | bash
+sudo curl -fsSL https://raw.githubusercontent.com/kholia/OSX-KVM/master/wget.install.script | bash
 ```
 
 **Or download and run the installer script manually**:
 
 ```bash
-sudo wget https://raw.githubusercontent.com/kholia/OSX-KVM/master/install-macos-kvm.sh
+sudo wget https://raw.githubusercontent.com/kholia/OSX-KVM/master/wget.install.script | bash
 cd ~/OSX-KVM
 sudo bash install-macos-kvm.sh
 cd ~/OSX-KVM/OpenCore
