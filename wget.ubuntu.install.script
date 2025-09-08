@@ -118,7 +118,7 @@ cd "$INSTALL_DIR"
 # Download macOS recovery image (automatically choose Sonoma - option 7)
 echo "Downloading macOS recovery image (Sonoma - Recommended)..."
 if [ -f "fetch-macOS-v2.py" ]; then
-    echo "7" | python3 fetch-macOS-v2.py
+    ./fetch-macOS-v2.py
 else
     echo "Warning: fetch-macOS-v2.py not found, attempting manual download..."
     # Fallback download URLs for macOS recovery images
@@ -217,7 +217,7 @@ read -p "Would you like to start the macOS VM now? (y/n): " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo "Starting macOS VM..."
-    sudo ./OpenCore-Boot.sh
+    ./OpenCore-Boot.sh
 else
     echo "You can start the VM later by running:"
     echo "  cd $INSTALL_DIR && sudo ./OpenCore-Boot.sh"
