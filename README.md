@@ -10,9 +10,9 @@ sudo curl -fsSL https://raw.githubusercontent.com/kholia/OSX-KVM/master/install-
 
 ```bash
 sudo wget https://raw.githubusercontent.com/kholia/OSX-KVM/master/install-macos-kvm.sh
-cd ~/kholia/OSX-KVM
+cd ~/OSX-KVM
 sudo bash install-macos-kvm.sh
-cd ~/kholia/OSX-KVM/OpenCore
+cd ~/OSX-KVM/OpenCore
 ./OpenCore-boot.sh
 ```
 #### After Boot open KVM and Creat a new VM, navigate to your new "drive" and MacOS in KVM
