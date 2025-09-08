@@ -1,7 +1,7 @@
 *.dist
 *.dmg
-*.img
 *.iso
+*.img
 *.pkg
 *.sha256sum
 *.smd

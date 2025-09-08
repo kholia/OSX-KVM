@@ -1,0 +1,213 @@
+k#!/usr/bin/bash
+
+# macOS KVM Installation Script with wget/curl support
+# 
+# Quick Install (one-liner):
+#   curl -fsSL https://raw.githubusercontent.com/yourusername/OSX-KVM/master/install-macos-kvm.sh | bash
+#
+# Usage: ./install-macos-kvm.sh [OPTIONS]
+# Options:
+#   --use-curl    Use curl instead of wget for downloads
+#   --help        Show this help message
+
+set -e  # Exit on any error
+
+# Default settings
+USE_CURL=false
+INSTALL_DIR="$HOME/OSX-KVM"
+
+# Function to display help
+show_help() {
+    echo "macOS KVM Installation Script"
+    echo ""
+    echo "Usage: $0 [OPTIONS]"
+    echo ""
+    echo "Options:"
+    echo "  --use-curl    Use curl instead of wget for downloads"
+    echo "  --help        Show this help message"
+    echo ""
+    echo "This script will:"
+    echo "  1. Clone the OSX-KVM repository"
+    echo "  2. Download macOS recovery image"
+    echo "  3. Convert BaseSystem.dmg to raw format"
+    echo "  4. Create macOS disk image (100GB)"
+    echo "  5. Set proper permissions for libvirt"
+    echo "  6. Launch macOS VM"
+}
+
+# Function to check if command exists
+command_exists() {
+    command -v "$1" >/dev/null 2>&1
+}
+
+# Function to download with fallback
+download_file() {
+    local url="$1"
+    local output="$2"
+    
+    echo "Downloading: $url"
+    
+    if [ "$USE_CURL" = true ] && command_exists curl; then
+        echo "Using curl for download..."
+        curl -L -o "$output" "$url"
+    elif command_exists wget; then
+        echo "Using wget for download..."
+        wget -O "$output" "$url"
+    elif command_exists curl; then
+        echo "wget not found, falling back to curl..."
+        curl -L -o "$output" "$url"
+    else
+        echo "Error: Neither wget nor curl found. Please install one of them."
+        exit 1
+    fi
+}
+
+# Parse command line arguments
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --use-curl)
+            USE_CURL=true
+            shift
+            ;;
+        --help)
+            show_help
+            exit 0
+            ;;
+        *)
+            echo "Unknown option: $1"
+            echo "Use --help for usage information"
+            exit 1
+            ;;
+    esac
+done
+
+# Check for required commands
+echo "Checking system requirements..."
+
+if ! command_exists git; then
+    echo "Error: git is required but not installed."
+    exit 1
+fi
+
+if ! command_exists qemu-img; then
+    echo "Error: qemu-img is required but not installed."
+    echo "Please install qemu-utils or qemu-system package"
+    exit 1
+fi
+
+# Check for download capability
+if ! command_exists wget && ! command_exists curl; then
+    echo "Error: Neither wget nor curl found."
+    echo "Please install wget or curl to continue."
+    exit 1
+fi
+
+echo "✓ System requirements check passed"
+
+# Create installation directory if it doesn't exist
+if [ -d "$INSTALL_DIR" ]; then
+    echo "Warning: $INSTALL_DIR already exists. Backing up to ${INSTALL_DIR}.backup"
+    mv "$INSTALL_DIR" "${INSTALL_DIR}.backup.$(date +%Y%m%d_%H%M%S)"
+fi
+
+# Clone the repository
+echo "Cloning OSX-KVM repository..."
+git clone https://github.com/kholia/OSX-KVM.git "$INSTALL_DIR"
+cd "$INSTALL_DIR"
+
+# Download macOS recovery image
+echo "Downloading macOS recovery image..."
+if [ -f "fetch-macOS-v2.py" ]; then
+    python3 fetch-macOS-v2.py
+else
+    echo "Warning: fetch-macOS-v2.py not found, attempting manual download..."
+    # Fallback download URLs for macOS recovery images
+    RECOVERY_URL="https://updates.cdn-apple.com/2019FallFCS/fullrestores/061-44998/B5A3E286-1C4A-11EA-99D4-864D6786AB92/BaseSystem.dmg"
+    download_file "$RECOVERY_URL" "BaseSystem.dmg"
+fi
+
+# Convert BaseSystem.dmg to raw format
+echo "Converting BaseSystem.dmg to raw format..."
+if [ -f "BaseSystem.dmg" ]; then
+    qemu-img convert BaseSystem.dmg -O raw BaseSystem.img
+    echo "✓ BaseSystem.img created successfully"
+else
+    echo "Error: BaseSystem.dmg not found"
+    exit 1
+fi
+
+# Create macOS disk image (100GB)
+echo "Creating macOS disk image (100GB)..."
+qemu-img create -f qcow2 macOS.qcow2 100G
+echo "✓ macOS.qcow2 created successfully"
+
+# Create symlink for script compatibility
+echo "Creating compatibility symlink..."
+ln -sf macOS.qcow2 mac_hdd_ng.img
+
+# Fix permissions for libvirt
+echo "Setting up permissions for libvirt..."
+sudo chown libvirt-qemu:libvirt-qemu macOS.qcow2 2>/dev/null || {
+    echo "Warning: Could not change ownership to libvirt-qemu. You may need to run this manually:"
+    echo "  sudo chown libvirt-qemu:libvirt-qemu $INSTALL_DIR/macOS.qcow2"
+}
+
+sudo chmod 664 macOS.qcow2 2>/dev/null || {
+    echo "Warning: Could not change permissions. You may need to run this manually:"
+    echo "  sudo chmod 664 $INSTALL_DIR/macOS.qcow2"
+}
+
+# Fix directory permissions
+sudo chmod 755 "$INSTALL_DIR" 2>/dev/null || {
+    echo "Warning: Could not change directory permissions. You may need to run this manually:"
+    echo "  sudo chmod 755 $INSTALL_DIR"
+}
+
+# Make scripts executable
+echo "Making scripts executable..."
+chmod +x *.sh
+
+# Check if OpenCore exists and build if necessary
+if [ ! -f "OpenCore/OpenCore.qcow2" ]; then
+    echo "OpenCore not found, attempting to build..."
+    cd OpenCore
+    if [ -f "Makefile" ]; then
+        make
+    else
+        echo "Warning: Could not build OpenCore. You may need to build it manually."
+    fi
+    cd ..
+fi
+
+echo ""
+echo "🎉 Installation completed successfully!"
+echo ""
+echo "Next steps:"
+echo "1. To start the macOS VM using the script:"
+echo "   cd $INSTALL_DIR && sudo ./OpenCore-Boot.sh"
+echo ""
+echo "2. To use with virt-manager:"
+echo "   - Import the provided libvirt XML configuration"
+echo "   - Start the VM through virt-manager interface"
+echo ""
+echo "3. During installation:"
+echo "   - Select 'macOS Base System' from OpenCore"
+echo "   - Use Disk Utility to format the 100GB drive"
+echo "   - Install macOS to the formatted drive"
+echo ""
+echo "Files created:"
+echo "  - BaseSystem.img (macOS installer)"
+echo "  - macOS.qcow2 (100GB virtual disk)"
+echo "  - mac_hdd_ng.img -> macOS.qcow2 (compatibility symlink)"
+echo ""
+
+# Ask if user wants to start the VM now
+read -p "Would you like to start the macOS VM now? (y/n): " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    echo "Starting macOS VM..."
+    sudo ./OpenCore-Boot.sh
+else
+    echo "You can start the VM later by running:"
+    echo "  cd $INSTALL_DIR && sudo ./OpenCore-Boot.sh"
+fi
