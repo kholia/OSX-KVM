@@ -11,11 +11,6 @@ sudo curl -fsSL https://raw.githubusercontent.com/kholia/OSX-KVM/master/wget.ubu
 sudo wget https://raw.githubusercontent.com/kholia/OSX-KVM/master/wget.ubuntu.install.script -O wget.install.script
 ```
 
-#### macOS Recovery and Installation
-- Once OpenCore boots, you can download the macOS installer:
-```
-$ ./fetch-macOS-v2.py
-```
 Choose from:
 ```shell
 1. High Sierra (10.13)  
@@ -48,6 +43,12 @@ Select a product to download (1-8): 6
 - Boot the VM and macOS should start with OpenCore managing the EFI environment.  
 - Optionally, you can keep `fetch-macOS-v2.py` handy to upgrade or reinstall newer macOS versions.
 
+#### macOS Recovery and Installation
+- Once OpenCore boots, you can download the macOS installer:
+```
+$ ./fetch-macOS-v2.py
+```
+
 ---
 
 ### Fedora 38+ Quick Install
@@ -63,11 +64,6 @@ sudo curl -fsSL https://raw.githubusercontent.com/kholia/OSX-KVM/master/wget.fed
 sudo wget https://raw.githubusercontent.com/kholia/OSX-KVM/master/wget.fedora.install.script -O wget.fedora.install.script
 ```
 
-#### macOS Recovery and Installation
-- Once OpenCore boots, you can download the macOS installer using:
-```
-$ ./fetch-macOS-v2.py
-```
 Choose from:
 ```
 1. High Sierra (10.13)  
@@ -99,6 +95,12 @@ Select a product to download (1-8): 6
 
 - Boot the VM; OpenCore handles the EFI environment and macOS should load.  
 - Keep `fetch-macOS-v2.py` available for future upgrades or reinstallations.  
+
+#### macOS Recovery and Installation
+- Once OpenCore boots, you can download the macOS installer using:
+```
+$ ./fetch-macOS-v2.py
+```
 
 ---
 
