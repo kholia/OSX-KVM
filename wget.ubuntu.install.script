@@ -10,8 +10,6 @@
 #   --use-curl    Use curl instead of wget for downloads
 #   --help        Show this help message
 
-set -e  # Exit on any error
-
 # Default settings
 USE_CURL=false
 INSTALL_DIR="$HOME/OSX-KVM"
@@ -112,7 +110,7 @@ fi
 
 # Clone the repository
 echo "Cloning OSX-KVM repository..."
-git clone https://github.com/kholia/OSX-KVM.git "$INSTALL_DIR"
+git clone https://github.com/statikfintechllc/OSX-KVM.git "$INSTALL_DIR"
 cd "$INSTALL_DIR"
 
 sudo apt-get install qemu-system uml-utilities virt-manager git \
