@@ -1,17 +1,21 @@
-## Quick Install
+### Quick Install
 
-To install OSX-KVM and set up macOS in a VM, run:
+**To install OSX-KVM and set up macOS in a VM, run**:
 
 ```bash
 sudo curl -fsSL https://raw.githubusercontent.com/kholia/OSX-KVM/master/install-macos-kvm.sh | bash
 ```
 
-Or download and run the installer script manually:
+**Or download and run the installer script manually**:
 
 ```bash
 sudo wget https://raw.githubusercontent.com/kholia/OSX-KVM/master/install-macos-kvm.sh
+cd ~/kholia/OSX-KVM
 sudo bash install-macos-kvm.sh
+cd ~/kholia/OSX-KVM/OpenCore
+./OpenCore-boot.sh
 ```
+#### After Boot open KVM and Creat a new VM, navigate to your new "drive" and MacOS in KVM
 
 ### Note
 
