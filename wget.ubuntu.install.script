@@ -10,8 +10,10 @@
 #   --use-curl    Use curl instead of wget for downloads
 #   --help        Show this help message
 
+set -e  # Exit on any error
+
 # Default settings
-USE_CURL=false
+USE_CURL=true
 INSTALL_DIR="$HOME/OSX-KVM"
 
 # Function to display help
@@ -110,8 +112,19 @@ fi
 
 # Clone the repository
 echo "Cloning OSX-KVM repository..."
-git clone https://github.com/statikfintechllc/OSX-KVM.git "$INSTALL_DIR"
+git clone https://github.com/kholia/OSX-KVM.git "$INSTALL_DIR"
 cd "$INSTALL_DIR"
+
+# Download macOS recovery image (automatically choose Sonoma - option 7)
+echo "Downloading macOS recovery image (Sonoma - Recommended)..."
+if [ -f "fetch-macOS-v2.py" ]; then
+    echo "7" | python3 fetch-macOS-v2.py
+else
+    echo "Warning: fetch-macOS-v2.py not found, attempting manual download..."
+    # Fallback download URLs for macOS recovery images
+    RECOVERY_URL="https://updates.cdn-apple.com/2019FallFCS/fullrestores/061-44998/B5A3E286-1C4A-11EA-99D4-864D6786AB92/BaseSystem.dmg"
+    download_file "$RECOVERY_URL" "BaseSystem.dmg"
+fi
 
 sudo apt-get install qemu-system uml-utilities virt-manager git \
     wget libguestfs-tools p7zip-full make dmg2img tesseract-ocr \
@@ -124,17 +137,6 @@ sudo usermod -aG kvm $(whoami)
 sudo usermod -aG libvirt $(whoami)
 sudo usermod -aG input $(whoami)
 
-# Download macOS recovery image
-echo "Downloading macOS recovery image..."
-if [ -f "fetch-macOS-v2.py" ]; then
-    python3 fetch-macOS-v2.py
-else
-    echo "Warning: fetch-macOS-v2.py not found, attempting manual download..."
-    # Fallback download URLs for macOS recovery images
-    RECOVERY_URL="https://updates.cdn-apple.com/2019FallFCS/fullrestores/061-44998/B5A3E286-1C4A-11EA-99D4-864D6786AB92/BaseSystem.dmg"
-    download_file "$RECOVERY_URL" "BaseSystem.dmg"
-fi
-
 # Convert BaseSystem.dmg to raw format
 echo "Converting BaseSystem.dmg to raw format..."
 if [ -f "BaseSystem.dmg" ]; then
@@ -145,8 +147,8 @@ else
     exit 1
 fi
 
-# Create macOS disk image (100GB)
-echo "Creating macOS disk image (100GB)..."
+# Create macOS disk image (256GB)
+echo "Creating macOS disk image (256GB)..."
 qemu-img create -f qcow2 macOS.qcow2 256G
 echo "✓ macOS.qcow2 created successfully"
 
@@ -206,7 +208,7 @@ echo "   - Install macOS to the formatted drive"
 echo ""
 echo "Files created:"
 echo "  - BaseSystem.img (macOS installer)"
-echo "  - macOS.qcow2 (100GB virtual disk)"
+echo "  - macOS.qcow2 (256GB virtual disk)"
 echo "  - mac_hdd_ng.img -> macOS.qcow2 (compatibility symlink)"
 echo ""
 
