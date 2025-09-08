@@ -3,11 +3,11 @@
 - Full install and activation uses wget and curl commands to run the full sequence so you don’t have to manually configure everything.
 
 **Automatic Installation (one-liner) `wget`/`curl` install**:
-```
+```bash
 sudo wget https://raw.githubusercontent.com/kholia/OSX-KVM/master/wget.ubuntu.install.script -O wget.ubuntu.install.script && ./wget.ubuntu.install.script
 ```
 *Or*:
-```
+```bash
 curl -fsSL https://raw.githubusercontent.com/statikfintechllc/OSX-KVM/master/install-macos-kvm.sh | bash
 ```
 
@@ -22,7 +22,7 @@ Choose from:
 7. Sonoma (14)  
 8. Sequoia (15)  
 
-Select a product to download (1-8): Auto-Chooses 7
+Select a product to download (1-8):
 ```
 #### Disk Setup
 1. Select **Disk Utility** from the OpenCore menu.  
@@ -45,7 +45,7 @@ Select a product to download (1-8): Auto-Chooses 7
 
 #### macOS Recovery and Installation
 - Once OpenCore boots, you can download the macOS installer:
-```
+```bash
 ./fetch-macOS-v2.py
 ```
 
@@ -55,16 +55,16 @@ Select a product to download (1-8): Auto-Chooses 7
 - Full install and activation uses wget and curl commands to run the full sequence so you don’t have to manually configure packages or dependencies.
 
 **Automatic Installation with `wget`/`curl` install**:
-```
+```bash
 sudo wget https://raw.githubusercontent.com/kholia/OSX-KVM/master/wget.fedora.install.script -O wget.fedora.install.script && wget.fedora.install.script
 ```
 *Or*:
-```
+```bash
 curl -fsSL https://raw.githubusercontent.com/statikfintechllc/OSX-KVM/master/install-macos-kvm.sh | bash
 ```
 
 Choose from:
-```
+```shell
 1. High Sierra (10.13)  
 2. Mojave (10.14)  
 3. Catalina (10.15)  
@@ -74,7 +74,7 @@ Choose from:
 7. Sonoma (14)  
 8. Sequoia (15)  
 
-Select a product to download (1-8): Auto-Chooses 7
+Select a product to download (1-8):
 ```
 #### Disk Setup
 1. Open **Disk Utility** in the OpenCore menu.  
@@ -97,7 +97,7 @@ Select a product to download (1-8): Auto-Chooses 7
 
 #### macOS Recovery and Installation
 - Once OpenCore boots, you can download the macOS installer using:
-```
+```bash
 ./fetch-macOS-v2.py
 ```
 
