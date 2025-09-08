@@ -7,7 +7,7 @@
 sudo wget https://raw.githubusercontent.com/kholia/OSX-KVM/master/wget.ubuntu.install.script -O wget.ubuntu.install.script && ./wget.ubuntu.install.script
 ```
 
-Choose from:
+Chooses 7 from:
 ```shell
 1. High Sierra (10.13)  
 2. Mojave (10.14)  
@@ -18,7 +18,7 @@ Choose from:
 7. Sonoma (14)  
 8. Sequoia (15)  
 
-Select a product to download (1-8): 6
+Select a product to download (1-8): Auto-Chooses 7
 ```
 #### Disk Setup
 1. Select **Disk Utility** from the OpenCore menu.  
@@ -55,7 +55,7 @@ $ ./fetch-macOS-v2.py
 sudo wget https://raw.githubusercontent.com/kholia/OSX-KVM/master/wget.fedora.install.script -O wget.fedora.install.script && wget.fedora.install.script
 ```
 
-Choose from:
+Chooses 7 from:
 ```
 1. High Sierra (10.13)  
 2. Mojave (10.14)  
@@ -66,7 +66,7 @@ Choose from:
 7. Sonoma (14)  
 8. Sequoia (15)  
 
-Select a product to download (1-8): 6
+Select a product to download (1-8): Auto-Chooses 7
 ```
 #### Disk Setup
 1. Open **Disk Utility** in the OpenCore menu.  
