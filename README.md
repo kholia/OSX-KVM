@@ -1,42 +1,114 @@
+
 ### Ubuntu 22.04 Quick Install
-- Full Install and Activation uses `wget` and `curl` cmds then runs a full sequence so you dont have to.
+- Full install and activation uses wget and curl commands to run the full sequence so you don’t have to manually configure everything.
 
-**To install OSX-KVM and set up macOS in a VM, run**:
-
-```bash
+**Automatic Installation (one-liner)**:
+```
 sudo curl -fsSL https://raw.githubusercontent.com/kholia/OSX-KVM/master/wget.install.script | bash
 ```
-
-**Or download and run the installer script manually**:
-
-```bash
-sudo wget https://raw.githubusercontent.com/kholia/OSX-KVM/master/wget.install.script | bash
-cd ~/OSX-KVM
-sudo bash install-macos-kvm.sh
-cd ~/OSX-KVM/OpenCore
-./OpenCore-boot.sh
+**Or `wget` install**:
 ```
-#### After Boot:
-- Choose from:
-```
-  $ ./fetch-macOS-v2.py
-  1. High Sierra (10.13)
-  2. Mojave (10.14)
-  3. Catalina (10.15)
-  4. Big Sur (11.7)
-  5. Monterey (12.6)
-  6. Ventura (13) - RECOMMENDED
-  7. Sonoma (14)
-  8. Sequoia (15)
-
-  Choose a product to download (1-8): 6
+sudo wget https://raw.githubusercontent.com/kholia/OSX-KVM/master/wget.install.script -O wget.install.script
 ```
 
-1. Select Disk Tool and reformat the 256 GB `sata`
-2. Exit and go to Install New for the distro of your choice, follow steps and complete.
-3. Once complete, open KVM and Creat a new VM:
-- Navigate to your new `sata` in KVM
-- Begin building you new MacOS VM
+#### macOS Recovery and Installation
+- Once OpenCore boots, you can download the macOS installer:
+```
+$ ./fetch-macOS-v2.py
+```
+Choose from:
+```shell
+1. High Sierra (10.13)  
+2. Mojave (10.14)  
+3. Catalina (10.15)  
+4. Big Sur (11.7)  
+5. Monterey (12.6)  
+6. Ventura (13) - **RECOMMENDED**  
+7. Sonoma (14)  
+8. Sequoia (15)  
+
+Select a product to download (1-8): 6
+```
+#### Disk Setup
+1. Select **Disk Utility** from the OpenCore menu.  
+2. Reformat the `256 GB SATA` disk as APFS (or your preferred macOS format).  
+3. Exit Disk Utility and go to **Install macOS**, selecting the formatted `SATA` disk.  
+4. Follow the on-screen steps to complete the macOS installation.
+
+#### Post-Installation
+- After installation completes:
+1. Open *KVM* (or *virt-manager*) and create a new VM.  
+2. Assign your freshly installed `macOS SATA` disk.  
+3. Begin building your new macOS VM with the following settings:  
+   - CPU: Match your host cores  
+   - RAM: Minimum *8 GB (recommended 16+ GB)*  
+   - Network: `VirtIO` or `bridged adapter` 
+   - Boot: `OpenCore.qcow2` + `macOS SATA` disk  
+
+- Boot the VM and macOS should start with OpenCore managing the EFI environment.  
+- Optionally, you can keep `fetch-macOS-v2.py` handy to upgrade or reinstall newer macOS versions.
+
+---
+
+### Fedora 38+ Quick Install
+- Full install and activation uses wget and curl commands to run the full sequence so you don’t have to manually configure packages or dependencies.
+
+**Automatic Installation**:
+
+```
+sudo curl -fsSL https://raw.githubusercontent.com/kholia/OSX-KVM/master/wget.fedora.install.script | bash
+```
+**Or `wget` install**:
+```
+sudo wget https://raw.githubusercontent.com/kholi
+a/OSX-KVM/master/wget.fedora.install.script -O wget.fedora.install.script
+```
+
+#### macOS Recovery and Installation
+- Once OpenCore boots, you can download the macOS installer using:
+```
+$ ./fetch-macOS-v2.py
+```
+Choose from:
+```
+1. High Sierra (10.13)  
+2. Mojave (10.14)  
+3. Catalina (10.15)  
+4. Big Sur (11.7)  
+5. Monterey (12.6)  
+6. Ventura (13) - **RECOMMENDED**  
+7. Sonoma (14)  
+8. Sequoia (15)  
+
+Select a product to download (1-8): 6
+```
+#### Disk Setup
+1. Open **Disk Utility** in the OpenCore menu.  
+2. Reformat the `256 GB SATA` disk as APFS (or your preferred macOS format).  
+3. Exit Disk Utility and select **Install macOS** on the formatted `SATA` disk.  
+4. Follow the installer steps to complete macOS setup.
+
+#### Post-Installation
+- After installation completes:
+1. Open *KVM* (or *virt-manager*)and create a new VM.  
+2. Assign the freshly installed `macOS SATA` disk.  
+3. Recommended VM settings:  
+   - CPU: Match host cores  
+   - RAM: Minimum *8 GB(16+ GB preferred)* 
+   - Network: `VirtIO` or `bridged adapter` 
+   - Boot: `OpenCore.qcow2` + `macOS SATA` disk  
+
+- Boot the VM; OpenCore handles the EFI environment and macOS should load.  
+- Keep `fetch-macOS-v2.py` available for future upgrades or reinstallations.  
+
+---
+
+#### Notes
+- Fedora users should ensure `kvm` modules are loaded and their user is added to `kvm` and `libvirt` groups.  
+- Required Fedora packages installed by the script: `git`, `wget`, `curl`, `python3`, `python3-pip`, `qemu-kvm`, `qemu-img`, `virt-manager`, `libguestfs-tools`, `p7zip`, `make`, `dmg2img`, `tesseract`, `tesseract-langpack-eng`, `genisoimage`, `vim`, `net-tools`, `screen`.  
+- Script handles automatic installation and verification of all dependencies.
+
+---
 
 ### Note
 
@@ -54,6 +126,8 @@ Struggling with `Content Caching` stuff? We can help.
 Working with `Proxmox` and macOS? See [Nick's blog for sure](https://www.nicksherlock.com/).
 
 Yes, we support offline macOS installations now - see [this document](./run_offline.md) 🎉
+
+---
 
 ### Contributing Back
 
@@ -79,6 +153,7 @@ help (pull-requests!) with the following work items:
 
 * (Not so) crazy idea - automate the macOS installation via OpenCV.
 
+---
 
 ### Requirements
 
@@ -95,6 +170,8 @@ help (pull-requests!) with the following work items:
 > [!Note]
 > Older AMD CPU(s) are known to be problematic but modern AMD Ryzen
 processors work just fine (even for macOS Sonoma).
+
+---
 
 ### Installation Preparation
 
@@ -186,7 +263,9 @@ processors work just fine (even for macOS Sonoma).
 
 * Now you are ready to install macOS 🚀
 
-### Installation
+---
+
+### Manual Installation
 
 - CLI method (primary). Just run the `OpenCore-Boot.sh` script to start the installation process.
 
@@ -226,6 +305,8 @@ processors work just fine (even for macOS Sonoma).
 
   - Launch `virt-manager` and start the `macOS` virtual machine.
 
+---
+
 ### Headless macOS
 
 - Use the provided [boot-macOS-headless.sh](./boot-macOS-headless.sh) script.
@@ -234,6 +315,7 @@ processors work just fine (even for macOS Sonoma).
   ./boot-macOS-headless.sh
 ```
 
+---
 
 ### Setting Expectations Right
 
@@ -241,15 +323,20 @@ Nice job on setting up a `Virtual Hackintosh` system! Such a system can be used
 for a variety of purposes (e.g. software builds, testing, reversing work), and
 it may be all you need, along with some tweaks documented in this repository.
 
-However, such a system lacks graphical acceleration, a reliable sound sub-system,
-USB 3 functionality and other similar things. To enable these things, take a
+> [!Note]
+> However, such a system lacks graphical acceleration, a reliable sound sub-system,
+
+#### For USB 3 functionality and other similar things
+**To enable these things**:
+- take a
 look at our [notes](notes.md). We would like to resume our testing and
 documentation work around this area. Please [reach out to us](mailto:dhiru.kholia@gmail.com?subject=[GitHub]%20OSX-KVM%20Funding%20Support)
 if you are able to fund this area of work.
 
-It is possible to have 'beyond-native-apple-hw' performance but it does require
+- It is possible to have 'beyond-native-apple-hw' performance but it does require
 work, patience, and a bit of luck (perhaps?).
 
+---
 
 ### Post-Installation
 
@@ -263,10 +350,13 @@ work, patience, and a bit of luck (perhaps?).
 
 * Highly recommended macOS tweaks - https://github.com/sickcodes/osx-optimizer
 
+---
 
 ### Is This Legal?
 
-The "secret" Apple OSK string is widely available on the Internet. It is also included in a public court document [available here](http://www.rcfp.org/sites/default/files/docs/20120105_202426_apple_sealing.pdf). I am not a lawyer but it seems that Apple's attempt(s) to get the OSK string treated as a trade secret did not work out. Due to these reasons, the OSK string is freely included in this repository.
+The "secret" Apple OSK string is widely available on the Internet. 
+- It is also included in a public court document [available here](http://www.rcfp.org/sites/default/files/docs/20120105_202426_apple_sealing.pdf).
+- I am not a lawyer but it seems that Apple's attempt(s) to get the OSK string treated as a trade secret did not work out. Due to these reasons, the OSK string is freely included in this repository.
 
 Please review the ['Legality of Hackintoshing' documentation bits from Dortania's OpenCore Install Guide](https://dortania.github.io/OpenCore-Install-Guide/why-oc.html#legality-of-hackintoshing).
 
@@ -281,6 +371,7 @@ Apple EULA.
 Note: This is not legal advice, so please make the proper assessments yourself
 and discuss with your lawyers if you have any concerns (Text credit: Dortania)
 
+---
 
 ### Motivation
 
