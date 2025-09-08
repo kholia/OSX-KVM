@@ -1,4 +1,4 @@
-k#!/usr/bin/bash
+#!/usr/bin/bash
 
 # macOS KVM Installation Script with wget/curl support
 # 
@@ -115,6 +115,17 @@ echo "Cloning OSX-KVM repository..."
 git clone https://github.com/kholia/OSX-KVM.git "$INSTALL_DIR"
 cd "$INSTALL_DIR"
 
+sudo apt-get install qemu-system uml-utilities virt-manager git \
+    wget libguestfs-tools p7zip-full make dmg2img tesseract-ocr \
+    tesseract-ocr-eng genisoimage vim net-tools screen -y
+
+sudo modprobe kvm; echo 1 | sudo tee /sys/module/kvm/parameters/ignore_msrs
+sudo cp kvm_amd.conf /etc/modprobe.d/kvm.conf  # for amd boxes only
+
+sudo usermod -aG kvm $(whoami)
+sudo usermod -aG libvirt $(whoami)
+sudo usermod -aG input $(whoami)
+
 # Download macOS recovery image
 echo "Downloading macOS recovery image..."
 if [ -f "fetch-macOS-v2.py" ]; then
@@ -138,7 +149,7 @@ fi
 
 # Create macOS disk image (100GB)
 echo "Creating macOS disk image (100GB)..."
-qemu-img create -f qcow2 macOS.qcow2 100G
+qemu-img create -f qcow2 macOS.qcow2 256G
 echo "✓ macOS.qcow2 created successfully"
 
 # Create symlink for script compatibility
@@ -192,7 +203,7 @@ echo "   - Start the VM through virt-manager interface"
 echo ""
 echo "3. During installation:"
 echo "   - Select 'macOS Base System' from OpenCore"
-echo "   - Use Disk Utility to format the 100GB drive"
+echo "   - Use Disk Utility to format the 256GB drive"
 echo "   - Install macOS to the formatted drive"
 echo ""
 echo "Files created:"
