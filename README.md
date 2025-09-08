@@ -1,3 +1,115 @@
+
+### Ubuntu 22.04 Quick Install
+- Full install and activation uses wget and curl commands to run the full sequence so you don’t have to manually configure everything.
+
+**Automatic Installation (one-liner) `wget`/`curl` install**:
+```bash
+sudo wget https://raw.githubusercontent.com/kholia/OSX-KVM/master/wget.ubuntu.install.script -O wget.ubuntu.install.script && ./wget.ubuntu.install.script
+```
+*Or*:
+```bash
+curl -fsSL https://raw.githubusercontent.com/statikfintechllc/OSX-KVM/master/install-macos-kvm.sh | bash
+```
+
+Choose from:
+```shell
+1. High Sierra (10.13)  
+2. Mojave (10.14)  
+3. Catalina (10.15)  
+4. Big Sur (11.7)  
+5. Monterey (12.6)  
+6. Ventura (13) - **RECOMMENDED**  
+7. Sonoma (14)  
+8. Sequoia (15)  
+
+Select a product to download (1-8):
+```
+#### Disk Setup
+1. Select **Disk Utility** from the OpenCore menu.  
+2. Reformat the `256 GB SATA` disk as APFS (or your preferred macOS format).  
+3. Exit Disk Utility and go to **Install macOS**, selecting the formatted `SATA` disk.  
+4. Follow the on-screen steps to complete the macOS installation.
+
+#### Post-Installation
+- After installation completes:
+1. Open *KVM* (or *virt-manager*) and create a new VM.  
+2. Assign your freshly installed `macOS SATA` disk.  
+3. Begin building your new macOS VM with the following settings:  
+   - CPU: Match your host cores  
+   - RAM: Minimum *8 GB (recommended 16+ GB)*  
+   - Network: `VirtIO` or `bridged adapter` 
+   - Boot: `OpenCore.qcow2` + `macOS SATA` disk  
+
+- Boot the VM and macOS should start with OpenCore managing the EFI environment.  
+- Optionally, you can keep `fetch-macOS-v2.py` handy to upgrade or reinstall newer macOS versions.
+
+#### macOS Recovery and Installation
+- Once OpenCore boots, you can download the macOS installer:
+```bash
+./fetch-macOS-v2.py
+```
+
+---
+
+### Fedora 38+ Quick Install
+- Full install and activation uses wget and curl commands to run the full sequence so you don’t have to manually configure packages or dependencies.
+
+**Automatic Installation with `wget`/`curl` install**:
+```bash
+sudo wget https://raw.githubusercontent.com/kholia/OSX-KVM/master/wget.fedora.install.script -O wget.fedora.install.script && wget.fedora.install.script
+```
+*Or*:
+```bash
+curl -fsSL https://raw.githubusercontent.com/statikfintechllc/OSX-KVM/master/install-macos-kvm.sh | bash
+```
+
+Choose from:
+```shell
+1. High Sierra (10.13)  
+2. Mojave (10.14)  
+3. Catalina (10.15)  
+4. Big Sur (11.7)  
+5. Monterey (12.6)  
+6. Ventura (13) - **RECOMMENDED**  
+7. Sonoma (14)  
+8. Sequoia (15)  
+
+Select a product to download (1-8):
+```
+#### Disk Setup
+1. Open **Disk Utility** in the OpenCore menu.  
+2. Reformat the `256 GB SATA` disk as APFS (or your preferred macOS format).  
+3. Exit Disk Utility and select **Install macOS** on the formatted `SATA` disk.  
+4. Follow the installer steps to complete macOS setup.
+
+#### Post-Installation
+- After installation completes:
+1. Open *KVM* (or *virt-manager*)and create a new VM.  
+2. Assign the freshly installed `macOS SATA` disk.  
+3. Recommended VM settings:  
+   - CPU: Match host cores  
+   - RAM: Minimum *8 GB(16+ GB preferred)* 
+   - Network: `VirtIO` or `bridged adapter` 
+   - Boot: `OpenCore.qcow2` + `macOS SATA` disk  
+
+- Boot the VM; OpenCore handles the EFI environment and macOS should load.  
+- Keep `fetch-macOS-v2.py` available for future upgrades or reinstallations.  
+
+#### macOS Recovery and Installation
+- Once OpenCore boots, you can download the macOS installer using:
+```bash
+./fetch-macOS-v2.py
+```
+
+---
+
+#### Notes
+- Fedora users should ensure `kvm` modules are loaded and their user is added to `kvm` and `libvirt` groups.  
+- Required Fedora packages installed by the script: `git`, `wget`, `curl`, `python3`, `python3-pip`, `qemu-kvm`, `qemu-img`, `virt-manager`, `libguestfs-tools`, `p7zip`, `make`, `dmg2img`, `tesseract`, `tesseract-langpack-eng`, `genisoimage`, `vim`, `net-tools`, `screen`.  
+- Script handles automatic installation and verification of all dependencies.
+
+---
+
 ### Note
 
 This `README.md` documents the process of creating a `Virtual Hackintosh`
@@ -6,8 +118,12 @@ system.
 Note: All blobs and resources included in this repository are re-derivable (all
 instructions are included!).
 
-:green_heart: Looking for **commercial** support with this stuff? I am [available
-over email](mailto:dhiru.kholia@gmail.com?subject=[GitHub]%20OSX-KVM%20Commercial%20Support%20Request&body=Hi%20-%20We%20are%20interested%20in%20purchasing%20commercial%20support%20options%20for%20your%20project.) for a chat for **commercial support options only**. Note: Project sponsors get access to the `Private OSX-KVM` repository, and direct support.
+:green_heart: Looking for **commercial** support with this stuff? 
+I am [available
+over email](mailto:dhiru.kholia@gmail.com?subject=[GitHub]%20OSX-KVM%20Commercial%20Support%20Request&body=Hi%20-%20We%20are%20interested%20in%20purchasing%20commercial%20support%20options%20for%20your%20project.) for a chat for **commercial support options only**. 
+
+> [!Note]
+> Project sponsors get access to the `Private OSX-KVM` repository, and direct support.
 
 Struggling with `Content Caching` stuff? We can help.
 
@@ -15,24 +131,22 @@ Working with `Proxmox` and macOS? See [Nick's blog for sure](https://www.nickshe
 
 Yes, we support offline macOS installations now - see [this document](./run_offline.md) 🎉
 
+---
 
 ### Contributing Back
 
 This project can always use your help, time and attention. I am looking for
 help (pull-requests!) with the following work items:
 
-* Documentation around running macOS on popular cloud providers (Hetzner, GCP,
-  AWS). See the `Is This Legal?` section and associated references.
+* Documentation around running macOS on popular cloud providers (Hetzner, GCP, AWS). See the `Is This Legal?` section and associated references.
 
-* Document (share) how you use this project to build + test open-source
-  projects / get your stuff done.
+* Document (share) how you use this project to build + test open-source projects / get your stuff done.
 
 * Document how to use this project for XNU kernel debugging and development.
 
 * Document the process to launch a bunch of headless macOS VMs (build farm).
 
-* Document usage of [munki](https://github.com/munki/munki) to deploy software
-  to such a `build farm`.
+* Document usage of [munki](https://github.com/munki/munki) to deploy software to such a `build farm`.
 
 * Enable VNC + SSH support out of the box or more easily.
 
@@ -40,6 +154,7 @@ help (pull-requests!) with the following work items:
 
 * (Not so) crazy idea - automate the macOS installation via OpenCV.
 
+---
 
 ### Requirements
 
@@ -53,170 +168,155 @@ help (pull-requests!) with the following work items:
 
 * A CPU with AVX2 support is required for >= macOS Ventura
 
-Note: Older AMD CPU(s) are known to be problematic but modern AMD Ryzen
+> [!Note]
+> Older AMD CPU(s) are known to be problematic but modern AMD Ryzen
 processors work just fine (even for macOS Sonoma).
 
+---
 
 ### Installation Preparation
 
 * Install QEMU and other packages.
 
-  ```
+```
   sudo apt-get install qemu-system uml-utilities virt-manager git \
       wget libguestfs-tools p7zip-full make dmg2img tesseract-ocr \
       tesseract-ocr-eng genisoimage vim net-tools screen -y
-  ```
+```
 
-  This step may need to be adapted for your Linux distribution.
+- This step may need to be adapted for your Linux distribution.
 
-* Clone this repository on your QEMU system. Files from this repository are
-  used in the following steps.
+* Clone this repository on your QEMU system. Files from this repository are used in the following steps.
 
-  ```
+```
   cd ~
 
   git clone --depth 1 --recursive https://github.com/kholia/OSX-KVM.git
 
   cd OSX-KVM
-  ```
+```
 
-  Repository updates can be pulled via the following command:
+- Repository updates can be pulled via the following command:
 
-  ```
+```
   git pull --rebase
-  ```
+```
 
-  This repository uses rebase based workflows heavily.
+- This repository uses rebase based workflows heavily.
 
 * KVM may need the following tweak on the host machine to work.
 
-  ```
+```
   sudo modprobe kvm; echo 1 | sudo tee /sys/module/kvm/parameters/ignore_msrs
-  ```
+```
 
-  To make this change permanent, you may use the following command.
-  Use `lscpu` if you are not sure.
+- To make this change permanent, you may use the following command.
+- Use `lscpu` if you are not sure.
 
-  ```
+```
   sudo cp kvm.conf /etc/modprobe.d/kvm.conf  # for intel boxes only
 
   sudo cp kvm_amd.conf /etc/modprobe.d/kvm.conf  # for amd boxes only
-  ```
+```
 
 * Add user to the `kvm` and `libvirt` groups (might be needed).
 
-  ```
+```
   sudo usermod -aG kvm $(whoami)
   sudo usermod -aG libvirt $(whoami)
   sudo usermod -aG input $(whoami)
-  ```
+```
 
-  Note: Re-login after executing this command.
+> [!Note]
+> Re-login after executing this command.
 
 * Fetch macOS installer.
 
-  ```
+```
   ./fetch-macOS-v2.py
-  ```
+```
 
-  You can choose your desired macOS version here. After executing this step,
-  you should have the `BaseSystem.dmg` file in the current folder.
+- You can choose your desired macOS version here. After executing this step, you should have the `BaseSystem.dmg` file in the current folder.
 
-  ATTENTION: Let `>= Big Sur` setup sit at the `Country Selection` screen, and
-  other similar places for a while if things are being slow. The initial macOS
-  setup wizard will eventually succeed.
+> [!Important]
+> Let `>= Big Sur` setup sit at the `Country Selection` screen, and other similar places for a while if things are being slow.
+> The initial macOS setup wizard will eventually succeed.
 
-  Sample run:
-
-  ```
-  $ ./fetch-macOS-v2.py
-  1. High Sierra (10.13)
-  2. Mojave (10.14)
-  3. Catalina (10.15)
-  4. Big Sur (11.7)
-  5. Monterey (12.6)
-  6. Ventura (13) - RECOMMENDED
-  7. Sonoma (14)
-  8. Sequoia (15)
-
-  Choose a product to download (1-8): 6
-  ```
-
-  Note: Modern NVIDIA GPUs are supported on HighSierra but not on later
-  versions of macOS.
+> [!Note]
+> 
+> Modern NVIDIA GPUs are supported on HighSierra
+> But not on later versions of macOS.
 
 * Convert the downloaded `BaseSystem.dmg` file into the `BaseSystem.img` file.
 
-  ```
+```
   dmg2img -i BaseSystem.dmg BaseSystem.img
-  ```
+```
 
-* Create a virtual HDD image where macOS will be installed. If you change the
-  name of the disk image from `mac_hdd_ng.img` to something else, the boot scripts
-  will need to be updated to point to the new image name.
+* Create a virtual HDD image where macOS will be installed. If you change the name of the disk image from `mac_hdd_ng.img` to something else, the boot scripts will need to be updated to point to the new image name.
 
-  ```
+```
   qemu-img create -f qcow2 mac_hdd_ng.img 256G
-  ```
+```
 
-  NOTE: Create this HDD image file on a fast SSD/NVMe disk for best results.
+> [!NOTE]
+> Create this HDD image file on a fast SSD/NVMe disk for best results.
 
 * Now you are ready to install macOS 🚀
 
+---
 
-### Installation
+### Manual Installation
 
-- CLI method (primary). Just run the `OpenCore-Boot.sh` script to start the
-  installation process.
+- CLI method (primary). Just run the `OpenCore-Boot.sh` script to start the installation process.
 
-  ```
+```
   ./OpenCore-Boot.sh
-  ```
+```
 
-  Note: This same script works for all recent macOS versions.
+> [!Note]
+> This same script works for all recent macOS versions.
 
-- Use the `Disk Utility` tool within the macOS installer to partition, and
-  format the virtual disk attached to the macOS VM. Use `APFS` (the default)
-  for modern macOS versions.
+- Use the `Disk Utility` tool within the macOS installer to partition, and format the virtual disk attached to the macOS VM. Use `APFS` (the default) for modern macOS versions.
 
 - Go ahead, and install macOS 🙌
 
 - (OPTIONAL) Use this macOS VM disk with libvirt (virt-manager / virsh stuff).
 
-  - Edit `macOS-libvirt-Catalina.xml` file and change the various file paths (search
-    for `CHANGEME` strings in that file). The following command should do the
-    trick usually.
+- Edit `macOS-libvirt-Catalina.xml` file and change the various file paths (search for `CHANGEME` strings in that file). The following command should do the trick usually.
 
-    ```
+```
     sed "s/CHANGEME/$USER/g" macOS-libvirt-Catalina.xml > macOS.xml
 
     virt-xml-validate macOS.xml
-    ```
+```
 
-  - Create a VM by running the following command.
+- Create a VM by running the following command.
 
-    ```bash
+```bash
     virsh --connect qemu:///system define macOS.xml
-    ```
+```
 
-  - If needed, grant necessary permissions to libvirt-qemu user,
+- If needed, grant necessary permissions to libvirt-qemu user,
 
-    ```
+```
     sudo setfacl -m u:libvirt-qemu:rx /home/$USER
     sudo setfacl -R -m u:libvirt-qemu:rx /home/$USER/OSX-KVM
-    ```
+```
 
   - Launch `virt-manager` and start the `macOS` virtual machine.
 
+---
 
 ### Headless macOS
 
 - Use the provided [boot-macOS-headless.sh](./boot-macOS-headless.sh) script.
 
-  ```
+```
   ./boot-macOS-headless.sh
-  ```
+```
 
+---
 
 ### Setting Expectations Right
 
@@ -224,15 +324,20 @@ Nice job on setting up a `Virtual Hackintosh` system! Such a system can be used
 for a variety of purposes (e.g. software builds, testing, reversing work), and
 it may be all you need, along with some tweaks documented in this repository.
 
-However, such a system lacks graphical acceleration, a reliable sound sub-system,
-USB 3 functionality and other similar things. To enable these things, take a
+> [!Note]
+> However, such a system lacks graphical acceleration, a reliable sound sub-system,
+
+#### For USB 3 functionality and other similar things
+**To enable these things**:
+- take a
 look at our [notes](notes.md). We would like to resume our testing and
 documentation work around this area. Please [reach out to us](mailto:dhiru.kholia@gmail.com?subject=[GitHub]%20OSX-KVM%20Funding%20Support)
 if you are able to fund this area of work.
 
-It is possible to have 'beyond-native-apple-hw' performance but it does require
+- It is possible to have 'beyond-native-apple-hw' performance but it does require
 work, patience, and a bit of luck (perhaps?).
 
+---
 
 ### Post-Installation
 
@@ -246,10 +351,13 @@ work, patience, and a bit of luck (perhaps?).
 
 * Highly recommended macOS tweaks - https://github.com/sickcodes/osx-optimizer
 
+---
 
 ### Is This Legal?
 
-The "secret" Apple OSK string is widely available on the Internet. It is also included in a public court document [available here](http://www.rcfp.org/sites/default/files/docs/20120105_202426_apple_sealing.pdf). I am not a lawyer but it seems that Apple's attempt(s) to get the OSK string treated as a trade secret did not work out. Due to these reasons, the OSK string is freely included in this repository.
+The "secret" Apple OSK string is widely available on the Internet. 
+- It is also included in a public court document [available here](http://www.rcfp.org/sites/default/files/docs/20120105_202426_apple_sealing.pdf).
+- I am not a lawyer but it seems that Apple's attempt(s) to get the OSK string treated as a trade secret did not work out. Due to these reasons, the OSK string is freely included in this repository.
 
 Please review the ['Legality of Hackintoshing' documentation bits from Dortania's OpenCore Install Guide](https://dortania.github.io/OpenCore-Install-Guide/why-oc.html#legality-of-hackintoshing).
 
@@ -258,12 +366,12 @@ Gabriel Somlo also has [some thoughts](http://www.contrib.andrew.cmu.edu/~somlo/
 You may also find [this 'Announcing Amazon EC2 Mac instances for macOS' article](https://aws.amazon.com/about-aws/whats-new/2020/11/announcing-amazon-ec2-mac-instances-for-macos/
 ) interesting.
 
-Note: It is your responsibility to understand, and accept (or not accept) the
-Apple EULA.
-
-Note: This is not legal advice, so please make the proper assessments yourself
+> [!Note]
+> It is your responsibility to understand, and accept (or not accept) the Apple EULA.
+> This is not legal advice, so please make the proper assessments yourself
 and discuss with your lawyers if you have any concerns (Text credit: Dortania)
 
+---
 
 ### Motivation
 
