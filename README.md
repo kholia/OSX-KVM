@@ -42,7 +42,7 @@ Select a product to download (1-8): Auto-Chooses 7
 #### macOS Recovery and Installation
 - Once OpenCore boots, you can download the macOS installer:
 ```
-$ ./fetch-macOS-v2.py
+./fetch-macOS-v2.py
 ```
 
 ---
@@ -90,7 +90,7 @@ Select a product to download (1-8): Auto-Chooses 7
 #### macOS Recovery and Installation
 - Once OpenCore boots, you can download the macOS installer using:
 ```
-$ ./fetch-macOS-v2.py
+./fetch-macOS-v2.py
 ```
 
 ---
@@ -110,8 +110,12 @@ system.
 Note: All blobs and resources included in this repository are re-derivable (all
 instructions are included!).
 
-:green_heart: Looking for **commercial** support with this stuff? I am [available
-over email](mailto:dhiru.kholia@gmail.com?subject=[GitHub]%20OSX-KVM%20Commercial%20Support%20Request&body=Hi%20-%20We%20are%20interested%20in%20purchasing%20commercial%20support%20options%20for%20your%20project.) for a chat for **commercial support options only**. Note: Project sponsors get access to the `Private OSX-KVM` repository, and direct support.
+:green_heart: Looking for **commercial** support with this stuff? 
+I am [available
+over email](mailto:dhiru.kholia@gmail.com?subject=[GitHub]%20OSX-KVM%20Commercial%20Support%20Request&body=Hi%20-%20We%20are%20interested%20in%20purchasing%20commercial%20support%20options%20for%20your%20project.) for a chat for **commercial support options only**. 
+
+> [!Note]
+> Project sponsors get access to the `Private OSX-KVM` repository, and direct support.
 
 Struggling with `Content Caching` stuff? We can help.
 
@@ -126,18 +130,15 @@ Yes, we support offline macOS installations now - see [this document](./run_offl
 This project can always use your help, time and attention. I am looking for
 help (pull-requests!) with the following work items:
 
-* Documentation around running macOS on popular cloud providers (Hetzner, GCP,
-  AWS). See the `Is This Legal?` section and associated references.
+* Documentation around running macOS on popular cloud providers (Hetzner, GCP, AWS). See the `Is This Legal?` section and associated references.
 
-* Document (share) how you use this project to build + test open-source
-  projects / get your stuff done.
+* Document (share) how you use this project to build + test open-source projects / get your stuff done.
 
 * Document how to use this project for XNU kernel debugging and development.
 
 * Document the process to launch a bunch of headless macOS VMs (build farm).
 
-* Document usage of [munki](https://github.com/munki/munki) to deploy software
-  to such a `build farm`.
+* Document usage of [munki](https://github.com/munki/munki) to deploy software to such a `build farm`.
 
 * Enable VNC + SSH support out of the box or more easily.
 
@@ -357,10 +358,9 @@ Gabriel Somlo also has [some thoughts](http://www.contrib.andrew.cmu.edu/~somlo/
 You may also find [this 'Announcing Amazon EC2 Mac instances for macOS' article](https://aws.amazon.com/about-aws/whats-new/2020/11/announcing-amazon-ec2-mac-instances-for-macos/
 ) interesting.
 
-Note: It is your responsibility to understand, and accept (or not accept) the
-Apple EULA.
-
-Note: This is not legal advice, so please make the proper assessments yourself
+> [!Note]
+> It is your responsibility to understand, and accept (or not accept) the Apple EULA.
+> This is not legal advice, so please make the proper assessments yourself
 and discuss with your lawyers if you have any concerns (Text credit: Dortania)
 
 ---
