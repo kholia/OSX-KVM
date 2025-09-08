@@ -2,13 +2,9 @@
 ### Ubuntu 22.04 Quick Install
 - Full install and activation uses wget and curl commands to run the full sequence so you don’t have to manually configure everything.
 
-**Automatic Installation (one-liner)**:
+**Automatic Installation (one-liner) `wget` install**:
 ```
-sudo curl -fsSL https://raw.githubusercontent.com/kholia/OSX-KVM/master/wget.ubuntu.install.script | bash
-```
-**Or `wget` install**:
-```
-sudo wget https://raw.githubusercontent.com/kholia/OSX-KVM/master/wget.ubuntu.install.script -O wget.install.script
+sudo wget https://raw.githubusercontent.com/kholia/OSX-KVM/master/wget.ubuntu.install.script -O wget.ubuntu.install.script && ./wget.ubuntu.install.script
 ```
 
 Choose from:
@@ -54,14 +50,9 @@ $ ./fetch-macOS-v2.py
 ### Fedora 38+ Quick Install
 - Full install and activation uses wget and curl commands to run the full sequence so you don’t have to manually configure packages or dependencies.
 
-**Automatic Installation**:
-
+**Automatic Installation with `wget` install**:
 ```
-sudo curl -fsSL https://raw.githubusercontent.com/kholia/OSX-KVM/master/wget.fedora.install.script | bash
-```
-**Or `wget` install**:
-```
-sudo wget https://raw.githubusercontent.com/kholia/OSX-KVM/master/wget.fedora.install.script -O wget.fedora.install.script
+sudo wget https://raw.githubusercontent.com/kholia/OSX-KVM/master/wget.fedora.install.script -O wget.fedora.install.script && wget.fedora.install.script
 ```
 
 Choose from:
