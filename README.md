@@ -1,4 +1,5 @@
-### Quick Install
+### Ubuntu 22.04 Quick Install
+- Full Install and Activation uses `wget` and `curl` cmds then runs a full sequence so you dont have to.
 
 **To install OSX-KVM and set up macOS in a VM, run**:
 
@@ -15,7 +16,27 @@ sudo bash install-macos-kvm.sh
 cd ~/OSX-KVM/OpenCore
 ./OpenCore-boot.sh
 ```
-#### After Boot open KVM and Creat a new VM, navigate to your new "drive" and MacOS in KVM
+#### After Boot:
+- Choose from:
+```
+  $ ./fetch-macOS-v2.py
+  1. High Sierra (10.13)
+  2. Mojave (10.14)
+  3. Catalina (10.15)
+  4. Big Sur (11.7)
+  5. Monterey (12.6)
+  6. Ventura (13) - RECOMMENDED
+  7. Sonoma (14)
+  8. Sequoia (15)
+
+  Choose a product to download (1-8): 6
+```
+
+1. Select Disk Tool and reformat the 256 GB `sata`
+2. Exit and go to Install New for the distro of your choice, follow steps and complete.
+3. Once complete, open KVM and Creat a new VM:
+- Navigate to your new `sata` in KVM
+- Begin building you new MacOS VM
 
 ### Note
 
@@ -33,7 +54,6 @@ Struggling with `Content Caching` stuff? We can help.
 Working with `Proxmox` and macOS? See [Nick's blog for sure](https://www.nicksherlock.com/).
 
 Yes, we support offline macOS installations now - see [this document](./run_offline.md) 🎉
-
 
 ### Contributing Back
 
@@ -72,169 +92,147 @@ help (pull-requests!) with the following work items:
 
 * A CPU with AVX2 support is required for >= macOS Ventura
 
-Note: Older AMD CPU(s) are known to be problematic but modern AMD Ryzen
+> [!Note]
+> Older AMD CPU(s) are known to be problematic but modern AMD Ryzen
 processors work just fine (even for macOS Sonoma).
-
 
 ### Installation Preparation
 
 * Install QEMU and other packages.
 
-  ```
+```
   sudo apt-get install qemu-system uml-utilities virt-manager git \
       wget libguestfs-tools p7zip-full make dmg2img tesseract-ocr \
       tesseract-ocr-eng genisoimage vim net-tools screen -y
-  ```
+```
 
-  This step may need to be adapted for your Linux distribution.
+- This step may need to be adapted for your Linux distribution.
 
-* Clone this repository on your QEMU system. Files from this repository are
-  used in the following steps.
+* Clone this repository on your QEMU system. Files from this repository are used in the following steps.
 
-  ```
+```
   cd ~
 
   git clone --depth 1 --recursive https://github.com/kholia/OSX-KVM.git
 
   cd OSX-KVM
-  ```
+```
 
-  Repository updates can be pulled via the following command:
+- Repository updates can be pulled via the following command:
 
-  ```
+```
   git pull --rebase
-  ```
+```
 
-  This repository uses rebase based workflows heavily.
+- This repository uses rebase based workflows heavily.
 
 * KVM may need the following tweak on the host machine to work.
 
-  ```
+```
   sudo modprobe kvm; echo 1 | sudo tee /sys/module/kvm/parameters/ignore_msrs
-  ```
+```
 
-  To make this change permanent, you may use the following command.
-  Use `lscpu` if you are not sure.
+- To make this change permanent, you may use the following command.
+- Use `lscpu` if you are not sure.
 
-  ```
+```
   sudo cp kvm.conf /etc/modprobe.d/kvm.conf  # for intel boxes only
 
   sudo cp kvm_amd.conf /etc/modprobe.d/kvm.conf  # for amd boxes only
-  ```
+```
 
 * Add user to the `kvm` and `libvirt` groups (might be needed).
 
-  ```
+```
   sudo usermod -aG kvm $(whoami)
   sudo usermod -aG libvirt $(whoami)
   sudo usermod -aG input $(whoami)
-  ```
+```
 
-  Note: Re-login after executing this command.
+> [!Note]
+> Re-login after executing this command.
 
 * Fetch macOS installer.
 
-  ```
+```
   ./fetch-macOS-v2.py
-  ```
+```
 
-  You can choose your desired macOS version here. After executing this step,
-  you should have the `BaseSystem.dmg` file in the current folder.
+- You can choose your desired macOS version here. After executing this step, you should have the `BaseSystem.dmg` file in the current folder.
 
-  ATTENTION: Let `>= Big Sur` setup sit at the `Country Selection` screen, and
-  other similar places for a while if things are being slow. The initial macOS
-  setup wizard will eventually succeed.
+> [!Important]
+> Let `>= Big Sur` setup sit at the `Country Selection` screen, and other similar places for a while if things are being slow.
+> The initial macOS setup wizard will eventually succeed.
 
-  Sample run:
-
-  ```
-  $ ./fetch-macOS-v2.py
-  1. High Sierra (10.13)
-  2. Mojave (10.14)
-  3. Catalina (10.15)
-  4. Big Sur (11.7)
-  5. Monterey (12.6)
-  6. Ventura (13) - RECOMMENDED
-  7. Sonoma (14)
-  8. Sequoia (15)
-
-  Choose a product to download (1-8): 6
-  ```
-
-  Note: Modern NVIDIA GPUs are supported on HighSierra but not on later
-  versions of macOS.
+> [!Note]
+> 
+> Modern NVIDIA GPUs are supported on HighSierra
+> But not on later versions of macOS.
 
 * Convert the downloaded `BaseSystem.dmg` file into the `BaseSystem.img` file.
 
-  ```
+```
   dmg2img -i BaseSystem.dmg BaseSystem.img
-  ```
+```
 
-* Create a virtual HDD image where macOS will be installed. If you change the
-  name of the disk image from `mac_hdd_ng.img` to something else, the boot scripts
-  will need to be updated to point to the new image name.
+* Create a virtual HDD image where macOS will be installed. If you change the name of the disk image from `mac_hdd_ng.img` to something else, the boot scripts will need to be updated to point to the new image name.
 
-  ```
+```
   qemu-img create -f qcow2 mac_hdd_ng.img 256G
-  ```
+```
 
-  NOTE: Create this HDD image file on a fast SSD/NVMe disk for best results.
+> [!NOTE]
+> Create this HDD image file on a fast SSD/NVMe disk for best results.
 
 * Now you are ready to install macOS 🚀
 
-
 ### Installation
 
-- CLI method (primary). Just run the `OpenCore-Boot.sh` script to start the
-  installation process.
+- CLI method (primary). Just run the `OpenCore-Boot.sh` script to start the installation process.
 
-  ```
+```
   ./OpenCore-Boot.sh
-  ```
+```
 
-  Note: This same script works for all recent macOS versions.
+> [!Note]
+> This same script works for all recent macOS versions.
 
-- Use the `Disk Utility` tool within the macOS installer to partition, and
-  format the virtual disk attached to the macOS VM. Use `APFS` (the default)
-  for modern macOS versions.
+- Use the `Disk Utility` tool within the macOS installer to partition, and format the virtual disk attached to the macOS VM. Use `APFS` (the default) for modern macOS versions.
 
 - Go ahead, and install macOS 🙌
 
 - (OPTIONAL) Use this macOS VM disk with libvirt (virt-manager / virsh stuff).
 
-  - Edit `macOS-libvirt-Catalina.xml` file and change the various file paths (search
-    for `CHANGEME` strings in that file). The following command should do the
-    trick usually.
+- Edit `macOS-libvirt-Catalina.xml` file and change the various file paths (search for `CHANGEME` strings in that file). The following command should do the trick usually.
 
-    ```
+```
     sed "s/CHANGEME/$USER/g" macOS-libvirt-Catalina.xml > macOS.xml
 
     virt-xml-validate macOS.xml
-    ```
+```
 
-  - Create a VM by running the following command.
+- Create a VM by running the following command.
 
-    ```bash
+```bash
     virsh --connect qemu:///system define macOS.xml
-    ```
+```
 
-  - If needed, grant necessary permissions to libvirt-qemu user,
+- If needed, grant necessary permissions to libvirt-qemu user,
 
-    ```
+```
     sudo setfacl -m u:libvirt-qemu:rx /home/$USER
     sudo setfacl -R -m u:libvirt-qemu:rx /home/$USER/OSX-KVM
-    ```
+```
 
   - Launch `virt-manager` and start the `macOS` virtual machine.
-
 
 ### Headless macOS
 
 - Use the provided [boot-macOS-headless.sh](./boot-macOS-headless.sh) script.
 
-  ```
+```
   ./boot-macOS-headless.sh
-  ```
+```
 
 
 ### Setting Expectations Right
