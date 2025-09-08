@@ -4,11 +4,11 @@
 
 **Automatic Installation (one-liner)**:
 ```
-sudo curl -fsSL https://raw.githubusercontent.com/kholia/OSX-KVM/master/wget.install.script | bash
+sudo curl -fsSL https://raw.githubusercontent.com/kholia/OSX-KVM/master/wget.ubuntu.install.script | bash
 ```
 **Or `wget` install**:
 ```
-sudo wget https://raw.githubusercontent.com/kholia/OSX-KVM/master/wget.install.script -O wget.install.script
+sudo wget https://raw.githubusercontent.com/kholia/OSX-KVM/master/wget.ubuntu.install.script -O wget.install.script
 ```
 
 #### macOS Recovery and Installation
@@ -60,8 +60,7 @@ sudo curl -fsSL https://raw.githubusercontent.com/kholia/OSX-KVM/master/wget.fed
 ```
 **Or `wget` install**:
 ```
-sudo wget https://raw.githubusercontent.com/kholi
-a/OSX-KVM/master/wget.fedora.install.script -O wget.fedora.install.script
+sudo wget https://raw.githubusercontent.com/kholia/OSX-KVM/master/wget.fedora.install.script -O wget.fedora.install.script
 ```
 
 #### macOS Recovery and Installation
