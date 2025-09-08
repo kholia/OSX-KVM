@@ -1,3 +1,18 @@
+## Quick Install
+
+To install OSX-KVM and set up macOS in a VM, run:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/kholia/OSX-KVM/master/install-macos-kvm.sh | bash
+```
+
+Or download and run the installer script manually:
+
+```bash
+wget https://raw.githubusercontent.com/kholia/OSX-KVM/master/install-macos-kvm.sh
+bash install-macos-kvm.sh
+```
+
 ### Note
 
 This `README.md` documents the process of creating a `Virtual Hackintosh`
