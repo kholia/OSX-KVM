@@ -1,0 +1,178 @@
+#!/usr/bin/bash
+# macOS KVM Installation Script for a brand-new Linux system
+# Quick Install: curl -fsSL <URL> | bash
+
+set -e  # Exit on any error
+
+# Default settings
+USE_CURL=false
+INSTALL_DIR="$HOME/OSX-KVM"
+
+# Function to display help
+show_help() {
+    cat <<EOF
+macOS KVM Installation Script
+
+Usage: $0 [OPTIONS]
+
+Options:
+  --use-curl    Use curl instead of wget for downloads
+  --help        Show this help message
+
+This script will:
+  1. Install all required packages
+  2. Clone the OSX-KVM repository
+  3. Download macOS recovery image
+  4. Convert BaseSystem.dmg to raw format
+  5. Create macOS disk image (100GB)
+  6. Set proper permissions for libvirt
+  7. Launch macOS VM
+EOF
+}
+
+# Function to check if command exists
+command_exists() {
+    command -v "$1" >/dev/null 2>&1
+}
+
+# Function to install packages via apt
+install_package() {
+    local pkg="$1"
+    if ! dpkg -s "$pkg" >/dev/null 2>&1; then
+        echo "Installing missing package: $pkg"
+        sudo apt-get install -y "$pkg"
+    fi
+}
+
+# Function to download files
+download_file() {
+    local url="$1"
+    local output="$2"
+    echo "Downloading: $url"
+    if [ "$USE_CURL" = true ] && command_exists curl; then
+        curl -L -o "$output" "$url"
+    elif command_exists wget; then
+        wget -O "$output" "$url"
+    elif command_exists curl; then
+        curl -L -o "$output" "$url"
+    else
+        echo "Error: Neither wget nor curl found. Please install one of them."
+        exit 1
+    fi
+}
+
+# Parse command line arguments
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --use-curl)
+            USE_CURL=true
+            shift
+            ;;
+        --help)
+            show_help
+            exit 0
+            ;;
+        *)
+            echo "Unknown option: $1"
+            show_help
+            exit 1
+            ;;
+    esac
+done
+
+echo "Updating package list..."
+sudo apt-get update -y
+
+# Install required packages
+REQUIRED_PKGS=(git wget curl python3 python3-pip qemu-system qemu-utils \
+uml-utilities virt-manager libguestfs-tools p7zip-full make dmg2img \
+tesseract-ocr tesseract-ocr-eng genisoimage vim net-tools screen)
+
+for pkg in "${REQUIRED_PKGS[@]}"; do
+    install_package "$pkg"
+done
+
+echo "✓ All required packages installed"
+
+# Check system commands
+for cmd in git qemu-img wget curl python3 make dmg2img; do
+    if ! command_exists "$cmd"; then
+        echo "Error: $cmd is required but not installed."
+        exit 1
+    fi
+done
+
+echo "✓ System commands verified"
+
+# Create installation directory
+if [ -d "$INSTALL_DIR" ]; then
+    echo "Warning: $INSTALL_DIR exists. Backing up to ${INSTALL_DIR}.backup"
+    mv "$INSTALL_DIR" "${INSTALL_DIR}.backup.$(date +%Y%m%d_%H%M%S)"
+fi
+
+# Clone repository
+echo "Cloning OSX-KVM repository..."
+git clone https://github.com/kholia/OSX-KVM.git "$INSTALL_DIR"
+cd "$INSTALL_DIR"
+
+# Setup KVM
+sudo modprobe kvm
+echo 1 | sudo tee /sys/module/kvm/parameters/ignore_msrs >/dev/null || true
+[ -f kvm_amd.conf ] && sudo cp kvm_amd.conf /etc/modprobe.d/kvm.conf
+
+sudo usermod -aG kvm "$(whoami)"
+sudo usermod -aG libvirt "$(whoami)"
+sudo usermod -aG input "$(whoami)"
+
+# Download macOS recovery image
+echo "Downloading macOS recovery image..."
+if [ -f "fetch-macOS-v2.py" ]; then
+    python3 fetch-macOS-v2.py
+else
+    RECOVERY_URL="https://updates.cdn-apple.com/2019FallFCS/fullrestores/061-44998/B5A3E286-1C4A-11EA-99D4-864D6786AB92/BaseSystem.dmg"
+    download_file "$RECOVERY_URL" "BaseSystem.dmg"
+fi
+
+# Convert BaseSystem.dmg to raw format
+echo "Converting BaseSystem.dmg to raw format..."
+if [ -f "BaseSystem.dmg" ]; then
+    qemu-img convert BaseSystem.dmg -O raw BaseSystem.img
+    echo "✓ BaseSystem.img created successfully"
+else
+    echo "Error: BaseSystem.dmg not found"
+    exit 1
+fi
+
+# Create macOS disk image
+echo "Creating macOS disk image (256GB)..."
+qemu-img create -f qcow2 macOS.qcow2 256G
+ln -sf macOS.qcow2 mac_hdd_ng.img
+echo "✓ Disk image created"
+
+# Set permissions for libvirt
+sudo chown libvirt-qemu:libvirt-qemu macOS.qcow2 2>/dev/null || true
+sudo chmod 664 macOS.qcow2 2>/dev/null || true
+sudo chmod 755 "$INSTALL_DIR" 2>/dev/null || true
+
+# Make scripts executable
+chmod +x *.sh
+
+# Build OpenCore if missing
+if [ ! -f "OpenCore/OpenCore.qcow2" ]; then
+    echo "OpenCore not found, attempting to build..."
+    cd OpenCore || exit
+    [ -f "Makefile" ] && make || echo "Warning: Could not build OpenCore"
+    cd ..
+fi
+
+echo ""
+echo "🎉 Installation completed successfully!"
+echo "Next steps:"
+echo "1. Start macOS VM: cd $INSTALL_DIR && sudo ./OpenCore-Boot.sh"
+echo "2. Use virt-manager: import XML, start VM"
+echo ""
+
+# Prompt to start VM
+read -p "Start macOS VM now? (y/n): " -n 1 -r
+echo
+[[ $REPLY =~ ^[Yy]$ ]] && sudo ./OpenCore-Boot.sh || echo "VM can be started later"
