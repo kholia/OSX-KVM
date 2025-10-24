@@ -702,13 +702,13 @@
 				<key>BundlePath</key>
 				<string>CryptexFixup.kext</string>
 				<key>Comment</key>
-				<string>Support for non-AVX2 CPUs in Ventura/Sonoma</string>
+				<string>Support for non-AVX2 CPUs in Ventura/Sonoma/Sequoia</string>
 				<key>Enabled</key>
 				<true/>
 				<key>ExecutablePath</key>
 				<string>Contents/MacOS/CryptexFixup</string>
 				<key>MaxKernel</key>
-				<string>23.99.99</string>
+				<string>24.99.99</string>
 				<key>MinKernel</key>
 				<string>22.1.0</string>
 				<key>PlistPath</key>
@@ -819,7 +819,7 @@
 				<key>Base</key>
 				<string></string>
 				<key>Comment</key>
-				<string>algrey - thenickdude - cpuid_set_cpufamily - force CPUFAMILY_INTEL_PENRYN (Big Sur 11.3+, Monterey, Ventura, Sonoma)</string>
+				<string>algrey - thenickdude - cpuid_set_cpufamily - force CPUFAMILY_INTEL_PENRYN (Big Sur 11.3+, Monterey, Ventura, Sonoma,Sequoia)</string>
 				<key>Count</key>
 				<integer>1</integer>
 				<key>Enabled</key>
@@ -837,7 +837,7 @@
 					////////AAAAAP//
 				</data>
 				<key>MaxKernel</key>
-				<string>23.99.99</string>
+				<string>24.99.99</string>
 				<key>MinKernel</key>
 				<string>20.4.0</string>
 				<key>Replace</key>
@@ -916,7 +916,7 @@
 				<key>Base</key>
 				<string>_apfs_filevault_allowed</string>
 				<key>Comment</key>
-				<string>Force FileVault on Broken Seal (from OCLP project, for non-AVX2 Ventura/Sonoma)</string>
+				<string>Force FileVault on Broken Seal (from OCLP project, for non-AVX2 Ventura/Sonoma/Sequoia)</string>
 				<key>Count</key>
 				<integer>0</integer>
 				<key>Enabled</key>
@@ -930,7 +930,7 @@
 				<key>Mask</key>
 				<data></data>
 				<key>MaxKernel</key>
-				<string>23.99.99</string>
+				<string>24.99.99</string>
 				<key>MinKernel</key>
 				<string>22.1.0</string>
 				<key>Replace</key>
