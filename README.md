@@ -135,11 +135,12 @@ processors work just fine (even for macOS Sonoma).
   3. Catalina (10.15)
   4. Big Sur (11.7)
   5. Monterey (12.6)
-  6. Ventura (13) - RECOMMENDED
-  7. Sonoma (14)
+  6. Ventura (13)
+  7. Sonoma (14) - RECOMMENDED
   8. Sequoia (15)
+  9. Tahoe (26)
 
-  Choose a product to download (1-8): 6
+  Choose a product to download (1-9): 7
   ```
 
   Note: Modern NVIDIA GPUs are supported on HighSierra but not on later
