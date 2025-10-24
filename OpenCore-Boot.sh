@@ -52,12 +52,14 @@ args=(
   -smbios type=2
   -device ich9-intel-hda -device hda-duplex
   -device ich9-ahci,id=sata
-  -drive id=OpenCoreBoot,if=none,snapshot=on,format=qcow2,file="$REPO_PATH/OpenCore/OpenCore.qcow2"
-  -device ide-hd,bus=sata.2,drive=OpenCoreBoot
+  # Setup SSD trim support to keep qcow2 image sparse
+  -blockdev driver=qcow2,node-name=OpenCoreBoot,file.filename="$REPO_PATH/OpenCore/OpenCore.qcow2",file.aio=threads,file.driver=file,discard=unmap,detect-zeroes=unmap
+  -device ide-hd,bus=sata.2,drive=OpenCoreBoot,id=oc,rotation_rate=1
   -device ide-hd,bus=sata.3,drive=InstallMedia
   -drive id=InstallMedia,if=none,file="$REPO_PATH/BaseSystem.img",format=raw
-  -drive id=MacHDD,if=none,file="$REPO_PATH/mac_hdd_ng.img",format=qcow2
-  -device ide-hd,bus=sata.4,drive=MacHDD
+  # Again, setup SSD trim so macOS disk qcow2 image remains sparse
+  -blockdev driver=qcow2,node-name=MacHDD,file.driver=file,file.filename="$REPO_PATH/mac_hdd_ng.img",file.aio=threads,discard=unmap,detect-zeroes=unmap
+  -device ide-hd,bus=sata.4,drive=MacHDD,id=macssd,rotation_rate=1
   # -netdev tap,id=net0,ifname=tap0,script=no,downscript=no -device virtio-net-pci,netdev=net0,id=net0,mac=52:54:00:c9:18:27
   -netdev user,id=net0,hostfwd=tcp::2222-:22 -device virtio-net-pci,netdev=net0,id=net0,mac=52:54:00:c9:18:27
   # -netdev user,id=net0 -device vmxnet3,netdev=net0,id=net0,mac=52:54:00:c9:18:27  # Note: Use this line for High Sierra
