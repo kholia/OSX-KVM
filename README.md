@@ -143,8 +143,7 @@ processors work just fine (even for macOS Sonoma).
   Choose a product to download (1-9): 7
   ```
 
-  Note: Modern NVIDIA GPUs are supported on HighSierra but not on later
-  versions of macOS.
+  Note: All NVIDIA GPUs are not supported natively starting with Monterey. You can use later versions of macOS with OpenCore Legacy Patcher in order to implement basic OpenGL 3D acceleration on Tesla, Fermi, Maxwell and Pascal, or Legacy Metal on Kepler.
 
 * Convert the downloaded `BaseSystem.dmg` file into the `BaseSystem.img` file.
 
