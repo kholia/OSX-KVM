@@ -11,7 +11,9 @@ over email](mailto:dhiru.kholia@gmail.com?subject=[GitHub]%20OSX-KVM%20Commercia
 
 Struggling with `Content Caching` stuff? We can help.
 
-Working with `Proxmox` and macOS? See [Nick's blog for sure](https://www.nicksherlock.com/).
+Working with `Proxmox` and macOS:
+- See [Nick's blog for sure](https://www.nicksherlock.com/)
+- Here’s a more up-to-date version for `Proxmox` [OpenCore-ISO](https://github.com/LongQT-sea/OpenCore-ISO)
 
 Yes, we support offline macOS installations now - see [this document](./run_offline.md) 🎉
 
