@@ -144,7 +144,6 @@ processors work just fine (even for macOS Sonoma).
 
   Choose a product to download (1-9): 7
   ```
-
   Note: Modern NVIDIA GPUs are supported on HighSierra but not on later
   versions of macOS.
 
@@ -163,6 +162,14 @@ processors work just fine (even for macOS Sonoma).
   ```
 
   NOTE: Create this HDD image file on a fast SSD/NVMe disk for best results.
+
+* Or use a simple nix command if you have it installed.
+
+  ```
+  nix run github:kholia/OSX-KVM/ --no-write-lock-file -- catalina
+  ```
+  This will clone a repository at `./OSX-KVM`, download the image,
+  give everything the right permissions, and start `./OpenCore-Boot.sh`.
 
 * Now you are ready to install macOS 🚀
 
