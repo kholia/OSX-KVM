@@ -61,9 +61,7 @@ processors work just fine (even for macOS Sonoma).
 
 ### Installation Preparation
 
-* Install QEMU and other packages.
-
-This step may need to be adapted for your Linux distribution.
+* Install QEMU and other packages. (Note: This step may need to be adapted for your Linux distribution.)
 
 #### Debian/Ubuntu
 
@@ -76,7 +74,7 @@ This step may need to be adapted for your Linux distribution.
 #### Fedora/RHEL
 
   ```
-  sudo dnf install qemu-system-x64 virt-manager git \
+  sudo dnf install qemu-system-x86 virt-manager git \
      wget libguestfs-tools p7zip make dmg2img tesseract-common \
      tesseract-langpack-eng genisoimage vim net-tools screen -y
   ```
