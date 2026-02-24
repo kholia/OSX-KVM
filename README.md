@@ -63,13 +63,23 @@ processors work just fine (even for macOS Sonoma).
 
 * Install QEMU and other packages.
 
+This step may need to be adapted for your Linux distribution.
+
+#### Debian/Ubuntu
+
   ```
   sudo apt-get install qemu-system uml-utilities virt-manager git \
       wget libguestfs-tools p7zip-full make dmg2img tesseract-ocr \
       tesseract-ocr-eng genisoimage vim net-tools screen -y
   ```
 
-  This step may need to be adapted for your Linux distribution.
+#### Fedora/RHEL
+
+  ```
+  sudo dnf install qemu-system-x64 virt-manager git \
+     wget libguestfs-tools p7zip make dmg2img tesseract-common \
+     tesseract-langpack-eng genisoimage vim net-tools screen -y
+  ```
 
 * Clone this repository on your QEMU system. Files from this repository are
   used in the following steps.
