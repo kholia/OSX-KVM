@@ -43,8 +43,8 @@
   <os>
     <type arch='x86_64' machine='pc-q35-4.2'>hvm</type>
     <!-- We don't need patched OVMF anymore when using latest OpenCore, stock one is okay -->
-    <loader readonly='yes' type='pflash'>/home/CHANGEME/OSX-KVM/OVMF_CODE.fd</loader>
-    <nvram>/home/CHANGEME/OSX-KVM/OVMF_VARS.fd</nvram>
+    <loader readonly='yes' type='pflash'>/home/CHANGEME/.config/libvirt/qemu/nvram/OVMF_CODE_4M.fd</loader>
+    <nvram>/home/CHANGEME/.config/libvirt/qemu/nvram/OVMF_VARS.4m.fd</nvram>
   </os>
   <features>
     <acpi/>
@@ -62,21 +62,21 @@
     <emulator>/usr/bin/qemu-system-x86_64</emulator>
     <disk type='file' device='disk'>
       <driver name='qemu' type='qcow2' cache='writeback' io='threads'/>
-      <source file='/home/CHANGEME/OSX-KVM/OpenCore/OpenCore.qcow2'/>
+      <source file='/home/CHANGEME/.local/src/OSX-KVM/OpenCore/OpenCore.qcow2'/>
       <target dev='sda' bus='sata'/>
       <boot order='2'/>
       <address type='drive' controller='0' bus='0' target='0' unit='0'/>
     </disk>
     <disk type='file' device='disk'>
       <driver name='qemu' type='qcow2' cache='writeback' io='threads'/>
-      <source file='/home/CHANGEME/OSX-KVM/mac_hdd_ng.img'/>
+      <source file='/home/CHANGEME/.local/src/OSX-KVM/mac_hdd_ng.img'/>
       <target dev='sdb' bus='sata'/>
       <boot order='1'/>
       <address type='drive' controller='0' bus='0' target='0' unit='1'/>
     </disk>
     <disk type="file" device="disk">
       <driver name="qemu" type="raw" cache="writeback"/>
-      <source file="/home/CHANGEME/OSX-KVM/BaseSystem.img"/>
+      <source file="/home/CHANGEME/.local/src/OSX-KVM/BaseSystem.img"/>
       <target dev="sdc" bus="sata"/>
       <boot order="3"/>
       <address type="drive" controller="0" bus="0" target="0" unit="2"/>
