@@ -61,7 +61,9 @@ processors work just fine (even for macOS Sonoma).
 
 ### Installation Preparation
 
-* Install QEMU and other packages.
+* Install QEMU and other packages. (Note: This step may need to be adapted for your Linux distribution.)
+
+#### Debian/Ubuntu
 
   ```
   sudo apt-get install qemu-system uml-utilities virt-manager git \
@@ -69,7 +71,13 @@ processors work just fine (even for macOS Sonoma).
       tesseract-ocr-eng genisoimage vim net-tools screen -y
   ```
 
-  This step may need to be adapted for your Linux distribution.
+#### Fedora/RHEL
+
+  ```
+  sudo dnf install qemu-system-x86 virt-manager git \
+     wget libguestfs-tools p7zip make dmg2img tesseract-common \
+     tesseract-langpack-eng genisoimage vim net-tools screen -y
+  ```
 
 * Clone this repository on your QEMU system. Files from this repository are
   used in the following steps.
@@ -186,6 +194,14 @@ processors work just fine (even for macOS Sonoma).
 
 - (OPTIONAL) Use this macOS VM disk with libvirt (virt-manager / virsh stuff).
 
+  - Move OVMF code and vars files to `$XDG_CONFIG_HOME/libvirt/qemu/nvram` and rename var store as necessary
+    for your resolution
+    ```
+    cp OVMF_VARS-<your desired resolution>.fd OVMF_VARS.4m.fd
+    cp OVMF_CODE_4M.fd "${XDG_CONFIG_HOME}/libvirt/qemu/nvram"
+    cp OVMF_VARS.4m.fd "${XDG_CONFIG_HOME}/libvirt/qemu/nvram"
+    ```
+
   - Edit `macOS-libvirt-Catalina.xml` file and change the various file paths (search
     for `CHANGEME` strings in that file). The following command should do the
     trick usually.
@@ -202,7 +218,8 @@ processors work just fine (even for macOS Sonoma).
     virsh --connect qemu:///system define macOS.xml
     ```
 
-  - If needed, grant necessary permissions to libvirt-qemu user,
+  - If needed, grant necessary permissions to libvirt-qemu user
+    (ignore spurious "invalid argument near character 3" error if encountered),
 
     ```
     sudo setfacl -m u:libvirt-qemu:rx /home/$USER
