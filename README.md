@@ -186,12 +186,12 @@ processors work just fine (even for macOS Sonoma).
 
 - (OPTIONAL) Use this macOS VM disk with libvirt (virt-manager / virsh stuff).
 
-  - Edit `macOS-libvirt-Catalina.xml` file and change the various file paths (search
+  - Edit `macOS-libvirt.xml` file and change the various file paths (search
     for `CHANGEME` strings in that file). The following command should do the
-    trick usually.
+    trick if the repo folder is inside `/home/$USER`.
 
     ```
-    sed "s/CHANGEME/$USER/g" macOS-libvirt-Catalina.xml > macOS.xml
+    sed "s/CHANGEME/$USER/g" macOS-libvirt.xml > macOS.xml
 
     virt-xml-validate macOS.xml
     ```
@@ -211,6 +211,8 @@ processors work just fine (even for macOS Sonoma).
 
   - Launch `virt-manager` and start the `macOS` virtual machine.
 
+  Note: The older `macOS-libvirt-Catalina.xml` is preserved in the repository
+  for reference. `macOS-libvirt.xml` is recommended for modern setups (QEMU >= 8.x).
 
 ### Headless macOS
 
