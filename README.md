@@ -59,7 +59,7 @@ Note: Older AMD CPU(s) are known to be problematic but modern AMD Ryzen
 processors work just fine (even for macOS Sonoma).
 
 
-### Installation Preparation
+### Installation Preparation 
 
 * Install QEMU and other packages.
 
