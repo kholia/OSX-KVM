@@ -11,9 +11,7 @@ over email](mailto:dhiru.kholia@gmail.com?subject=[GitHub]%20OSX-KVM%20Commercia
 
 Struggling with `Content Caching` stuff? We can help.
 
-Working with `Proxmox` and macOS:
-- See [Nick's blog for sure](https://www.nicksherlock.com/)
-- Here’s a more up-to-date version for `Proxmox` [OpenCore-ISO](https://github.com/LongQT-sea/OpenCore-ISO)
+Working with `Proxmox` and macOS? See [Nick's blog for sure](https://www.nicksherlock.com/).
 
 Yes, we support offline macOS installations now - see [this document](./run_offline.md) 🎉
 
@@ -144,7 +142,6 @@ processors work just fine (even for macOS Sonoma).
 
   Choose a product to download (1-9): 7
   ```
-
   Note: Modern NVIDIA GPUs are supported on HighSierra but not on later
   versions of macOS.
 
@@ -163,6 +160,14 @@ processors work just fine (even for macOS Sonoma).
   ```
 
   NOTE: Create this HDD image file on a fast SSD/NVMe disk for best results.
+
+* Or use a simple nix command if you have it installed.
+
+  ```
+  nix run github:kholia/OSX-KVM/ --no-write-lock-file -- catalina
+  ```
+  This will clone a repository at `./OSX-KVM`, download the image,
+  give everything the right permissions, and start `./OpenCore-Boot.sh`.
 
 * Now you are ready to install macOS 🚀
 
