@@ -176,6 +176,11 @@ processors work just fine (even for macOS Sonoma).
   ./OpenCore-Boot.sh
   ```
 
+  > **Note:** Software Rendering is usually slow. If you
+  > experience a sluggish desktop (5–15 FPS), read
+  > [`MANDATORY_PERFORMANCE_GUIDE.md`](MANDATORY_PERFORMANCE_GUIDE.md)
+  > for core isolation and SMT tuning.
+
   Note: This same script works for all recent macOS versions.
 
 - Use the `Disk Utility` tool within the macOS installer to partition, and
