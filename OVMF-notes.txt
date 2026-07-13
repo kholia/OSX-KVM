@@ -2,6 +2,37 @@ Current OVMF blobs are borrowed from the following URL(s),
 
 - http://ftp.debian.org/debian/pool/main/e/edk2/ (ovmf-generic_2025.11-3_all.deb)
 
+
+Pairing CODE and VARS
+---------------------
+
+QEMU maps both pflash images so the pair ends at the 4 GiB mark, and OVMF has
+the address of its variable store compiled in. The two files must therefore
+add up to exactly the flash size the firmware was built for:
+
+    OVMF_CODE_4M.fd   3653632 B  +  OVMF_VARS_4M.fd    540672 B  = 4 MiB
+    OVMF_CODE.fd      1966080 B  +  OVMF_VARS.fd       131072 B  = 2 MiB
+
+Mixing them is silent, not fatal. A 4M build with a 128 KiB varstore boots,
+shows its setup menu and accepts changes, but the store lands 0x64000 bytes
+above where the firmware looks for it, so nothing is read back and no write
+is kept. Symptoms: "Preferred Resolution at Next Boot" stays Unset however
+often you commit it, OpenCore's NVRAM writes vanish across reboots, and the
+nvram file's mtime never moves.
+
+OVMF_VARS.fd, OVMF_VARS-1024x768.fd and OVMF_VARS-1920x1080.fd are all
+2 MiB-era stores, and all three are byte for byte identical: empty templates
+whose names promise a resolution that was never baked in. Set the resolution
+once through the firmware, under
+
+    Device Manager > OVMF Platform Configuration > Change Preferred Resolution
+
+after which it lives in whichever varstore the VM actually uses. The offered
+modes come from QemuVideoBochsModes[] in OvmfPkg/QemuVideoDxe/Initialize.c,
+filtered against the video RAM size. vmware-svga is served by that same code
+path (see the comment in QemuVideoDxe/Driver.c), so the list applies to it.
+
+
 Building OVMF
 -------------
 
