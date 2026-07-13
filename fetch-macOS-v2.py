@@ -262,7 +262,10 @@ def verify_image(dmgpath, cnkpath):
 
     with open(dmgpath, 'rb') as dmgf:
         for cnkcount, (cnksize, cnkhash) in enumerate(verify_chunklist(cnkpath), 1):
-            terminalsize = max(os.get_terminal_size().columns - TERMINAL_MARGIN, 0)
+            try:
+                terminalsize = max(os.get_terminal_size().columns - TERMINAL_MARGIN, 0)
+            except OSError:
+                terminalsize = 80
             print(f'\r{f"Chunk {cnkcount} ({cnksize} bytes)":<{terminalsize}}', end='')
             sys.stdout.flush()
             cnk = dmgf.read(cnksize)
@@ -494,8 +497,9 @@ def main():
                         help='Action to perform: "download" - performs recovery downloading,'
                         ' "selfcheck" checks whether MLB serial validation is possible, "verify" performs'
                         ' MLB serial verification, "guess" tries to find suitable mac model for MLB.')
-    parser.add_argument('-o', '--outdir', type=str, default='com.apple.recovery.boot',
-                        help='customise output directory for downloading, defaults to com.apple.recovery.boot')
+    parser.add_argument('-o', '--outdir', type=str, default=None,
+                        help='customise output directory for downloading, defaults to'
+                        ' com.apple.recovery.boot, or the current directory with --shortname')
     parser.add_argument('-n', '--basename', type=str, default='',
                         help='customise base name for downloading, defaults to remote name')
     parser.add_argument('-b', '--board-id', type=str, default=RECENT_MAC,
@@ -521,6 +525,9 @@ def main():
     if len(args.mlb) != 17:
         print('ERROR: Cannot use MLBs in non 17 character format!')
         sys.exit(1)
+
+    if args.outdir is None and args.shortname == '':
+        args.outdir = 'com.apple.recovery.boot'
 
     if args.action == 'download':
         return action_download(args)
@@ -571,8 +578,10 @@ def main():
     except:
         os_type = "default"
     args = gdata(mlb = product["m"], board_id = product["b"], diagnostics =
-            False, os_type = os_type, verbose=False, basename="", outdir=".")
-    action_download(args)
+            False, os_type = os_type, verbose = args.verbose,
+            basename = args.basename,
+            outdir = '.' if args.outdir is None else args.outdir)
+    return action_download(args)
 
 
 if __name__ == '__main__':
