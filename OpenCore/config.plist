@@ -378,7 +378,7 @@
 				<key>Arch</key>
 				<string>Any</string>
 				<key>BundlePath</key>
-				<string>AppleMCEReporterDisabler.kext</string>
+				<string>MCEReporterDisabler.kext</string>
 				<key>Comment</key>
 				<string>Fix kernel panic MacPro SMBIOS</string>
 				<key>Enabled</key>
