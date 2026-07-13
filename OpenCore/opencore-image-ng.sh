@@ -24,7 +24,7 @@ function do_cleanup() {
 	if test "$GUESTFISH_PID" != ""; then
 		guestfish --remote -- exit >/dev/null 2>&1 || true
 	fi
-	sudo rm -rf "$WORK"
+	rm -rf "$WORK"
 }
 
 WORK="${TMPDIR-/var/tmp}/${0##*/}-$$"
