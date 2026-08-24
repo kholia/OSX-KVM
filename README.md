@@ -241,7 +241,11 @@ work, patience, and a bit of luck (perhaps?).
 
 * See [networking notes](networking-qemu-kvm-howto.txt) on how to setup networking in your VM, outbound and also inbound for remote access to your VM via SSH, VNC, etc.
 
+* Guest has no network / no `en0`? The NIC likely needs to sit on the PCI root bus — see [these notes](notes.md#networking-note-vmxnet3-must-sit-on-the-pci-root-bus).
+
 * To passthrough GPUs and other devices, see [these notes](notes.md#gpu-passthrough-notes).
+
+* To passthrough an Intel **integrated** GPU (GVT-g, for laptops), see [these notes](notes.md#intel-igpu-gvt-g-passthrough-notes).
 
 * Need a different resolution? Check out the [notes](notes.md#change-resolution-in-opencore) included in this repository.
 
