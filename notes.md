@@ -222,6 +222,111 @@ work in a rugged, consistent manner.
 
 [Link to a list of supported GPUs](https://dortania.github.io/GPU-Buyers-Guide/modern-gpus/amd-gpu.html).
 
+### Intel iGPU (GVT-g) passthrough notes
+
+If your machine only has an Intel integrated GPU (typical laptops), you cannot
+unbind it for full-device passthrough because the host display server is using
+it. GVT-g (Intel's mediated GPU virtualization) lets the host and a macOS guest
+share the iGPU. This was verified on a UHD 620 (`8086:5917`) laptop with
+QEMU 11 / libvirt and macOS Ventura 13.6, using the libvirt setup from this
+repository. Companion repository with helper scripts:
+[Vault042/Docker-OSX-GVT-g](https://github.com/Vault042/Docker-OSX-GVT-g).
+
+What works: the vGPU is enumerated by macOS (System Information shows
+`Intel HD Graphics (GVT-g)`, Built-In), UEFI/OpenCore boot, networking, and
+boot-time resolution selection. What does not work: graphics acceleration
+(QE/CI) — the Apple framebuffer driver cannot register on a mediated GPU
+(tracked at
+[acidanthera/bugtracker#1914](https://github.com/acidanthera/bugtracker/issues/1914)).
+macOS falls back to vmware-svga display, which is fully usable.
+
+Note: GVT-g requires a Gen 6-10 Intel iGPU and kernel support
+(`CONFIG_DRM_I915_GVT_KVMGT`). The `kvmgt` code has been removed from newer
+mainline kernels, so check your distribution's kernel first.
+
+- Enable GVT-g on the host: kernel command line
+  `intel_iommu=on iommu=pt i915.enable_gvt=1` plus `kvm.ignore_msrs=1`
+  (see the GPU passthrough notes above).
+
+- Create a mediated device instance (pick any UUID, and a type from
+  `/sys/class/mdev_bus/<IGPU_BDF>/mdev_supported_types/`, e.g.
+  `i915-GVTg_V5_8`). Wrap this in a systemd oneshot unit to make it
+  persistent:
+
+  ```
+  $ echo '<MDEV_UUID>' | sudo tee /sys/class/mdev_bus/<IGPU_BDF>/mdev_supported_types/i915-GVTg_V5_8/create
+  ```
+
+- Attach the mdev to the VM. With libvirt, add to the domain XML (root
+  element needs `xmlns:qemu="http://libvirt.org/schemas/domain/qemu/1.0"`):
+
+  ```xml
+  <qemu:commandline>
+    <qemu:arg value='-device'/>
+    <qemu:arg value='vfio-pci,sysfsdev=/sys/bus/mdev/devices/<MDEV_UUID>,addr=06.0,display=off'/>
+  </qemu:commandline>
+  ```
+
+  On QEMU >= 10/11, do **not** add `x-igd-opregion=on` or
+  `romfile=i915ovmf.rom` — they make OVMF/OpenCore spin forever (one CPU core
+  at 100%, black screen, silent serial). The plain `vfio-pci` device is
+  sufficient for macOS to enumerate the GPU. Also add `/dev/vfio/vfio` and the
+  mdev's VFIO group to `cgroup_device_acl` in `/etc/libvirt/qemu.conf`,
+  otherwise QEMU fails with `Operation not permitted` on `/dev/vfio/<group>`.
+
+- Inject the iGPU in OpenCore's `config.plist`. The example matches
+  `addr=06.0`, i.e. `PciRoot(0x0)/Pci(0x6,0x0)` (base64 values are
+  little-endian; UHD 620 example):
+
+  ```xml
+  <key>PciRoot(0x0)/Pci(0x6,0x0)</key>
+  <dict>
+    <key>device-id</key>               <data>FlkAAA==</data>  <!-- 0x5916 -->
+    <key>AAPL,ig-platform-id</key>     <data>FlkAAA==</data>  <!-- 0x00005916 -->
+    <key>framebuffer-patch-enable</key><data>AQAAAA==</data>
+    <key>framebuffer-stolenmem</key>   <data>AAAwAQ==</data>  <!-- 0x01300000 -->
+    <key>framebuffer-fbmem</key>       <data>AACQAA==</data>  <!-- 0x00900000 -->
+    <key>model</key><string>Intel HD Graphics (GVT-g)</string>
+  </dict>
+  ```
+
+  Success marker on the serial console: `[IGPU] Graphics driver failed to
+  load: could not register with Framebuffer driver!` — this means the Apple
+  driver bound to the injected device (the whole passthrough chain works);
+  only the framebuffer registration fails (the known limitation above).
+
+### Networking note: vmxnet3 must sit on the PCI root bus
+
+With recent QEMU/libvirt the guest may boot fine but macOS shows no network,
+and `ifconfig` has no `en0` at all. Root cause: libvirt places the NIC behind
+a PCIe root port by default, and macOS does not load the `vmxnet3` driver for
+devices there. Pin the NIC to the PCI root bus instead (and avoid `virtio` /
+`e1000` models — macOS has no drivers for them):
+
+```xml
+<interface type='user'>
+  <mac address='<MAC_ADDRESS>'/>
+  <model type='vmxnet3'/>
+  <rom bar='off'/>
+  <address type='pci' domain='0x0000' bus='0x00' slot='0x05' function='0x0'/>
+</interface>
+```
+
+`rom bar='off'` stops OVMF from executing the NIC's EFI option ROM, which can
+otherwise hang the firmware. Verification: the serial log shows
+`ifnet_attach: ... interface en0` once the driver loads.
+
+### Resolution caveat with vmvga (EFI framebuffer)
+
+The "Change resolution in OpenCore" section above still applies, but note that
+with `video model='vmvga'` (needed on QEMU >= 9: `virtio` video has no macOS
+driver, and SPICE was removed) there is no native macOS display driver, so the
+resolution cannot be switched at runtime from System Settings - Displays. Set
+`UEFI -> Output -> Resolution` in OpenCore (e.g. `Max`, which gave 2560x1600
+in testing) and reboot. Also give the `<video>` element an explicit address on
+the PCI root bus (`<address type='pci' bus='0x00' slot='0x02'/>`), otherwise
+OVMF reports `Missing compatible GOP` and the display stays black.
+
 ### USB passthrough notes
 
 These steps will need to be adapted for your particular setup.
