@@ -6,7 +6,7 @@
 	Run "virt-xml-validate macOS-libvirt-Catalina.xml" to validate this file.
 
 	To install this file, you may place it at ~/.config/libvirt/qemu/
-	and run: virsh define macOS-libvirt.xml.
+	and run: virsh define macOS-libvirt-Catalina.xml.
 
 	This configuration has been tested in Ubuntu 20.04 with stock QEMU-KVM.
 
