@@ -346,7 +346,7 @@
 				<key>Comment</key>
 				<string>Acidanthera VoodooPS2Controller.kext</string>
 				<key>Enabled</key>
-				<true/>
+				<false/>
 				<key>ExecutablePath</key>
 				<string>Contents/MacOS/VoodooPS2Controller</string>
 				<key>MaxKernel</key>
@@ -364,7 +364,7 @@
 				<key>Comment</key>
 				<string>Acidanthera VoodooPS2Keyboard.kext</string>
 				<key>Enabled</key>
-				<true/>
+				<false/>
 				<key>ExecutablePath</key>
 				<string>Contents/MacOS/VoodooPS2Keyboard</string>
 				<key>MaxKernel</key>
@@ -378,7 +378,7 @@
 				<key>Arch</key>
 				<string>Any</string>
 				<key>BundlePath</key>
-				<string>AppleMCEReporterDisabler.kext</string>
+				<string>MCEReporterDisabler.kext</string>
 				<key>Comment</key>
 				<string>Fix kernel panic MacPro SMBIOS</string>
 				<key>Enabled</key>
@@ -400,7 +400,7 @@
 				<key>Comment</key>
 				<string>USBToolBox.kext</string>
 				<key>Enabled</key>
-				<true/>
+				<false/>
 				<key>ExecutablePath</key>
 				<string>Contents/MacOS/USBToolBox</string>
 				<key>MaxKernel</key>
@@ -418,7 +418,7 @@
 				<key>Comment</key>
 				<string>UTBMap.kext</string>
 				<key>Enabled</key>
-				<true/>
+				<false/>
 				<key>ExecutablePath</key>
 				<string></string>
 				<key>MaxKernel</key>
