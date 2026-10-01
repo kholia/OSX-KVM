@@ -21,6 +21,7 @@ import json
 import linecache
 import os
 import random
+import shutil
 import struct
 import string
 import sys
@@ -262,7 +263,7 @@ def verify_image(dmgpath, cnkpath):
 
     with open(dmgpath, 'rb') as dmgf:
         for cnkcount, (cnksize, cnkhash) in enumerate(verify_chunklist(cnkpath), 1):
-            terminalsize = max(os.get_terminal_size().columns - TERMINAL_MARGIN, 0)
+            terminalsize = max(shutil.get_terminal_size().columns - TERMINAL_MARGIN, 0)
             print(f'\r{f"Chunk {cnkcount} ({cnksize} bytes)":<{terminalsize}}', end='')
             sys.stdout.flush()
             cnk = dmgf.read(cnksize)
@@ -572,7 +573,7 @@ def main():
         os_type = "default"
     args = gdata(mlb = product["m"], board_id = product["b"], diagnostics =
             False, os_type = os_type, verbose=False, basename="", outdir=".")
-    action_download(args)
+    return action_download(args)
 
 
 if __name__ == '__main__':
