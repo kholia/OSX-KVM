@@ -59,11 +59,21 @@ def validate_args(a):
 
 def image_info(path):
     # No -U: respect QEMU image locks instead of inspecting an active writer.
-    result = subprocess.run(['qemu-img', 'info', '--output=json', str(path)],
-                            check=True, capture_output=True, text=True)
+    try:
+        result = subprocess.run(['qemu-img', 'info', '--output=json', str(path)],
+                                check=True, capture_output=True, text=True)
+    except subprocess.CalledProcessError as error:
+        raise ValueError(f'Cannot inspect {path}: {error.stderr.strip()}') from error
     info = json.loads(result.stdout)
     if info.get('backing-filename') or info.get('full-backing-filename'):
         raise ValueError(f'Backing chains are unsupported: {path}')
+    details = info.get('format-specific', {}).get('data', {})
+    if details.get('data-file'):
+        raise ValueError(f'External QCOW2 data files are unsupported: {path}')
+    if info.get('encrypted') or details.get('encrypt'):
+        raise ValueError(f'Encrypted images require secrets and are unsupported: {path}')
+    if details.get('corrupt'):
+        raise ValueError(f'Image is marked corrupt: {path}')
     return info
 
 
@@ -96,14 +106,22 @@ def prepare(conn, a):
         if not source.is_file() or not os.access(source, os.R_OK):
             raise ValueError(f'Not a readable file: {source}')
         name = a.name + suffix
-        if name in destpool.listVolumes():
+        if name in destpool.listVolumes() or os.path.lexists(directory / name):
             raise ValueError(f'Volume already exists: {directory / name}')
+        before = fingerprint(source)
+        if before[2] == 0:
+            raise ValueError(f'Empty source file: {source}')
         info = image_info(source)
+        if fingerprint(source) != before:
+            raise ValueError(f'Source changed during preflight: {source}')
         expected = 'qcow2' if role in ('disk', 'opencore') else 'raw'
         if info.get('format') != expected:
             raise ValueError(f'{source}: expected {expected}, found {info.get("format")}')
         items.append(dict(role=role, source=source, name=name, pool=destpool,
-                          path=directory / name, before=fingerprint(source)))
+                          path=directory / name, before=before))
+    identities = [item['before'][:2] for item in items]
+    if len(set(identities)) != len(identities):
+        raise ValueError('Each disk and firmware role must use a distinct source file.')
     sources = {str(i['source']) for i in items}
     for domain in conn.listAllDomains(0):
         root = ET.fromstring(domain.XMLDesc(0))
@@ -166,6 +184,20 @@ def volume_xml(item):
     return ET.tostring(root, encoding='unicode')
 
 
+def abort_stream(stream):
+    try:
+        stream.abort()
+    except Exception as error:
+        print(f'Stream abort failed: {error}', file=sys.stderr)
+
+
+def check_sources(items):
+    for item in items:
+        image_info(item['source'])  # Respect image locks; the source VM must stay stopped.
+        if fingerprint(item['source']) != item['before']:
+            raise RuntimeError(f'Source changed: {item["source"]}')
+
+
 def upload_verify(conn, volume, item):
     source = item['source']
     stream = conn.newStream(0)
@@ -183,7 +215,7 @@ def upload_verify(conn, volume, item):
                     offset += sent
         stream.finish()
     except BaseException:
-        stream.abort()
+        abort_stream(stream)
         raise
     if fingerprint(source) != item['before']:
         raise RuntimeError(f'Source changed during import: {source}')
@@ -195,7 +227,7 @@ def upload_verify(conn, volume, item):
             downloaded.update(chunk)
         stream.finish()
     except BaseException:
-        stream.abort()
+        abort_stream(stream)
         raise
     if digest.digest() != downloaded.digest():
         raise RuntimeError(f'Checksum mismatch: {item["name"]}')
@@ -205,22 +237,28 @@ def upload_verify(conn, volume, item):
 def migrate(conn, a, items, xml):
     created = []
     registered = False
+    definition_attempted = False
     a.output_dir.mkdir(parents=True, exist_ok=False)
     try:
         # This dedicated blocking Python connection does not enable client keepalive.
         summary = []
+        (a.output_dir / 'domain.xml').write_text(xml + '\n')
+        (a.output_dir / 'import.json').write_text('[]\n')
+        check_sources(items)
         for item in items:
-            image_info(item['source'])  # Recheck locks after interactive confirmation.
-            if fingerprint(item['source']) != item['before']:
-                raise RuntimeError(f'Source changed: {item["source"]}')
+            check_sources([item])
             print(f'Importing and verifying {item["source"]} -> {item["path"]}', flush=True)
             volume = item['pool'].createXML(volume_xml(item), 0)
-            created.append(volume)
+            created.append((volume, item['name']))
             checksum = upload_verify(conn, volume, item)
             item['pool'].refresh(0)
             summary.append(dict(source=str(item['source']), destination=str(item['path']), sha256=checksum))
-        (a.output_dir / 'domain.xml').write_text(xml + '\n')
-        (a.output_dir / 'import.json').write_text(json.dumps(summary, indent=2) + '\n')
+            (a.output_dir / 'import.json').write_text(json.dumps(summary, indent=2) + '\n')
+        # An earlier disk may have changed while later files were copied.
+        check_sources(items)
+        # A failed RPC can still have registered the domain. Retain storage whenever
+        # registration was attempted, even if its outcome cannot be confirmed.
+        definition_attempted = True
         domain = conn.defineXML(xml)
         registered = True
         (a.output_dir / 'domain.xml').write_text(domain.XMLDesc(2) + '\n')
@@ -229,15 +267,18 @@ def migrate(conn, a, items, xml):
         if a.start:
             domain.create()
     except BaseException:
-        if not registered:
-            for volume in reversed(created):
+        if not definition_attempted:
+            for volume, name in reversed(created):
                 try:
                     volume.delete(0)
                 except Exception as error:
-                    print(f'Cleanup failed for {volume.name()}: {error}', file=sys.stderr)
+                    print(f'Cleanup failed for {name}: {error}', file=sys.stderr)
             print(f'Import failed; diagnostic output retained at {a.output_dir}', file=sys.stderr)
+        elif registered:
+            print('VM is registered; its files are retained. Inspect the post-registration failure.', file=sys.stderr)
         else:
-            print('VM is registered and its files are retained; inspect the start failure.', file=sys.stderr)
+            print('Registration outcome is uncertain; all imported files are retained. '
+                  f'Inspect libvirt and {a.output_dir} before retrying.', file=sys.stderr)
         raise
 
 

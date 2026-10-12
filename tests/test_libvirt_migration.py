@@ -143,6 +143,71 @@ class MigrationTests(unittest.TestCase):
         for item in self.items:
             item['pool'].createXML.return_value.delete.assert_not_called()
 
+    def test_external_data_encryption_and_corruption_rejected(self):
+        for details in ({'data-file': '/elsewhere/data.raw'},
+                        {'encrypt': {'format': 'luks'}}, {'corrupt': True}):
+            with self.subTest(details=details):
+                result = MagicMock(stdout=m.json.dumps({'format': 'qcow2',
+                                   'format-specific': {'data': details}}))
+                with patch.object(m.subprocess, 'run', return_value=result), self.assertRaises(ValueError):
+                    self.original_image_info(self.items[0]['source'])
+
+    def test_abort_error_does_not_hide_transfer_failure(self):
+        conn = MagicMock()
+        stream = conn.newStream.return_value
+        stream.send.side_effect = RuntimeError('original transfer failure')
+        stream.abort.side_effect = RuntimeError('abort failed too')
+        with self.assertRaisesRegex(RuntimeError, 'original transfer failure'):
+            m.upload_verify(conn, MagicMock(), self.items[0])
+
+    def test_source_changed_after_earlier_upload_rolls_back(self):
+        conn = MagicMock()
+        def upload(conn, volume, item):
+            if item['role'] == 'vars':
+                self.items[0]['source'].write_bytes(b'changed after earlier upload')
+            return 'checksum'
+        with patch.object(m, 'upload_verify', side_effect=upload):
+            with self.assertRaisesRegex(RuntimeError, 'Source changed'):
+                m.migrate(conn, self.args, self.items, '<domain/>')
+        conn.defineXML.assert_not_called()
+        for item in self.items:
+            item['pool'].createXML.return_value.delete.assert_called_once_with(0)
+
+    def test_registration_rpc_failure_retains_verified_storage(self):
+        conn = MagicMock()
+        conn.defineXML.side_effect = RuntimeError('response lost')
+        with patch.object(m, 'upload_verify', return_value='checksum'):
+            with self.assertRaisesRegex(RuntimeError, 'response lost'):
+                m.migrate(conn, self.args, self.items, '<domain/>')
+        for item in self.items:
+            item['pool'].createXML.return_value.delete.assert_not_called()
+        self.assertTrue((self.args.output_dir / 'domain.xml').exists())
+        self.assertEqual(len(m.json.loads((self.args.output_dir / 'import.json').read_text())), 4)
+
+    def test_cleanup_failure_does_not_stop_remaining_cleanup(self):
+        conn = MagicMock()
+        first = self.items[0]['pool'].createXML.return_value
+        second = self.items[1]['pool'].createXML.return_value
+        second.delete.side_effect = RuntimeError('delete failed')
+        second.name.side_effect = RuntimeError('connection lost')
+        with patch.object(m, 'upload_verify', side_effect=['checksum', RuntimeError('original failure')]):
+            with self.assertRaisesRegex(RuntimeError, 'original failure'):
+                m.migrate(conn, self.args, self.items, '<domain/>')
+        first.delete.assert_called_once_with(0)
+        second.name.assert_not_called()
+
+    def test_zero_progress_and_short_download_fail(self):
+        for send, chunks, message in [(0, [], 'no progress'),
+                                       (len(b'original-content'), [b'partial', b''], 'Checksum mismatch')]:
+            with self.subTest(message=message):
+                conn = MagicMock()
+                upload, download = MagicMock(), MagicMock()
+                upload.send.return_value = send
+                download.recv.side_effect = chunks
+                conn.newStream.side_effect = [upload, download]
+                with self.assertRaisesRegex(RuntimeError, message):
+                    m.upload_verify(conn, MagicMock(), self.items[0])
+
     def test_source_changed_before_upload(self):
         self.items[0]['source'].write_bytes(b'changed')
         with self.assertRaisesRegex(RuntimeError, 'Source changed'):

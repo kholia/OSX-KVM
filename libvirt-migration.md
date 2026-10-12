@@ -32,9 +32,9 @@ For example:
 ```
 
 Keep the source VM stopped throughout copying and verification. The helper
-requires self-contained QCOW2 disk/OpenCore images and raw firmware files;
-backing chains and existing destination names are rejected. Copies need free
-space for the source files' full apparent sizes. Defaults match
+requires self-contained QCOW2 disk/OpenCore images and raw firmware files.
+Backing chains, external data files, encrypted/corrupt images, and existing
+destination names are rejected. Copies need free space for the source files' full apparent sizes. Defaults match
 `OpenCore-Boot.sh`; customized boot scripts are not read or executed.
 
 The generated VM uses root-bus USB XHCI, a USB keyboard and absolute tablet,
@@ -51,8 +51,10 @@ may need `--cpu-model Haswell-noTSX` or `--cpu-model Penryn`.
 
 Import records and normalized XML are saved under
 `~/.local/share/osx-kvm-imports/<name>/`. Failed imports remove only newly
-created volumes; diagnostic records remain. After registration, a start
-failure retains the VM and its files for inspection. No host-boot autostart is
+created volumes before registration; diagnostic records remain. If registration
+is attempted but its response fails, imported files are retained because the VM
+may already exist. Inspect libvirt before retrying. Post-registration failures
+also retain the VM and its files. No host-boot autostart is
 enabled. The original `OpenCore-Boot.sh` still boots the original disk copy,
 which can diverge from the imported VM. Source cleanup is deliberately manual.
 
@@ -83,3 +85,15 @@ which can diverge from the imported VM. Source cleanup is deliberately manual.
   ```
 
 - Launch `virt-manager` and start the `macOS` virtual machine.
+
+## Testing the helper
+
+```bash
+python3 -m unittest discover -s tests -v
+OSX_KVM_LIBVIRT_TESTS=1 /usr/bin/python3 -m unittest discover -s tests -v
+```
+
+The opt-in integration tests require access to local system libvirt. They use
+small temporary images, separately named transient storage pools and inactive
+test domains, and remove their own fixtures. They never start a guest or change
+an existing VM. They do not replace guest boot and interactive console checks.
