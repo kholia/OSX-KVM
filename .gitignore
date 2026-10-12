@@ -10,3 +10,6 @@
 OVMF_VARS*.fd
 OpenCore-Catalina/EFI/OC/Resources/
 .direnv/
+
+# Python bytecode
+__pycache__/

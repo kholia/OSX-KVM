@@ -184,32 +184,18 @@ processors work just fine (even for macOS Sonoma).
 
 - Go ahead, and install macOS 🙌
 
-- (OPTIONAL) Use this macOS VM disk with libvirt (virt-manager / virsh stuff).
+- (OPTIONAL) Add your installed macOS VM to Virtual Machine Manager. Shut it
+  down first, then run:
 
-  - Edit `macOS-libvirt-Catalina.xml` file and change the various file paths (search
-    for `CHANGEME` strings in that file). The following command should do the
-    trick usually.
+  ```bash
+  sudo apt-get install python3-libvirt qemu-utils  # Debian/Ubuntu
+  ./migrate-to-libvirt.py --nvram-pool default --dry-run
+  ./migrate-to-libvirt.py --nvram-pool default
+  ```
 
-    ```
-    sed "s/CHANGEME/$USER/g" macOS-libvirt-Catalina.xml > macOS.xml
-
-    virt-xml-validate macOS.xml
-    ```
-
-  - Create a VM by running the following command.
-
-    ```bash
-    virsh --connect qemu:///system define macOS.xml
-    ```
-
-  - If needed, grant necessary permissions to libvirt-qemu user,
-
-    ```
-    sudo setfacl -m u:libvirt-qemu:rx /home/$USER
-    sudo setfacl -R -m u:libvirt-qemu:rx /home/$USER/OSX-KVM
-    ```
-
-  - Launch `virt-manager` and start the `macOS` virtual machine.
+  Select `macOS` in Virtual Machine Manager's QEMU/KVM system connection and
+  start it. The helper copies and verifies the files, keeping your originals.
+  See [migration options and manual XML setup](libvirt-migration.md) for details.
 
 
 ### Headless macOS
