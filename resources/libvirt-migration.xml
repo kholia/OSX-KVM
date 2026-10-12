@@ -1,0 +1,80 @@
+<!-- Internal template: rendered by migrate-to-libvirt.py; do not define directly. -->
+<domain xmlns:qemu="http://libvirt.org/schemas/domain/qemu/1.0" type="kvm">
+  <name>macOS</name>
+  <memory unit="KiB">4194304</memory>
+  <currentMemory unit="KiB">4194304</currentMemory>
+  <vcpu placement="static">4</vcpu>
+  <os>
+    <type arch="x86_64" machine="pc-q35-8.2">hvm</type>
+    <loader readonly="yes" type="pflash">/var/lib/libvirt/images/macOS-OVMF_CODE.fd</loader>
+    <nvram>/var/lib/libvirt/qemu/nvram/macOS_VARS.fd</nvram>
+    <boot dev="hd" />
+  </os>
+  <features>
+    <acpi />
+    <apic />
+  </features>
+  <cpu mode="custom" match="exact" check="none">
+    <model fallback="forbid">Skylake-Client</model>
+    <topology sockets="1" dies="1" cores="2" threads="2" />
+  </cpu>
+  <clock offset="utc">
+    <timer name="hpet" present="no" />
+  </clock>
+  <on_poweroff>destroy</on_poweroff>
+  <on_reboot>restart</on_reboot>
+  <on_crash>destroy</on_crash>
+  <devices>
+    <emulator>/usr/bin/qemu-system-x86_64</emulator>
+    <disk type="file" device="disk">
+      <driver name="qemu" type="qcow2" />
+      <source file="/var/lib/libvirt/images/macOS-OpenCore.qcow2" />
+      <target dev="sdc" bus="sata" />
+      <address type="drive" controller="0" bus="0" target="0" unit="2" />
+    </disk>
+    <disk type="file" device="disk">
+      <driver name="qemu" type="qcow2" />
+      <source file="/var/lib/libvirt/images/macOS.qcow2" />
+      <target dev="sde" bus="sata" />
+      <address type="drive" controller="0" bus="0" target="0" unit="4" />
+    </disk>
+    <controller type="pci" index="0" model="pcie-root" />
+    <controller type="sata" index="0">
+      <address type="pci" domain="0x0000" bus="0x00" slot="0x1f" function="0x2" />
+    </controller>
+    <controller type="usb" index="0" model="qemu-xhci">
+      <address type="pci" domain="0x0000" bus="0x00" slot="0x02" function="0x0" />
+    </controller>
+    <input type="keyboard" bus="usb">
+      <address type="usb" bus="0" port="1" />
+    </input>
+    <input type="tablet" bus="usb">
+      <address type="usb" bus="0" port="2" />
+    </input>
+    <graphics type="spice" autoport="yes" listen="127.0.0.1">
+      <listen type="address" address="127.0.0.1" />
+      <mouse mode="client" />
+    </graphics>
+    <sound model="ich9">
+      <address type="pci" domain="0x0000" bus="0x00" slot="0x1b" function="0x0" />
+    </sound>
+    <audio id="1" type="spice" />
+    <video>
+      <model type="vmvga" vram="16384" heads="1" primary="yes" />
+      <address type="pci" domain="0x0000" bus="0x00" slot="0x01" function="0x0" />
+    </video>
+    <memballoon model="none" />
+  </devices>
+  <qemu:commandline>
+    <qemu:arg value="-cpu" />
+    <qemu:arg value="Skylake-Client,-hle,-rtm,kvm=on,vendor=GenuineIntel,+invtsc,vmware-cpuid-freq=on,+ssse3,+sse4.2,+popcnt,+avx,+aes,+xsave,+xsaveopt,check" />
+    <qemu:arg value="-device" />
+    <qemu:arg value="isa-applesmc,osk=ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc" />
+    <qemu:arg value="-smbios" />
+    <qemu:arg value="type=2" />
+    <qemu:arg value="-netdev" />
+    <qemu:arg value="user,id=macosnet,hostfwd=tcp:127.0.0.1:2222-:22" />
+    <qemu:arg value="-device" />
+    <qemu:arg value="virtio-net-pci,netdev=macosnet,mac=52:54:00:00:00:00,bus=pcie.0,addr=0x5" />
+  </qemu:commandline>
+</domain>
