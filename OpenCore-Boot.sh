@@ -20,6 +20,13 @@
 
 MY_OPTIONS="+ssse3,+sse4.2,+popcnt,+avx,+aes,+xsave,+xsaveopt,check"
 
+# Skylake-Client includes PCID, which AMD CPUs lack. Disable it only when the
+# host doesn't support it, to avoid "host doesn't support requested feature"
+# warnings.
+if ! grep -qw pcid /proc/cpuinfo; then
+  MY_OPTIONS="-pcid,$MY_OPTIONS"
+fi
+
 # This script works for Big Sur, Catalina, Mojave, and High Sierra. Tested with
 # macOS 10.15.6, macOS 10.14.6, and macOS 10.13.6.
 
