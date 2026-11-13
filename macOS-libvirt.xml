@@ -1,0 +1,199 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<domain type='kvm' xmlns:qemu='http://libvirt.org/schemas/domain/qemu/1.0'>
+
+  <!-- 
+  > **Note:** `macOS-libvirt-Catalina.xml` has been updated to work with
+  > modern QEMU and libvirt versions. Key changes from the original:
+  > - CPU model updated to `Skylake-Client` (Penryn seems to break on newer versions of macOS)
+  > - OVMF firmware filenames updated to `OVMF_CODE_4M.fd` / `OVMF_VARS-1920x1080.fd`
+  > - USB controllers replaced with `qemu-xhci` (USB 3.0)
+  > - Video changed from `virtio` to `vmvga` (vmware-svga)
+  > - TSC clock timer added to aid timing issues
+  > - SATA port assignments corrected to match OpenCore-Boot.sh
+  > - `ICH9-LPC.acpi-pci-hotplug-with-bridge-support=off` added (commonly recommended for macOS KVM guests)
+  > - PCI slot conflicts resolved by removing unused pcie-root-port controllers
+  > - Networking moved to qemu:commandline for libvirt compatibility 
+  -->
+
+  <name>macOS</name>
+  <uuid>2aca0dd6-cec9-4717-9ab2-0b7b13d111c3</uuid>
+  <title>macOS</title>
+
+  <!-- 4 GiB RAM -->
+  <memory unit='KiB'>4194304</memory>
+  <currentMemory unit='KiB'>4194304</currentMemory>
+
+  <!-- 4 threads: 1 socket, 2 cores, 2 threads per core (stated later) -->
+  <vcpu placement='static'>4</vcpu>
+
+  <os>
+    <!-- pc-q35-8.2 to match newer QEMU versions -->
+    <type arch='x86_64' machine='pc-q35-8.2'>hvm</type>
+    <loader readonly='yes' type='pflash'>/home/CHANGEME/OSX-KVM/OVMF_CODE_4M.fd</loader>
+    <nvram>/home/CHANGEME/OSX-KVM/OVMF_VARS-1920x1080.fd</nvram>
+  </os>
+
+  <features>
+    <acpi/>
+    <apic/>
+  </features>
+
+  <!-- Set the actual topology -->
+  <cpu mode="custom" match="exact" check="none">
+    <model fallback="forbid">qemu64</model>
+    <topology sockets="1" dies="1" clusters="1" cores="2" threads="2"/>
+  </cpu>
+
+  <!-- TSC timer helps with the timings of libvirt -->
+  <clock offset='utc'>
+    <timer name='rtc' tickpolicy='catchup'/>
+    <timer name='pit' tickpolicy='delay'/>
+    <timer name='hpet' present='no'/>
+    <timer name='tsc' present='yes' tickpolicy='delay'/>
+  </clock>
+
+  <on_poweroff>destroy</on_poweroff>
+  <on_reboot>restart</on_reboot>
+  <on_crash>restart</on_crash>
+
+  <devices>
+    <emulator>/usr/bin/qemu-system-x86_64</emulator>
+
+    <!-- SATA controller at the standard ich9-ahci PCI slot -->
+    <controller type='sata' index='0'>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x1f' function='0x2'/>
+    </controller>
+
+    <!-- OpenCore bootloader on SATA port 2 -->
+    <disk type='file' device='disk'>
+      <driver name='qemu' type='qcow2' cache='writeback' io='threads'/>
+      <source file='/home/CHANGEME/OSX-KVM/OpenCore/OpenCore.qcow2'/>
+      <target dev='sda' bus='sata'/>
+      <address type='drive' controller='0' bus='0' target='0' unit='2'/>
+    </disk>
+
+    <!-- BaseSystem install media on SATA port 3 -->
+    <disk type='file' device='disk'>
+      <driver name='qemu' type='raw' cache='writeback'/>
+      <source file='/home/CHANGEME/OSX-KVM/BaseSystem.img'/>
+      <target dev='sdb' bus='sata'/>
+      <address type='drive' controller='0' bus='0' target='0' unit='3'/>
+    </disk>
+
+    <!-- Main macOS HDD on SATA port 4 -->
+    <disk type='file' device='disk'>
+      <driver name='qemu' type='qcow2' cache='writeback' io='threads'/>
+      <source file='/home/CHANGEME/OSX-KVM/mac_hdd_ng.img'/>
+      <target dev='sdc' bus='sata'/>
+      <boot order='1'/>
+      <address type='drive' controller='0' bus='0' target='0' unit='4'/>
+    </disk>
+
+    <!-- PCIe root and ports -->
+    <controller type='pci' index='0' model='pcie-root'/>
+
+    <!-- USB 3.0 xhci controller with keyboard and tablet -->
+    <controller type='usb' index='0' model='qemu-xhci'>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x07' function='0x0'/>
+    </controller>
+    <input type='tablet' bus='usb'>
+      <address type='usb' bus='0' port='1'/>
+    </input>
+    <input type='keyboard' bus='usb'>
+      <address type='usb' bus='0' port='2'/>
+    </input>
+
+    <!-- Audio: ich9-intel-hda + hda-duplex, same as the .sh -->
+    <sound model='ich9'>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x1b' function='0x0'/>
+    </sound>
+
+    <!-- vmware-svga video, matches -device vmware-svga in the .sh -->
+    <video>
+      <model type='vmvga' vram='16384' heads='1' primary='yes'/>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x02' function='0x0'/>
+    </video>
+
+    <!-- SPICE display -->
+    <graphics type='spice' autoport='yes'>
+      <listen type='address'/>
+    </graphics>
+
+    <serial type='pty'>
+      <target type='isa-serial' port='0'>
+        <model name='isa-serial'/>
+      </target>
+    </serial>
+    <console type='pty'>
+      <target type='serial' port='0'/>
+    </console>
+
+    <!-- GPU PASSTHROUGH
+     Both GPU and its HDMI audio must share the same slot with different
+     functions — macOS requires this for the GPU to be recognized properly.
+     Replace bus='0x2d' with your GPU's actual PCI address from: lspci -nn
+     When using GPU passthrough, also remove or comment out the <video> and
+     <graphics> blocks above, since the guest GPU replaces them. -->
+    <!-- <hostdev mode='subsystem' type='pci' managed='yes'>
+      <driver name='vfio'/>
+      <source>
+        <address domain='0x0000' bus='0x2d' slot='0x00' function='0x0'/>
+      </source>
+      <rom file='/mnt/disks/backups/BIOS/RX580/Ellesmere.rom'/>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x04' function='0x0' multifunction='on'/>
+    </hostdev>
+    <hostdev mode='subsystem' type='pci' managed='yes'>
+      <driver name='vfio'/>
+      <source>
+        <address domain='0x0000' bus='0x2d' slot='0x00' function='0x1'/>
+      </source>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x04' function='0x1'/>
+    </hostdev> -->
+
+    <!-- ONBOARD AUDIO PASSTHROUGH
+        Must stay on bus 0x00 at a low numbered slot, otherwise AppleALC
+        won't recognize it. Replace bus='0x30' with your audio device's
+        actual PCI address from: lspci -nn | grep -i audio -->
+    <!-- <hostdev mode='subsystem' type='pci' managed='yes'>
+      <driver name='vfio'/>
+      <source>
+        <address domain='0x0000' bus='0x30' slot='0x00' function='0x4'/>
+      </source>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x05' function='0x0'/>
+    </hostdev> -->
+
+    <memballoon model='none'/>
+  </devices>
+
+  <qemu:commandline>
+    <!-- CPU: Skylake-Client with all flags required by macOS.
+         Change to Penryn for older macOS (pre-Ventura). -->
+    <qemu:arg value='-cpu'/>
+    <qemu:arg value='Skylake-Client,-hle,-rtm,-rdseed,-pcid,kvm=on,vendor=GenuineIntel,+invtsc,vmware-cpuid-freq=on,+ssse3,+sse4.2,+popcnt,+avx,+aes,+xsave,+xsaveopt,check'/>
+    <!-- <qemu:arg value='Penryn,kvm=on,vendor=GenuineIntel,+invtsc,vmware-cpuid-freq=on,+ssse3,+sse4.2,+popcnt,+avx,+aes,+xsave,+xsaveopt,check'/> -->
+
+
+    <!-- CPU topology: 1 socket, 2 cores, 2 threads = 4 vCPUs -->
+    <qemu:arg value='-smp'/>
+    <qemu:arg value='4,cores=2,sockets=1'/>
+
+    <!-- Apple SMC -->
+    <qemu:arg value='-device'/>
+    <qemu:arg value='isa-applesmc,osk=ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc'/>
+
+    <!-- SMBIOS type 2 — required for macOS hardware detection -->
+    <qemu:arg value='-smbios'/>
+    <qemu:arg value='type=2'/>
+
+    <!-- Disables PCI hotplug - only recommended, could be commented out if needed -->
+    <qemu:arg value='-global'/>
+    <qemu:arg value='ICH9-LPC.acpi-pci-hotplug-with-bridge-support=off'/>
+
+    <!-- The network device from the .sh version -->
+    <qemu:arg value='-netdev'/>
+    <qemu:arg value='user,id=net0,hostfwd=tcp::2222-:22'/>
+    <qemu:arg value='-device'/>
+    <qemu:arg value='virtio-net-pci,netdev=net0,id=net0,mac=52:54:00:c9:18:27,addr=0x03'/>
+  </qemu:commandline>
+
+</domain>
