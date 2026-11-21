@@ -173,7 +173,7 @@ processors work just fine (even for macOS Sonoma).
   installation process.
 
   ```
-  ./OpenCore-Boot.sh
+  sudo ./OpenCore-Boot.sh
   ```
 
   Note: This same script works for all recent macOS versions.
